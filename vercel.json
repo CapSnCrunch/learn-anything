@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "learn-anything",
+  "builds": [
+    { "src": "client/**", "use": "@vercel/static-build" },
+    { "src": "functions/api/**/*.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/functions/api/$1" },
+    { "src": "/(.*)", "dest": "/client/$1" }
+  ]
+}
