@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "name": "learn-anything",
   "builds": [
-    { "src": "client/**", "use": "@vercel/static-build" },
-    { "src": "functions/api/**/*.js", "use": "@vercel/node" }
+    { "src": "src/main.js", "use": "@vercel/static-build" },
+    { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/functions/api/$1" },
-    { "src": "/(.*)", "dest": "/client/$1" }
+    { "src": "/api/(.*)", "dest": "api/$1" },
+    { "src": "/(.*)", "dest": "src/$1" }
   ]
 }
