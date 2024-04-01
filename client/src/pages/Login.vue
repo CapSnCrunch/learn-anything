@@ -20,12 +20,12 @@
                 <h1 class="login-text mx-auto">Log In</h1>
                 <div class="text-input-wrapper">
                     <input class="duolingo-text-input" v-model="email" data-test="email-input" type="text" placeholder="Email or username">
-                    <button @click="clearEmailOrUser" class="cancel-email-input-button _1eJKW _16r-S NF_yB tV2C-" tabindex="-1" type="button">
-                        <img src="https://d35aaqx5ub95lt.cloudfront.net/vendor/8857e57af4c38e2caab2df3d086202da.svg">
+                    <button @click="email = ''" class="cancel-email-input-button" tabindex="-1" type="button">
+                        <img src="../assets/cancel-circle.svg">
                     </button>
                 </div>
                 <div class="text-input-wrapper">
-                    <input class="duolingo-text-input" data-test="email-input" type="password" placeholder="Password">
+                    <input class="duolingo-text-input" v-model="password" data-test="email-input" type="password" placeholder="Password">
                     <router-link class="forgot-button" tabindex="-1" type="button" to="/forgot-password">
                         FORGOT?
                     </router-link>
@@ -38,10 +38,14 @@
                 </div>
                 <v-row class="w-100" no-gutters>
                     <v-col class="mr-2">
-                        <LAButton text="FACEBOOK" class="w-100" margin="0px"/>
+                        <LAButton text="FACEBOOK" class="w-100" margin="0px">
+                            <img class="ml-5" src="../assets/facebook-icon.svg">
+                        </LAButton>
                     </v-col>
                     <v-col class="ml-2">
-                        <LAButton text="GOOGLE" class="w-100" margin="0px"/>
+                        <LAButton text="GOOGLE" class="w-100" margin="0px">
+                            <img class="ml-5" src="../assets/google-icon.svg">
+                        </LAButton>
                     </v-col>
                 </v-row>
             </v-col>
@@ -57,14 +61,6 @@
   
   const email = ref('')
   const password = ref('')
-  const message = ref('')
-  
-
-  const clearEmailOrUser = () =>  {
-    console.log('Before: ' + email.value)
-    email.value = ''
-    console.log('After: ' + email.value)
-  }
 
   </script>
   

@@ -1,6 +1,7 @@
 <template>
   <div class="button-wrapper">
     <div class="button" :style="{ width: width, margin: margin }">
+      <slot />
       <p class="answer-number" v-if="number">{{ number }}</p>
       <p class="answer-choice">{{ text }}</p>
     </div>
