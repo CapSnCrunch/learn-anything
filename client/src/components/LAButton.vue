@@ -1,6 +1,7 @@
 <template>
   <div class="button-wrapper">
-    <div class="button" :style="{ width: width }">
+    <div class="button" :style="{ width: width, margin: margin }">
+      <slot />
       <p class="answer-number" v-if="number">{{ number }}</p>
       <p class="answer-choice">{{ text }}</p>
     </div>
@@ -20,6 +21,10 @@ const props = defineProps({
     type: String, // Assuming width is passed as a string with 'px' suffix, e.g., '200px'
     default: '100%', // Default width of the button
   },
+  margin: {
+    type: String, // Assuming margin is passed as a string with 'px' suffix, e.g., '200px'
+    default: '10px', // Default width of the button
+  },
 })
 </script>
 
@@ -36,7 +41,6 @@ const props = defineProps({
   border-radius: 16px;
   border: 2px solid #e5e5e5;
   border-bottom: 6px solid #e5e5e5;
-  margin: 10px;
   transition: all 0.1s;
   display: inline-flex;
   padding: 12px 16px;
