@@ -17,7 +17,9 @@
             class="d-flex flex-column justify-start align-start pl-10"
           >
             <LAButton text="Get Started" width="350px" />
-            <LAButton text="I Already Have an Account" width="350px" />
+            <router-link style="text-decoration: none;" to="/login">
+              <LAButton text="I Already Have an Account" width="350px" />
+            </router-link>
             <!-- <v-card class="pa-6">
               <v-card-title>Welcome to Learn Anything</v-card-title>
               <v-card-text>
