@@ -16,29 +16,35 @@
             cols="6"
             class="d-flex flex-column justify-start align-start pl-10"
           >
-            <LAButton text="Get Started" width="350px" />
+            <router-link :to="{ name: 'welcome' }" class="text-decoration-none">
+              <LAButton
+                text="Get Started"
+                width="350px"
+                class="text-decoration-none"
+              />
+            </router-link>
             <router-link class="text-decoration-none" to="/login">
               <LAButton text="I Already Have an Account" width="350px" />
             </router-link>
             <!-- <v-card class="pa-6">
-              <v-card-title>Welcome to Learn Anything</v-card-title>
-              <v-card-text>
-                <v-form @submit.prevent="login">
-                  <v-text-field
-                    v-model="email"
-                    label="Email"
+                <v-card-title>Welcome to Learn Anything</v-card-title>
+                <v-card-text>
+                  <v-form @submit.prevent="login">
+                    <v-text-field
+                      v-model="email"
+                      label="Email"
                     outlined
-                    required
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="password"
-                    label="Password"
-                    outlined
-                    required
-                    type="password"
-                  ></v-text-field>
-                  <v-btn type="submit" color="primary">Login</v-btn>
-                </v-form>
+                              required
+                            ></v-text-field>
+                            <v-text-field
+                              v-model="password"
+                              label="Password"
+                              outlined
+                              required
+                              type="password"
+                            ></v-text-field>
+                            <v-btn type="submit" color="primary">Login</v-btn>
+                          </v-form>
               </v-card-text>
             </v-card> -->
           </v-col>
@@ -49,16 +55,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import LAButton from '@/components/LAButton.vue'
-
-const email = ref('')
-const password = ref('')
-
-const login = () => {
-  // Implement your login logic here
-  console.log('Logging in...')
-}
 </script>
 
 <style scoped>
