@@ -1,23 +1,27 @@
 <template>
-  <div class="input-wrapper">
+  <div class="input-wrapper" :style="{ width: width }">
     <input
       class="input"
-      type="text"
+      :type="type"
       :value="modelValue"
       :placeholder="placeholder"
-      :style="{ width: width }"
       @input="$emit('update:modelValue', $event.target.value)"
     />
+    <slot />
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps } from "vue";
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: '',
+    default: "",
+  },
+  type: {
+    type: String,
+    default: "text",
   },
   placeholder: {
     type: String,
@@ -25,40 +29,39 @@ const props = defineProps({
   },
   width: {
     type: String, // Assuming width is passed as a string with 'px' suffix, e.g., '200px'
-    default: '100%', // Default width of the input
+    default: "100%", // Default width of the input
   },
-})
+});
 </script>
 
 <style scoped>
 .input-wrapper {
   width: fit-content;
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-
-.input {
   border-radius: 16px;
   border: 2px solid #e5e5e5;
-  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 20px;
   transition: all 0.1s;
   display: inline-flex;
   padding: 12px 16px;
   cursor: pointer;
+}
+
+.input {
   outline: none;
 }
 
-.input:hover {
+.input-wrapper:hover {
   border: 2px solid #1cb0f6;
 }
 
-.input:focus {
+.input-wrapper:focus {
   border: 2px solid #1cb0f6;
 }
 
-.input:active {
+.input-wrapper:active {
   border: 2px solid #1cb0f6;
 }
 </style>

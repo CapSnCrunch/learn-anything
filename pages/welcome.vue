@@ -10,16 +10,14 @@
             cols="12"
             class="d-flex flex-column justify-center align-center pl-10"
           >
-            <h2 class="mb-3">What do you want to learn?</h2>
+            <h2 class="text-eel mb-3">What do you want to learn?</h2>
             <LAInput
               v-model="inputValue"
               placeholder="I want to learn..."
               width="500px"
               class="mb-10"
             />
-            <h4 class="mb-5 text-blue-grey-lighten-3">
-              Not sure? Suggested topics:
-            </h4>
+            <h4 class="text-eel mb-5">Not sure? Suggested topics:</h4>
           </v-col>
         </v-sheet>
       </v-col>
@@ -28,10 +26,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import LAInput from '@/components/LAInput.vue'
+import { ref } from "vue";
+import LAInput from "@/components/LAInput.vue";
 
-let inputValue = ref('')
+let inputValue = ref("");
 </script>
 
 <style scoped>
@@ -42,7 +40,6 @@ let inputValue = ref('')
   justify-content: center;
   text-align: center;
   font-size: 24px;
-  border: 2px solid red;
   position: relative;
 }
 </style>
