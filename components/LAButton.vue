@@ -1,31 +1,27 @@
 <template>
-  <div class="button-wrapper">
+  <div class="button-wrapper text-decoration-none">
     <div class="button" :style="{ width: width, margin: margin }">
-      <slot />
-      <p class="answer-number" v-if="number">{{ number }}</p>
-      <p class="answer-choice">{{ text }}</p>
+      <div class="content text-eel">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps } from "vue";
 
 const props = defineProps({
-  number: {
-    type: Number,
-    default: null,
-  },
   text: String,
   width: {
-    type: String, // Assuming width is passed as a string with 'px' suffix, e.g., '200px'
-    default: '100%', // Default width of the button
+    type: String,
+    default: "100%",
   },
   margin: {
-    type: String, // Assuming margin is passed as a string with 'px' suffix, e.g., '200px'
-    default: '10px', // Default width of the button
+    type: String,
+    default: "10px",
   },
-})
+});
 </script>
 
 <style scoped>
@@ -56,6 +52,14 @@ const props = defineProps({
   border-bottom: 2px solid #1cb0f6;
 }
 
+.content {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  color: #4b4b4b;
+  user-select: none; /* Make the number non-highlightable */
+}
+
 .answer-number {
   border: 2px solid #e5e5e5;
   border-radius: 8px;
@@ -64,14 +68,6 @@ const props = defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
-  user-select: none; /* Make the number non-highlightable */
-}
-
-.answer-choice {
-  width: 100%;
-  text-align: center;
-  font-size: 19px;
-  color: #4b4b4b;
   user-select: none; /* Make the number non-highlightable */
 }
 </style>
