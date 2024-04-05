@@ -30,8 +30,9 @@
                 class="d-inline-flex align-self-center highlight"
                 type="button"
               >
-                <img src="../assets/cancel-circle.svg" /></button
-            ></LAInput>
+                <img src="../assets/cancel-circle.svg" />
+              </button>
+            </LAInput>
 
             <LAInput v-model="password" placeholder="Password" type="password">
               <router-link
@@ -41,8 +42,8 @@
                 to="/forgot-password"
               >
                 FORGOT?
-              </router-link></LAInput
-            >
+              </router-link>
+            </LAInput>
 
             <LAButton class="w-100 mb-8" margin="0px">LOG IN</LAButton>
 
