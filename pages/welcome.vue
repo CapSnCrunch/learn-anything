@@ -51,8 +51,9 @@
                   <v-tooltip
                     v-if="topic?.description"
                     activator="parent"
-                    location="bottom"
-                    max-width="500px"
+                    location="top"
+                    offset="20px"
+                    max-width="300px"
                   >
                     {{ topic?.description }}
                   </v-tooltip>
@@ -70,6 +71,7 @@
 import { ref, computed } from "vue";
 import axios from "axios";
 import LAInput from "@/components/LAInput.vue";
+import LAButton from "@/components/LAButton.vue";
 
 let loading = ref(false);
 let inputValue = ref("");
