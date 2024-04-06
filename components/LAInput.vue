@@ -1,18 +1,19 @@
 <template>
   <div class="input-wrapper" :style="{ width: width }">
     <input
-      class="input"
+      class="input d-flex w-100"
       :type="type"
       :value="modelValue"
       :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
+      @keydown.enter="handleEnterKey"
     />
     <slot />
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -28,10 +29,18 @@ const props = defineProps({
     default: null,
   },
   width: {
-    type: String, // Assuming width is passed as a string with 'px' suffix, e.g., '200px'
-    default: "100%", // Default width of the input
+    type: String,
+    default: "100%",
   },
 });
+
+const emits = defineEmits(["enter"]);
+
+const handleEnterKey = (event) => {
+  if (event.key === "Enter") {
+    emits("enter");
+  }
+};
 </script>
 
 <style scoped>

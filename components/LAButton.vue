@@ -1,6 +1,6 @@
 <template>
   <div class="button-wrapper text-decoration-none">
-    <div class="button" :style="{ width: width, margin: margin }">
+    <div class="button ma-0" :style="{ width: width, margin: margin }">
       <div class="content text-eel">
         <slot />
       </div>
@@ -26,11 +26,10 @@ const props = defineProps({
 
 <style scoped>
 .button-wrapper {
-  width: fit-content;
   height: 80px;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
 }
 
 .button {
