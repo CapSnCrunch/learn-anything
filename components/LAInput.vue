@@ -6,13 +6,14 @@
       :value="modelValue"
       :placeholder="placeholder"
       @input="$emit('update:modelValue', $event.target.value)"
+      @keydown.enter="handleEnterKey"
     />
     <slot />
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -32,6 +33,14 @@ const props = defineProps({
     default: "100%",
   },
 });
+
+const emits = defineEmits(["enter"]);
+
+const handleEnterKey = (event) => {
+  if (event.key === "Enter") {
+    emits("enter");
+  }
+};
 </script>
 
 <style scoped>

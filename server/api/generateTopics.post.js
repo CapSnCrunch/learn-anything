@@ -10,9 +10,10 @@ export default defineEventHandler(async (event) => {
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
       Consider topics like Web Development, Python, Linear Algebra, Creative Writing, Archaeology, etc. 
       Provide a diverse range of topics that the user might find interesting to learn about based around 
-      their input. Your response should be a JSON object with an attribute 'topics' that is a list of strings.
+      their input. Your response should be a JSON object with an attribute 'topics' that is a list of JSON
+      objects containing a 'name' (one or two words) and a 'description' (no more than 20 words describing the topic).
       Generate exactly 6 distinct topics. IMPORTANT: Do not put the response in a code block, just send the 
-      stringified JSON as plain text.`;
+      stringified JSON as plain text. If the input itself is a topic, be sure to include it in the final list.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
