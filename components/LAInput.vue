@@ -1,7 +1,7 @@
 <template>
   <div class="input-wrapper" :style="{ width: width }">
     <input
-      class="input"
+      class="input d-flex w-100"
       :type="type"
       :value="modelValue"
       :placeholder="placeholder"
@@ -28,8 +28,8 @@ const props = defineProps({
     default: null,
   },
   width: {
-    type: String, // Assuming width is passed as a string with 'px' suffix, e.g., '200px'
-    default: "100%", // Default width of the input
+    type: String,
+    default: "100%",
   },
 });
 </script>

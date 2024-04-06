@@ -14,12 +14,16 @@
             cols="6"
             class="d-flex flex-column justify-start align-start pl-10"
           >
-            <router-link :to="{ name: 'welcome' }" class="text-decoration-none">
-              <LAButton width="350px">Get Started</LAButton>
-            </router-link>
-            <router-link class="text-decoration-none" to="/login">
-              <LAButton width="350px">I Already Have an Account</LAButton>
-            </router-link>
+            <LAButton width="350px">
+              <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none">
+                <h2 class="text-eel text-h6">Get Started</h2>
+              </nuxt-link>
+            </LAButton>
+            <LAButton width="350px">
+              <nuxt-link :to="{ name: 'login' }" class="text-decoration-none">
+                <h2 class="text-eel text-h6">I Already Have an Account</h2>
+              </nuxt-link>
+            </LAButton>
           </v-col>
         </v-sheet>
       </v-col>
