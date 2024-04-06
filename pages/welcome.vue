@@ -63,7 +63,6 @@ const getSuggestedTopics = async () => {
     const response = await axios.post("/api/generateTopics", {
       message: inputValue.value,
     });
-    console.log(response);
     suggestedTopics.value = response?.data?.data?.topics;
   } catch (error) {
     console.error("Error fetching suggested topics:", error);
