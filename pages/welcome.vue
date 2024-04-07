@@ -73,10 +73,10 @@ import axios from "axios";
 import LAInput from "@/components/LAInput.vue";
 import LAButton from "@/components/LAButton.vue";
 
-let loading = ref(false);
-let inputValue = ref("");
-let suggestedTopics = ref([]);
-let defaultTopics = ref([
+const loading = ref(false);
+const inputValue = ref("");
+const suggestedTopics = ref([]);
+const defaultTopics = ref([
   {
     name: "Archaeology",
     description:
