@@ -56,6 +56,16 @@
               <v-row v-else class="d-flex w-100 mt-8">
                 <v-col cols="12">
                   <h2>Done with the quiz!</h2>
+                  <LAButton class="mt-8" width="500px">
+                    <nuxt-link
+                      :to="'/course/' + topic?.toLowerCase()"
+                      class="d-flex text-decoration-none align-center justify-center"
+                    >
+                      <h2 class="text-eel text-h6" @click="started = true">
+                        Continue to your custom course!
+                      </h2>
+                    </nuxt-link>
+                  </LAButton>
                 </v-col>
               </v-row>
             </span>
