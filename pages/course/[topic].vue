@@ -2,53 +2,38 @@
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
     <v-row class="d-flex flex-column align-center justify-center">
       <v-col
-        class="d-flex flex-column align-center pa-0 ma-0"
-        style="position: relative"
+        class="d-flex flex-column align-center ma-0"
+        style="padding-top: 100px"
       >
         <div
-          class="d-flex align-center justify-center w-100"
-          style="
-            position: fixed;
-            top: 175px;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 1000px;
-          "
-        >
-          <div class="section-card">
-            <v-col cols="9" class="pa-0 ma-0">
-              <h1 class="text-eel text-subtitle-1 font-weight-bold">
-                Section 1, Unit {{ currentSubtopicIndex + 1 }}
-              </h1>
-              <h1 class="text-eel text-h5 font-weight-bold">
-                {{ currentSubtopic.name }}
-              </h1>
-              <h1 class="text-eel text-body-1 mt-1">
-                {{ currentSubtopic.description }}
-              </h1>
-            </v-col>
-            <v-col cols="3"> </v-col>
-          </div>
-        </div>
-
-        <v-sheet
-          v-for="(subtopic, index) of subtopics"
-          :id="`subtopic-${index}`"
-          :key="`subtopic-${index}`"
-          class="d-flex flex-column align-center h-screen w-100"
-          style="padding-top: 150px; max-width: 800px"
+          v-for="(subtopic, subtopicIndex) of subtopics"
+          :id="`subtopic-${subtopicIndex}`"
+          :key="`subtopic-${subtopicIndex}`"
+          class="section-card d-flex flex-column justify-center align-center w-75 mb-8"
+          style="max-width: 800px"
           ref="sections"
         >
-          <div class="d-flex flex-column justify-center align-center w-75">
-            <div class="d-flex w-100 align-center justify-center mb-2">
-              <hr class="flex-fill" style="border: 1px solid #afafaf" />
-              <p class="text-eel text-h5 font-weight-bold mx-4">
-                {{ subtopic?.name }}
-              </p>
-              <hr class="flex-fill" style="border: 1px solid #afafaf" />
-            </div>
+          <div
+            class="section-card-top d-flex flex-column w-100 align-start justify-center"
+          >
+            <h1 class="text-eel text-subtitle-1 font-weight-bold">
+              Section 1, Unit {{ subtopicIndex + 1 }}
+            </h1>
+            <h1 class="text-eel text-h5 font-weight-bold">
+              {{ subtopic.name }}
+            </h1>
+            <h1 class="text-eel text-body-1 mt-1">
+              {{ subtopic.description }}
+            </h1>
           </div>
-        </v-sheet>
+          <div class="d-flex justify-space-around w-100 mt-8 mb-6">
+            <LALessonButton
+              v-for="index of [1, 2, 3, 4, 5, 6, 7]"
+              :color="$vuetify.theme.current.colors?.[subtopic?.color]"
+              :disabled="index != 1"
+            />
+          </div>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -56,16 +41,69 @@
 
 <script setup>
 import axios from "axios";
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import "intersection-observer";
+
+const example = [
+  {
+    name: "Plant Cells",
+    description: "Structure and function of plant cells",
+    color: "sage",
+  },
+  {
+    name: "Plant Tissues",
+    description: "Different types of plant tissues and their functions",
+    color: "olivine",
+  },
+  {
+    name: "Plant Organs",
+    description:
+      "Structure and function of plant organs (roots, stems, leaves, flowers)",
+    color: "resuda",
+  },
+  {
+    name: "Plant Growth",
+    description: "Factors affecting plant growth and development",
+    color: "hunter",
+  },
+  {
+    name: "Plant Reproduction",
+    description: "Sexual and asexual reproduction in plants",
+    color: "umber",
+  },
+  {
+    name: "Plant Taxonomy",
+    description: "Classification and identification of plants",
+    color: "coffee",
+  },
+  {
+    name: "Plant Ecology",
+    description: "Interactions between plants and their environment",
+    color: "chamoisee",
+  },
+  {
+    name: "Plant Physiology",
+    description:
+      "Physiological processes in plants, such as photosynthesis and respiration",
+    color: "persian",
+  },
+  {
+    name: "Plant Biotechnology",
+    description: "Applications of biotechnology in plant science",
+    color: "lion",
+  },
+  {
+    name: "Economic Botany",
+    description: "Uses of plants for food, medicine, and other products",
+    color: "sunglow",
+  },
+];
 
 const route = useRoute();
 const topic = route.params.topic;
 
 const loading = ref(false);
 const subtopics = ref([]);
-const currentSubtopic = ref("");
-const currentSubtopicIndex = ref(0);
 
 const getCourseSubtopics = async () => {
   if (loading.value) {
@@ -86,34 +124,6 @@ const getCourseSubtopics = async () => {
 
 onMounted(async () => {
   await getCourseSubtopics();
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionIndex = subtopics.value.findIndex(
-            (_, index) => entry.target.id === `subtopic-${index}`
-          );
-          if (sectionIndex !== -1) {
-            currentSubtopic.value = subtopics.value[sectionIndex];
-            currentSubtopicIndex.value = sectionIndex;
-          }
-        }
-      });
-    },
-    { threshold: 0.95 }
-  );
-
-  subtopics.value.forEach((_, index) => {
-    const section = document.getElementById(`subtopic-${index}`);
-    if (section) {
-      observer.observe(section);
-    }
-  });
-});
-
-onBeforeUnmount(() => {
-  observer.disconnect();
 });
 </script>
 
@@ -121,11 +131,15 @@ onBeforeUnmount(() => {
 .section-card {
   display: flex;
   flex-direction: column;
-  height: 150px;
   width: 80%;
   background-color: #f0f0f0;
   border-radius: 16px;
-  border: 2px solid #e5e5e5;
-  padding: 20px;
+}
+
+.section-card-top {
+  background-color: #e5e5e5;
+  padding: 15px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 </style>
