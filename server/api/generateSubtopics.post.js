@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const body = await readBody(event);
 
-  console.log(body);
   const topic = body?.topic;
 
   try {
@@ -20,8 +19,6 @@ export default defineEventHandler(async (event) => {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = await response.text();
-
-    console.log(text);
 
     return {
       statusCode: 200,

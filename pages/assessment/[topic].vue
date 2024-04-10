@@ -1,78 +1,72 @@
 <template>
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center">
-      <v-col class="pa-0 ma-0">
-        <v-sheet
-          class="section d-flex flex-column align-center"
-          style="padding-top: 150px"
-        >
-          <div
-            class="d-flex flex-column justify-center align-center w-100"
-            style="max-width: 1000px"
-          >
-            <span v-if="!started">
-              <div>
-                <h1 class="text-eel text-h4 font-weight-bold typingEffect">
-                  Welcome to {{ formattedTopic }}!
-                </h1>
-              </div>
-              <div class="mt-8">
-                <h2
-                  class="text-eel text-h6 font-weight-medium"
-                  style="max-width: 800px"
-                >
-                  Let's get started with a basic knowledge assessment. Don't
-                  worry about answering anything incorrectly, just try your
-                  best!
-                </h2>
-              </div>
-              <LAButton class="mt-8" width="300px">
-                <h2 class="text-eel text-h6" @click="started = true">
-                  Let's Go!
-                </h2>
-              </LAButton>
-            </span>
-            <span v-else class="w-100">
-              <LAProgressBar :value="progress" />
-
-              <v-row
-                v-if="questionIndex < questions.length"
-                class="d-flex w-100 mt-8"
-              >
-                <v-col cols="12">
-                  <h2>{{ currentQuestion?.question }}</h2>
-                </v-col>
-                <v-col
-                  cols="6"
-                  v-for="answer of currentQuestion?.answers"
-                  class="d-flex align-center justify-center px-3 py-0"
-                >
-                  <LAButton class="w-100" @click="submit(answer)">{{
-                    answer
-                  }}</LAButton>
-                </v-col>
-              </v-row>
-
-              <v-row v-else class="d-flex w-100 mt-8">
-                <v-col cols="12">
-                  <h2>Done with the quiz!</h2>
-                  <LAButton class="mt-8" width="500px">
-                    <nuxt-link
-                      :to="'/course/' + topic?.toLowerCase()"
-                      class="d-flex text-decoration-none align-center justify-center"
-                    >
-                      <h2 class="text-eel text-h6" @click="started = true">
-                        Continue to your custom course!
-                      </h2>
-                    </nuxt-link>
-                  </LAButton>
-                </v-col>
-              </v-row>
-            </span>
+    <v-sheet class="section d-flex align-start" style="padding-top: 150px">
+      <div
+        class="d-flex flex-column justify-center align-start w-100"
+        style="max-width: 1000px"
+      >
+        <span v-if="!started">
+          <div class="text-start">
+            <h1 class="text-eel text-h4 font-weight-bold typingEffect">
+              Welcome to {{ formattedTopic }}!
+            </h1>
           </div>
-        </v-sheet>
-      </v-col>
-    </v-row>
+          <div class="text-start mt-4">
+            <h2
+              class="text-eel text-h6 font-weight-medium"
+              style="max-width: 800px"
+            >
+              Let's get started with a basic knowledge assessment. Don't worry
+              about answering anything incorrectly, just try your best!
+            </h2>
+          </div>
+          <LAButton class="mt-4" width="300px">
+            <h2 class="text-eel text-h6" @click="started = true">Let's Go!</h2>
+          </LAButton>
+        </span>
+        <span v-else class="w-100">
+          <LAProgressBar :value="progress" />
+
+          <v-row
+            v-if="questionIndex < questions.length"
+            class="d-flex w-100 mt-4"
+          >
+            <v-col cols="12" class="mb-4">
+              <h2 class="text-eel text-h4 text-start">
+                {{ currentQuestion?.question }}
+              </h2>
+            </v-col>
+            <v-col
+              cols="6"
+              v-for="answer of currentQuestion?.answers"
+              class="d-flex align-center justify-center px-3 py-0"
+            >
+              <LAButton class="w-100" @click="submit(answer)">{{
+                answer
+              }}</LAButton>
+            </v-col>
+          </v-row>
+
+          <v-row v-else class="d-flex w-100 mt-8">
+            <v-col cols="12" class="d-flex flex-column align-center">
+              <h2 class="text-eel text-h4 font-weight-bold">
+                Done with the quiz!
+              </h2>
+              <LAButton class="mt-8" width="500px">
+                <nuxt-link
+                  :to="'/course/' + topic?.toLowerCase()"
+                  class="d-flex text-decoration-none align-center justify-center"
+                >
+                  <h2 class="text-eel text-h6" @click="started = true">
+                    Continue to your custom course!
+                  </h2>
+                </nuxt-link>
+              </LAButton>
+            </v-col>
+          </v-row>
+        </span>
+      </div>
+    </v-sheet>
   </v-container>
 </template>
 
@@ -128,7 +122,7 @@ const submit = (answer) => {
 };
 </script>
 
-<style scoped>
+<style>
 .section {
   height: 100vh;
 }

@@ -2,7 +2,7 @@ import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import { createVuetify, type VuetifyOptions } from "vuetify";
 
-export default defineNuxtPlugin((app) => {
+export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     theme: {
       defaultTheme: "light",
@@ -48,5 +48,5 @@ export default defineNuxtPlugin((app) => {
     },
   } as VuetifyOptions);
 
-  app.vueApp.use(vuetify);
+  nuxtApp.vueApp.use(vuetify);
 });

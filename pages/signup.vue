@@ -17,7 +17,7 @@
             xxl="3"
             class="d-flex flex-column justify-start align-start"
           >
-            <h3 class="text-eel mx-auto mb-8">Log In</h3>
+            <h3 class="text-eel mx-auto mb-8">Sign Up</h3>
 
             <LAInput
               v-model="email"
@@ -40,8 +40,8 @@
               type="password"
             />
 
-            <LAButton class="w-100 mt-2 mb-4" margin="0px" @click="signup">
-              LOGIN
+            <LAButton class="w-100 mt-2 mb-4" @click="signup">
+              SIGN UP
             </LAButton>
 
             <div class="d-flex w-100 align-center justify-center mb-4">
@@ -61,8 +61,8 @@
 
             <v-row class="d-flex justify-center w-100">
               <h2 class="text-eel text-h6">
-                Don't have an account?
-                <nuxt-link :to="{ path: '/signup' }"> Create one </nuxt-link>
+                Already have an account?
+                <nuxt-link :to="{ path: '/login' }"> Login instead </nuxt-link>
               </h2>
             </v-row>
           </v-col>
