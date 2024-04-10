@@ -1,6 +1,6 @@
 <template>
   <div class="button-wrapper text-decoration-none">
-    <div class="button ma-0" :style="{ width: width, margin: margin }">
+    <div class="button ma-0" :class="classes">
       <div class="content text-eel">
         <slot />
       </div>
@@ -13,13 +13,9 @@ import { defineProps } from "vue";
 
 const props = defineProps({
   text: String,
-  width: {
+  classes: {
     type: String,
-    default: "100%",
-  },
-  margin: {
-    type: String,
-    default: "10px",
+    default: "w-100",
   },
 });
 </script>

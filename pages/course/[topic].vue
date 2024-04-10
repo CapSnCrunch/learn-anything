@@ -29,7 +29,7 @@
           <div class="d-flex justify-space-around w-100 mt-8 mb-6">
             <LALessonButton
               v-for="index of [1, 2, 3, 4, 5, 6, 7]"
-              :color="$vuetify.theme.current.colors?.[subtopic?.color]"
+              :color="colors[subtopicIndex]"
               :disabled="index != 1"
             />
           </div>
@@ -44,58 +44,71 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import "intersection-observer";
 
+const colors = ref([
+  "rgb(53.725% 88.627% 9.804%)",
+  "rgb(48.382% 86.176% 20.637%)",
+  "rgb(43.039% 83.725% 31.471%)",
+  "rgb(37.696% 81.275% 42.304%)",
+  "rgb(32.353% 78.824% 53.137%)",
+  "rgb(29.681% 77.598% 58.554%)",
+  "rgb(27.01% 76.373% 63.971%)",
+  "rgb(18.995% 72.696% 80.221%)",
+  "rgb(13.652% 70.245% 91.054%)",
+  "rgb(10.98% 69.02% 96.471%)",
+]);
+
 const example = [
   {
     name: "Plant Cells",
     description: "Structure and function of plant cells",
-    color: "sage",
+    color: "rgb(53.725% 88.627% 9.804%)",
   },
   {
     name: "Plant Tissues",
     description: "Different types of plant tissues and their functions",
-    color: "olivine",
+    color: "rgb(48.382% 86.176% 20.637%)",
   },
   {
     name: "Plant Organs",
     description:
       "Structure and function of plant organs (roots, stems, leaves, flowers)",
-    color: "resuda",
+    color: "rgb(43.039% 83.725% 31.471%)",
   },
   {
     name: "Plant Growth",
     description: "Factors affecting plant growth and development",
-    color: "hunter",
+    color: "rgb(37.696% 81.275% 42.304%)",
   },
   {
     name: "Plant Reproduction",
     description: "Sexual and asexual reproduction in plants",
-    color: "umber",
+    color: "rgb(32.353% 78.824% 53.137%)",
   },
   {
     name: "Plant Taxonomy",
     description: "Classification and identification of plants",
-    color: "coffee",
+    color: "rgb(29.681% 77.598% 58.554%)",
   },
   {
     name: "Plant Ecology",
     description: "Interactions between plants and their environment",
-    color: "chamoisee",
+    color: "rgb(27.01% 76.373% 63.971%)",
   },
   {
     name: "Plant Physiology",
     description:
       "Physiological processes in plants, such as photosynthesis and respiration",
-    color: "persian",
+    color: "rgb(18.995% 72.696% 80.221%)",
   },
   {
     name: "Plant Biotechnology",
     description: "Applications of biotechnology in plant science",
-    color: "lion",
+    color: "rgb(13.652% 70.245% 91.054%)",
   },
   {
     name: "Economic Botany",
     description: "Uses of plants for food, medicine, and other products",
-    color: "sunglow",
+    color: "rgb(10.98% 69.02% 96.471%)",
   },
 ];
 
@@ -103,7 +116,7 @@ const route = useRoute();
 const topic = route.params.topic;
 
 const loading = ref(false);
-const subtopics = ref([]);
+const subtopics = ref();
 
 const getCourseSubtopics = async () => {
   if (loading.value) {

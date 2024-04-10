@@ -1,69 +1,57 @@
 <template>
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center">
-      <v-col class="pa-0 ma-0">
-        <v-sheet
-          class="section d-flex flex-column align-center"
-          style="padding-top: 150px"
+    <v-sheet class="section d-flex align-start" style="padding-top: 150px">
+      <div
+        class="d-flex flex-column justify-center align-center w-100"
+        style="max-width: 1000px"
+      >
+        <h2 class="text-eel mb-3">What do you want to learn?</h2>
+        <LAInput
+          v-model="inputValue"
+          placeholder="I want to learn..."
+          width="500px"
+          class="mb-10 d-flex align-center"
+          @enter="getSuggestedTopics"
         >
-          <div
-            class="d-flex flex-column justify-center align-center w-100"
-            style="max-width: 1000px"
+          <v-icon
+            v-if="!loading"
+            icon="mdi-magnify"
+            size="20px"
+            color="eel"
+            @click="getSuggestedTopics"
+          />
+          <img v-else src="../assets/loading.gif" width="20px" height="20px" />
+        </LAInput>
+
+        <h4 class="text-eel mb-8">Not sure? Suggested topics:</h4>
+
+        <v-row class="d-flex w-100">
+          <v-col
+            cols="4"
+            v-for="topic of topicsToShow"
+            class="d-flex align-center justify-center px-3 py-0"
           >
-            <h2 class="text-eel mb-3">What do you want to learn?</h2>
-            <LAInput
-              v-model="inputValue"
-              placeholder="I want to learn..."
-              width="500px"
-              class="mb-10 d-flex align-center"
-              @enter="getSuggestedTopics"
-            >
-              <v-icon
-                v-if="!loading"
-                icon="mdi-magnify"
-                size="20px"
-                color="eel"
-                @click="getSuggestedTopics"
-              />
-              <img
-                v-else
-                src="../assets/loading.gif"
-                width="20px"
-                height="20px"
-              />
-            </LAInput>
-
-            <h4 class="text-eel mb-8">Not sure? Suggested topics:</h4>
-
-            <v-row class="d-flex w-100">
-              <v-col
-                cols="4"
-                v-for="topic of topicsToShow"
-                class="d-flex align-center justify-center px-3 py-0"
+            <LAButton class="w-100">
+              <nuxt-link
+                :to="'/assessment/' + topic?.name.toLowerCase()"
+                class="d-flex text-decoration-none align-center justify-center"
               >
-                <LAButton class="w-100">
-                  <nuxt-link
-                    :to="'/assessment/' + topic?.name.toLowerCase()"
-                    class="d-flex text-decoration-none align-center justify-center"
-                  >
-                    <h2 class="text-eel text-h6">{{ topic?.name }}</h2>
-                  </nuxt-link>
-                  <v-tooltip
-                    v-if="topic?.description"
-                    activator="parent"
-                    location="top"
-                    offset="20px"
-                    max-width="300px"
-                  >
-                    {{ topic?.description }}
-                  </v-tooltip>
-                </LAButton>
-              </v-col>
-            </v-row>
-          </div>
-        </v-sheet>
-      </v-col>
-    </v-row>
+                <h2 class="text-eel text-h6">{{ topic?.name }}</h2>
+              </nuxt-link>
+              <v-tooltip
+                v-if="topic?.description"
+                activator="parent"
+                location="top"
+                offset="20px"
+                max-width="300px"
+              >
+                {{ topic?.description }}
+              </v-tooltip>
+            </LAButton>
+          </v-col>
+        </v-row>
+      </div>
+    </v-sheet>
   </v-container>
 </template>
 
