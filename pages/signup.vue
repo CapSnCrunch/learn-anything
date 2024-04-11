@@ -15,9 +15,12 @@
             lg="4"
             xl="3"
             xxl="3"
-            class="d-flex flex-column justify-start align-start"
+            class="d-flex flex-column justify-center align-center"
           >
-            <h3 class="text-eel mx-auto mb-8">Sign Up</h3>
+            <h3 class="text-eel text-center mb-2">Sign Up</h3>
+            <h4 class="text-eel text-body-1 text-center mb-8">
+              Create an account to track your progress!
+            </h4>
 
             <LAInput
               v-model="email"
@@ -40,9 +43,22 @@
               type="password"
             />
 
-            <LAButton class="w-100 mt-2 mb-4" @click="signup">
+            <LAButton
+              class="w-100 mt-2"
+              :class="error ? 'mb-0' : 'mb-4'"
+              @click="signUpWithEmailAndPassword()"
+            >
               SIGN UP
             </LAButton>
+
+            <div
+              v-if="error"
+              class="d-flex align-center justify-center w-100 mb-4"
+            >
+              <h2 class="text-red text-center text-subtitle-2 font-weight-bold">
+                There was an error signing up.
+              </h2>
+            </div>
 
             <div class="d-flex w-100 align-center justify-center mb-4">
               <hr class="flex-fill" style="border: 1px solid #afafaf" />
@@ -51,7 +67,7 @@
             </div>
 
             <v-row class="w-100" no-gutters>
-              <LAButton class="w-100" margin="0px" @click="signinPopup()">
+              <LAButton class="w-100" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
                   <h4 class="pl-4 text-macaw">GOOGLE</h4>
@@ -77,57 +93,42 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
-import {
-  getRedirectResult,
-  signInAnonymously,
-  signInWithPopup,
-  signInWithRedirect,
-  signOut,
-} from "firebase/auth";
-import {
-  useCurrentUser,
-  useFirebaseAuth,
-  useIsCurrentUserLoaded,
-} from "vuefire";
-
-definePageMeta({
-  linkTitle: "Login",
-  order: 2,
-});
+import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { useFirebaseAuth, useIsCurrentUserLoaded } from "vuefire";
 
 const email = ref("");
 const password = ref("");
 
 const auth = useFirebaseAuth()!;
-const user = useCurrentUser();
-const isUserLoaded = useIsCurrentUserLoaded();
 const error = ref<Error | null>(null);
 const router = useRouter();
 
-function signinRedirect() {
-  const googleAuthProvider = new GoogleAuthProvider();
-  signInWithRedirect(auth, googleAuthProvider).catch((reason) => {
-    console.error("Failed signinRedirect", reason);
+async function signUpWithEmailAndPassword() {
+  try {
+    error.value = null;
+    const credential = await createUserWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+    router.push({ path: "/welcome" });
+  } catch (reason) {
+    console.error("Failed signup", reason);
     error.value = reason;
-  });
+  }
 }
 
-function signinPopup() {
+async function signInWithGooglePopup() {
   error.value = null;
   const googleAuthProvider = new GoogleAuthProvider();
-  signInWithPopup(auth, googleAuthProvider).catch((reason) => {
+  try {
+    await signInWithPopup(auth, googleAuthProvider);
+    router.push({ path: "/welcome" });
+  } catch (reason) {
     console.error("Failed signinPopup", reason);
     error.value = reason;
-  });
-  router.push({ path: "/welcome" });
+  }
 }
-
-onMounted(() => {
-  getRedirectResult(auth).catch((reason) => {
-    console.error("Failed redirect result", reason);
-    error.value = reason;
-  });
-});
 </script>
 
 <style>

@@ -19,6 +19,12 @@ export default defineEventHandler(async (event) => {
     const response = await result.response;
     const text = await response.text();
 
+    const jsonRegex = /^```json\n([\s\S]*)\n```$/;
+    const match = text.match(jsonRegex);
+    if (match) {
+      text = match[1];
+    }
+
     return {
       statusCode: 200,
       data: JSON.parse(text),

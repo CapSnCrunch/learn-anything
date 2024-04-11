@@ -4,7 +4,7 @@
       class="d-flex align-center justify-center px-10"
       style="height: 100vh"
     >
-      <v-row class="d-flex flex-wrap justify-center">
+      <v-row class="d-flex flex-wrap justify-center align-center">
         <!-- Image column -->
         <v-col cols="12" lg="6" class="d-flex align-end justify-end">
           <!-- :class="lgAndUp ? 'justify-end' : 'justify-center'" -->
@@ -16,11 +16,7 @@
         </v-col>
 
         <!-- Content column -->
-        <v-col
-          :cols="xs ? 12 : 6"
-          lg="6"
-          class="d-flex align-center justify-start"
-        >
+        <v-col xs="12" lg="6" class="d-flex align-center justify-start">
           <!-- :class="lgAndUp ? 'justify-start' : 'justify-center'" -->
           <v-row
             class="d-flex flex-column align-center justify-center"
