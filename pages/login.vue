@@ -15,7 +15,7 @@
             lg="4"
             xl="3"
             xxl="3"
-            class="d-flex flex-column justify-start align-start"
+            class="d-flex flex-column justify-center align-center"
           >
             <h3 class="text-eel mx-auto mb-8">Log In</h3>
 
@@ -34,15 +34,42 @@
               </button>
             </LAInput>
 
-            <LAInput
-              v-model="password"
-              placeholder="Password"
-              type="password"
-            />
+            <LAInput v-model="password" placeholder="Password" type="password">
+              <h2
+                class="highlight text-subtitle-1 font-weight-bold"
+                @click="resetPassword()"
+              >
+                FORGOT?
+              </h2>
+            </LAInput>
 
-            <LAButton class="w-100 mt-2 mb-4" margin="0px" @click="signup">
+            <LAButton
+              class="w-100 mt-2"
+              :class="error || message ? 'mb-0' : 'mb-4'"
+              @click="signInWithEmailPassword()"
+            >
               LOGIN
             </LAButton>
+
+            <div
+              v-if="message"
+              class="d-flex align-center justify-center w-100 mb-4"
+            >
+              <h2
+                class="text-green text-center text-subtitle-2 font-weight-bold"
+              >
+                {{ message }}
+              </h2>
+            </div>
+
+            <div
+              v-if="error"
+              class="d-flex align-center justify-center w-100 mb-4"
+            >
+              <h2 class="text-red text-center text-subtitle-2 font-weight-bold">
+                There was an error logging in.
+              </h2>
+            </div>
 
             <div class="d-flex w-100 align-center justify-center mb-4">
               <hr class="flex-fill" style="border: 1px solid #afafaf" />
@@ -51,7 +78,7 @@
             </div>
 
             <v-row class="w-100" no-gutters>
-              <LAButton class="w-100" margin="0px" @click="signinPopup()">
+              <LAButton class="w-100" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
                   <h4 class="pl-4 text-macaw">GOOGLE</h4>
@@ -78,56 +105,60 @@ import { useRouter } from "vue-router";
 import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
 import {
-  getRedirectResult,
-  signInAnonymously,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithPopup,
-  signInWithRedirect,
-  signOut,
 } from "firebase/auth";
-import {
-  useCurrentUser,
-  useFirebaseAuth,
-  useIsCurrentUserLoaded,
-} from "vuefire";
-
-definePageMeta({
-  linkTitle: "Login",
-  order: 2,
-});
+import { useFirebaseAuth } from "vuefire";
 
 const email = ref("");
 const password = ref("");
 
 const auth = useFirebaseAuth()!;
-const user = useCurrentUser();
-const isUserLoaded = useIsCurrentUserLoaded();
 const error = ref<Error | null>(null);
+const message = ref("");
 const router = useRouter();
 
-function signinRedirect() {
-  const googleAuthProvider = new GoogleAuthProvider();
-  signInWithRedirect(auth, googleAuthProvider).catch((reason) => {
-    console.error("Failed signinRedirect", reason);
+async function signInWithEmailPassword() {
+  try {
+    error.value = null;
+    message.value = null;
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
+    );
+
+    router.push({ path: "/welcome" });
+  } catch (reason) {
+    console.error("Failed signin with email and password", reason);
     error.value = reason;
-  });
+  }
 }
 
-function signinPopup() {
+async function resetPassword() {
+  try {
+    error.value = null;
+    message.value = null;
+    await sendPasswordResetEmail(auth, email.value);
+    message.value = "Password reset email sent.";
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+  }
+}
+
+async function signInWithGooglePopup() {
   error.value = null;
+  message.value = null;
   const googleAuthProvider = new GoogleAuthProvider();
-  signInWithPopup(auth, googleAuthProvider).catch((reason) => {
+  try {
+    await signInWithPopup(auth, googleAuthProvider);
+    router.push({ path: "/welcome" });
+  } catch (reason) {
     console.error("Failed signinPopup", reason);
     error.value = reason;
-  });
-  router.push({ path: "/welcome" });
+  }
 }
-
-onMounted(() => {
-  getRedirectResult(auth).catch((reason) => {
-    console.error("Failed redirect result", reason);
-    error.value = reason;
-  });
-});
 </script>
 
 <style>
