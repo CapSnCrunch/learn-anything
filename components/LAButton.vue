@@ -1,6 +1,6 @@
 <template>
   <div class="button-wrapper text-decoration-none">
-    <div class="button ma-0" :class="classes">
+    <div class="button ma-0" :class="classes" :style="styleObject">
       <div class="content text-eel">
         <slot />
       </div>
@@ -17,6 +17,24 @@ const props = defineProps({
     type: String,
     default: "w-100",
   },
+  colors: {
+    type: Object,
+    default: () => ({
+      borderColor: "#e5e5e5",
+      borderColorHover: "#1cb0f6",
+      backgroundColor: "#ffffff",
+      backgroundColorHover: "#ddf4ff",
+    }),
+  },
+});
+
+const styleObject = computed(() => {
+  return {
+    "--border-color": props.colors?.borderColor,
+    "--border-color-hover": props.colors?.borderColorHover,
+    "--background-color": props.colors?.backgroundColor,
+    "--background-color-hover": props.colors?.backgroundColorHover,
+  };
 });
 </script>
 
@@ -29,9 +47,10 @@ const props = defineProps({
 }
 
 .button {
+  background-color: var(--background-color);
   border-radius: 16px;
-  border: 2px solid #e5e5e5;
-  border-bottom: 6px solid #e5e5e5;
+  border: 2px solid var(--border-color);
+  border-bottom: 6px solid var(--border-color);
   transition: all 0.1s;
   display: inline-flex;
   padding: 12px 16px;
@@ -39,12 +58,12 @@ const props = defineProps({
 }
 
 .button:hover {
-  background-color: #ddf4ff;
-  border-color: #1cb0f6;
+  background-color: var(--background-color-hover);
+  border-color: var(--border-color-hover);
 }
 
 .button:active {
-  border-bottom: 2px solid #1cb0f6;
+  border-bottom: 2px solid var(--border-color-hover);
 }
 
 .content {
@@ -52,7 +71,7 @@ const props = defineProps({
   text-align: center;
   font-size: 16px;
   color: #4b4b4b;
-  user-select: none; /* Make the number non-highlightable */
+  user-select: none;
 }
 
 .answer-number {
@@ -63,6 +82,6 @@ const props = defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
-  user-select: none; /* Make the number non-highlightable */
+  user-select: none;
 }
 </style>

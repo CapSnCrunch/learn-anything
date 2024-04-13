@@ -33,7 +33,7 @@
           >
             <LAButton class="w-100">
               <nuxt-link
-                :to="'/assessment/' + topic?.name.toLowerCase()"
+                :to="'/assessment/' + kebabCase(topic?.name)"
                 class="d-flex text-decoration-none align-center justify-center"
               >
                 <h2 class="text-eel text-h6">{{ topic?.name }}</h2>
@@ -60,6 +60,10 @@ import { ref, computed } from "vue";
 import axios from "axios";
 import LAInput from "@/components/LAInput.vue";
 import LAButton from "@/components/LAButton.vue";
+import { useCurrentUser } from "vuefire";
+import { kebabCase } from "@/server/utils/strings";
+
+const user = useCurrentUser();
 
 const loading = ref(false);
 const inputValue = ref("");
