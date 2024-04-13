@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { authAdmin, firestoreAdmin } from "~/server/utils/firebase";
-import { kebabCase } from "~/server/utils/strings";
+import { firestoreAdmin } from "~/server/utils/firebase";
+import { kebabCase, removeCodeBlock } from "~/server/utils/strings";
 
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -8,17 +8,6 @@ export default defineEventHandler(async (event) => {
   const message = body?.message;
 
   try {
-    // Parse Session Cookie for User
-    const cookies = parseCookies(event);
-    const sessionCookie = cookies?.__session;
-    if (sessionCookie) {
-      const decodedClaims = await authAdmin.verifySessionCookie(
-        sessionCookie,
-        true
-      );
-      console.log(decodedClaims);
-    }
-
     // Generate Topics with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
@@ -30,16 +19,11 @@ export default defineEventHandler(async (event) => {
       stringified JSON as plain text. If the input itself is a topic, be sure to include it in the final list.`;
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = await response.text();
+    const response = result.response;
+    let text = response.text();
 
-    const jsonRegex = /^```json\n([\s\S]*)\n```$/;
-    const match = text.match(jsonRegex);
-    if (match) {
-      text = match[1];
-    }
-
-    const jsonResponse = JSON.parse(text);
+    // Strip code block if present
+    const jsonResponse = JSON.parse(removeCodeBlock(text));
 
     // Save Topics to Firestore
     const batch = firestoreAdmin.batch();
