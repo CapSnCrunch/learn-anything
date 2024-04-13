@@ -20,8 +20,22 @@
               about answering anything incorrectly, just try your best!
             </h2>
           </div>
-          <LAButton class="mt-4" width="300px">
+          <!--             :colors="{
+              borderColor: 'rgb(80, 143, 94)',
+              borderColorHover: 'rgb(114, 175, 128)',
+              backgroundColor: 'rgb(120, 176, 133)',
+              backgroundColorHover: 'rgb(162, 219, 175)',
+            }" -->
+          <LAButton class="mt-4" style="max-width: 400px">
             <h2 class="text-eel text-h6" @click="started = true">Let's Go!</h2>
+          </LAButton>
+          <LAButton style="max-width: 400px">
+            <nuxt-link
+              :to="'/course/' + topic?.toLowerCase()"
+              class="d-flex text-decoration-none align-center justify-center"
+            >
+              <h2 class="text-eel text-h6">Skip Quiz, Start with Basics</h2>
+            </nuxt-link>
           </LAButton>
         </span>
         <span v-else class="w-100">
@@ -57,7 +71,7 @@
                   :to="'/course/' + topic?.toLowerCase()"
                   class="d-flex text-decoration-none align-center justify-center"
                 >
-                  <h2 class="text-eel text-h6" @click="started = true">
+                  <h2 class="text-eel text-h6">
                     Continue to your custom course!
                   </h2>
                 </nuxt-link>

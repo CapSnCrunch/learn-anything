@@ -48,7 +48,7 @@
               :class="error || message ? 'mb-0' : 'mb-4'"
               @click="signInWithEmailPassword()"
             >
-              LOGIN
+              <h4 class="text-wolf font-weight-bold">LOGIN</h4>
             </LAButton>
 
             <div
@@ -72,16 +72,16 @@
             </div>
 
             <div class="d-flex w-100 align-center justify-center mb-4">
-              <hr class="flex-fill" style="border: 1px solid #afafaf" />
+              <hr class="flex-fill" style="border: 1px solid #e5e5e5" />
               <p class="text-hare text-subtitle-1 mx-4">OR</p>
-              <hr class="flex-fill" style="border: 1px solid #afafaf" />
+              <hr class="flex-fill" style="border: 1px solid #e5e5e5" />
             </div>
 
             <v-row class="w-100" no-gutters>
               <LAButton class="w-100" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-macaw">GOOGLE</h4>
+                  <h4 class="pl-4 text-wolf font-weight-bold">GOOGLE</h4>
                 </div>
               </LAButton>
             </v-row>

@@ -1,4 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { authAdmin, firestoreAdmin } from "~/server/utils/firebase";
+import { kebabCase } from "~/server/utils/strings";
 
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -6,6 +8,18 @@ export default defineEventHandler(async (event) => {
   const message = body?.message;
 
   try {
+    // Parse Session Cookie for User
+    const cookies = parseCookies(event);
+    const sessionCookie = cookies?.__session;
+    if (sessionCookie) {
+      const decodedClaims = await authAdmin.verifySessionCookie(
+        sessionCookie,
+        true
+      );
+      console.log(decodedClaims);
+    }
+
+    // Generate Topics with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
       Consider topics like Web Development, Python, Linear Algebra, Creative Writing, Archaeology, etc. 
@@ -17,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = await response.text();
+    let text = await response.text();
 
     const jsonRegex = /^```json\n([\s\S]*)\n```$/;
     const match = text.match(jsonRegex);
@@ -25,9 +39,43 @@ export default defineEventHandler(async (event) => {
       text = match[1];
     }
 
+    const jsonResponse = JSON.parse(text);
+
+    // Save Topics to Firestore
+    const batch = firestoreAdmin.batch();
+    const topicsRef = firestoreAdmin.collection("topics");
+    const timestamp = new Date();
+
+    for (const topic of jsonResponse?.topics) {
+      const topicId = kebabCase(topic.name);
+      const topicDocRef = topicsRef.doc(topicId);
+
+      try {
+        // Check if the document already exists
+        const docSnapshot = await topicDocRef.get();
+        const docExists = docSnapshot.exists;
+
+        if (!docExists) {
+          batch.set(topicDocRef, {
+            ...topic,
+            createdOn: timestamp,
+            updatedOn: timestamp,
+          });
+        } else {
+          batch.update(topicDocRef, {
+            updatedOn: timestamp,
+          });
+        }
+      } catch (error) {
+        console.error("Error updating document with ID:", topicId, error);
+      }
+    }
+
+    await batch.commit();
+
     return {
       statusCode: 200,
-      data: JSON.parse(text),
+      data: jsonResponse,
     };
   } catch (error) {
     console.error("Error generating content:", error);

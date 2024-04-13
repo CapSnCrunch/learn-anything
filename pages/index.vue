@@ -27,7 +27,7 @@
             </h2>
             <LAButton style="width: 350px">
               <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none">
-                <h2 class="text-eel text-h6">Get Started</h2>
+                <h2 class="text-white text-h6 font-weight-bold">Get Started</h2>
               </nuxt-link>
             </LAButton>
             <LAButton style="width: 350px">

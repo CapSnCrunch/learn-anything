@@ -1,11 +1,9 @@
 <template>
   <v-app-bar app elevation="0">
-    <v-container class="d-flex align-center" style="max-width: 960px">
-      <v-row class="d-flex align-center">
+    <v-container class="d-flex align-center" style="max-width: 1200px">
+      <v-row class="d-flex align-center pl-4 pr-6">
         <nuxt-link :to="{ path: '/' }" class="text-decoration-none">
-          <h1 class="text-feather mx-4" style="font-size: 20px">
-            Learn Anything
-          </h1>
+          <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
         <v-row class="d-flex justify-end">
           <LAButton v-if="user" classes="px-4 py-1" @click="handleSignOut"
