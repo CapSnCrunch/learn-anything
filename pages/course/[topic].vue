@@ -27,11 +27,26 @@
             </h1>
           </div>
           <div class="d-flex justify-space-around w-100 mt-8 mb-6">
-            <LALessonButton
-              v-for="index of [1, 2, 3, 4, 5, 6, 7]"
-              :color="colors[subtopicIndex]"
-              :disabled="index != 1"
-            />
+            <div v-for="(quiz, quizIndex) of subtopic?.quizzes">
+              <!-- <nuxt-link
+                :to="`/assessment/${kebabCase(topic)}/${quiz?.quizId}`"
+                class="d-flex text-decoration-none align-center justify-center"
+              > -->
+              <LALessonButton
+                :color="colors[subtopicIndex]"
+                :disabled="quizIndex != 0"
+              />
+              <!-- </nuxt-link> -->
+              <v-tooltip
+                v-if="quiz?.description"
+                activator="parent"
+                location="top"
+                offset="20px"
+                max-width="300px"
+              >
+                {{ quiz?.description }}
+              </v-tooltip>
+            </div>
           </div>
         </div>
       </v-col>
@@ -42,7 +57,7 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
-import "intersection-observer";
+import { kebabCase } from "@/server/utils/strings";
 
 const colors = ref([
   "rgb(53.725% 88.627% 9.804%)",
@@ -56,61 +71,6 @@ const colors = ref([
   "rgb(13.652% 70.245% 91.054%)",
   "rgb(10.98% 69.02% 96.471%)",
 ]);
-
-const example = [
-  {
-    name: "Plant Cells",
-    description: "Structure and function of plant cells",
-    color: "rgb(53.725% 88.627% 9.804%)",
-  },
-  {
-    name: "Plant Tissues",
-    description: "Different types of plant tissues and their functions",
-    color: "rgb(48.382% 86.176% 20.637%)",
-  },
-  {
-    name: "Plant Organs",
-    description:
-      "Structure and function of plant organs (roots, stems, leaves, flowers)",
-    color: "rgb(43.039% 83.725% 31.471%)",
-  },
-  {
-    name: "Plant Growth",
-    description: "Factors affecting plant growth and development",
-    color: "rgb(37.696% 81.275% 42.304%)",
-  },
-  {
-    name: "Plant Reproduction",
-    description: "Sexual and asexual reproduction in plants",
-    color: "rgb(32.353% 78.824% 53.137%)",
-  },
-  {
-    name: "Plant Taxonomy",
-    description: "Classification and identification of plants",
-    color: "rgb(29.681% 77.598% 58.554%)",
-  },
-  {
-    name: "Plant Ecology",
-    description: "Interactions between plants and their environment",
-    color: "rgb(27.01% 76.373% 63.971%)",
-  },
-  {
-    name: "Plant Physiology",
-    description:
-      "Physiological processes in plants, such as photosynthesis and respiration",
-    color: "rgb(18.995% 72.696% 80.221%)",
-  },
-  {
-    name: "Plant Biotechnology",
-    description: "Applications of biotechnology in plant science",
-    color: "rgb(13.652% 70.245% 91.054%)",
-  },
-  {
-    name: "Economic Botany",
-    description: "Uses of plants for food, medicine, and other products",
-    color: "rgb(10.98% 69.02% 96.471%)",
-  },
-];
 
 const route = useRoute();
 const topic = route.params.topic;
@@ -128,7 +88,7 @@ const getCourseSubtopics = async () => {
     const response = await axios.post("/api/generateSubtopics", {
       topic: topic,
     });
-    subtopics.value = response?.data?.data?.topics;
+    subtopics.value = response?.data?.data?.subtopics;
   } catch (error) {
     console.error(`Error fetching subtopics for ${topic}:`, error);
   }
