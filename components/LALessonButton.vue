@@ -7,7 +7,7 @@
       style="width: 70px; height: 60px"
       :style="{ 'background-color': computedColor }"
     >
-      <div class="text-eel">
+      <div class="text-darkGray">
         <v-icon icon="mdi-star-four-points" size="35px" color="white" />
       </div>
     </div>

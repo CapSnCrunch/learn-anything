@@ -5,7 +5,19 @@
         class="d-flex flex-column align-center ma-0"
         style="padding-top: 100px"
       >
+        <span v-if="loading" class="w-100">
+          <v-row class="d-flex w-100 mt-8">
+            <v-col cols="12" class="d-flex flex-column align-center">
+              <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
+                Loading your custom course...
+              </h2>
+              <img src="../assets/loading.gif" width="50px" height="50px" />
+            </v-col>
+          </v-row>
+        </span>
+
         <div
+          v-else
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
@@ -16,27 +28,31 @@
           <div
             class="section-card-top d-flex flex-column w-100 align-start justify-center"
           >
-            <h1 class="text-eel text-subtitle-1 font-weight-bold">
+            <h1 class="text-darkGray text-subtitle-1 font-weight-bold">
               Section 1, Unit {{ subtopicIndex + 1 }}
             </h1>
-            <h1 class="text-eel text-h5 font-weight-bold">
+            <h1 class="text-darkGray text-h5 font-weight-bold">
               {{ subtopic.name }}
             </h1>
-            <h1 class="text-eel text-body-1 mt-1">
+            <h1 class="text-darkGray text-body-1 mt-1">
               {{ subtopic.description }}
             </h1>
           </div>
           <div class="d-flex justify-space-around w-100 mt-8 mb-6">
             <div v-for="(quiz, quizIndex) of subtopic?.quizzes">
-              <!-- <nuxt-link
-                :to="`/assessment/${kebabCase(topic)}/${quiz?.quizId}`"
+              <nuxt-link
+                :to="
+                  quizIndex == 0
+                    ? `/assessment/${kebabCase(topic)}/${quiz?.quizId}`
+                    : ''
+                "
                 class="d-flex text-decoration-none align-center justify-center"
-              > -->
-              <LALessonButton
-                :color="colors[subtopicIndex]"
-                :disabled="quizIndex != 0"
-              />
-              <!-- </nuxt-link> -->
+              >
+                <LALessonButton
+                  :color="colors[subtopicIndex]"
+                  :disabled="quizIndex != 0"
+                />
+              </nuxt-link>
               <v-tooltip
                 v-if="quiz?.description"
                 activator="parent"
@@ -100,7 +116,7 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .section-card {
   display: flex;
   flex-direction: column;

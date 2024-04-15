@@ -1,7 +1,7 @@
 <template>
   <div class="button-wrapper text-decoration-none">
     <div class="button ma-0" :class="classes" :style="styleObject">
-      <div class="content text-eel">
+      <div class="content text-darkGray">
         <slot />
       </div>
     </div>

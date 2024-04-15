@@ -13,6 +13,9 @@ export function kebabCase(str) {
 }
 
 export function removeCodeBlock(str) {
+  if (typeof str != "string") {
+    return str;
+  }
   const jsonRegex = /^```json\n([\s\S]*)\n```$/;
   const match = str.match(jsonRegex);
   return match ? match[1] : str;

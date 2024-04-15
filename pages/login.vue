@@ -17,7 +17,7 @@
             xxl="3"
             class="d-flex flex-column justify-center align-center"
           >
-            <h3 class="text-eel mx-auto mb-8">Log In</h3>
+            <h3 class="text-darkGray mx-auto mb-8">Log In</h3>
 
             <LAInput
               v-model="email"
@@ -48,7 +48,7 @@
               :class="error || message ? 'mb-0' : 'mb-4'"
               @click="signInWithEmailPassword()"
             >
-              <h4 class="text-wolf font-weight-bold">LOGIN</h4>
+              <h4 class="text-gray font-weight-bold">LOGIN</h4>
             </LAButton>
 
             <div
@@ -81,13 +81,13 @@
               <LAButton class="w-100" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-wolf font-weight-bold">GOOGLE</h4>
+                  <h4 class="pl-4 text-gray font-weight-bold">GOOGLE</h4>
                 </div>
               </LAButton>
             </v-row>
 
             <v-row class="d-flex justify-center w-100">
-              <h2 class="text-eel text-h6">
+              <h2 class="text-darkGray text-h6">
                 Don't have an account?
                 <nuxt-link :to="{ path: '/signup' }"> Create one </nuxt-link>
               </h2>

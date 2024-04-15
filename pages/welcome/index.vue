@@ -5,7 +5,7 @@
         class="d-flex flex-column justify-center align-center w-100"
         style="max-width: 1000px"
       >
-        <h2 class="text-eel mb-3">What do you want to learn?</h2>
+        <h2 class="text-darkGray mb-3">What do you want to learn?</h2>
         <LAInput
           v-model="inputValue"
           placeholder="I want to learn..."
@@ -17,13 +17,19 @@
             v-if="!loading"
             icon="mdi-magnify"
             size="20px"
-            color="eel"
+            color="black"
             @click="getSuggestedTopics"
           />
           <img v-else src="../assets/loading.gif" width="20px" height="20px" />
         </LAInput>
 
-        <h4 class="text-eel mb-8">Not sure? Suggested topics:</h4>
+        <h4 class="text-darkGray mb-8">
+          {{
+            !suggestedTopics?.length
+              ? "Not sure? Suggested topics:"
+              : "Interesting! Suggested topics:"
+          }}
+        </h4>
 
         <v-row class="d-flex w-100">
           <v-col
@@ -33,10 +39,10 @@
           >
             <LAButton class="w-100">
               <nuxt-link
-                :to="'/assessment/' + kebabCase(topic?.name)"
+                :to="'/welcome/' + kebabCase(topic?.name)"
                 class="d-flex text-decoration-none align-center justify-center"
               >
-                <h2 class="text-eel text-h6">{{ topic?.name }}</h2>
+                <h2 class="text-darkGray text-h6">{{ topic?.name }}</h2>
               </nuxt-link>
               <v-tooltip
                 v-if="topic?.description"
