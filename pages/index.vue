@@ -22,17 +22,17 @@
             class="d-flex flex-column align-center justify-center"
             style="width: 100%; max-width: 600px"
           >
-            <h2 class="text-eel text-center text-h4 font-weight-bold mb-6">
+            <h2 class="text-darkGray text-center text-h4 font-weight-bold mb-6">
               AI-crafted, personalized learning paths for any topic!
             </h2>
             <LAButton style="width: 350px">
               <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none">
-                <h2 class="text-eel text-h6">Get Started</h2>
+                <h2 class="text-darkGray text-h6">Get Started</h2>
               </nuxt-link>
             </LAButton>
             <LAButton style="width: 350px">
               <nuxt-link :to="{ name: 'login' }" class="text-decoration-none">
-                <h2 class="text-eel text-h6">I Already Have an Account</h2>
+                <h2 class="text-darkGray text-h6">I Already Have an Account</h2>
               </nuxt-link>
             </LAButton>
           </v-row>

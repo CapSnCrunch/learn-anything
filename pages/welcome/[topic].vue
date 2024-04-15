@@ -7,34 +7,32 @@
       >
         <span v-if="!started">
           <div class="text-start">
-            <h1 class="text-eel text-h4 font-weight-bold typingEffect">
+            <h1 class="text-darkGray text-h4 font-weight-bold typingEffect">
               Welcome to {{ formattedTopic }}!
             </h1>
           </div>
           <div class="text-start mt-4">
             <h2
-              class="text-eel text-h6 font-weight-medium"
+              class="text-darkGray text-h6 font-weight-medium"
               style="max-width: 800px"
             >
               Let's get started with a basic knowledge assessment. Don't worry
               about answering anything incorrectly, just try your best!
             </h2>
           </div>
-          <!--             :colors="{
-              borderColor: 'rgb(80, 143, 94)',
-              borderColorHover: 'rgb(114, 175, 128)',
-              backgroundColor: 'rgb(120, 176, 133)',
-              backgroundColorHover: 'rgb(162, 219, 175)',
-            }" -->
           <LAButton class="mt-4" style="max-width: 400px">
-            <h2 class="text-eel text-h6" @click="started = true">Let's Go!</h2>
+            <h2 class="text-darkGray text-h6" @click="started = true">
+              Let's Go!
+            </h2>
           </LAButton>
           <LAButton style="max-width: 400px">
             <nuxt-link
               :to="'/course/' + topic?.toLowerCase()"
               class="d-flex text-decoration-none align-center justify-center"
             >
-              <h2 class="text-eel text-h6">Skip Quiz, Start with Basics</h2>
+              <h2 class="text-darkGray text-h6">
+                Skip Quiz, Start with Basics
+              </h2>
             </nuxt-link>
           </LAButton>
         </span>
@@ -46,7 +44,7 @@
             class="d-flex w-100 mt-4"
           >
             <v-col cols="12" class="mb-4">
-              <h2 class="text-eel text-h4 text-start">
+              <h2 class="text-darkGray text-h4 text-start">
                 {{ currentQuestion?.question }}
               </h2>
             </v-col>
@@ -63,7 +61,7 @@
 
           <v-row v-else class="d-flex w-100 mt-8">
             <v-col cols="12" class="d-flex flex-column align-center">
-              <h2 class="text-eel text-h4 font-weight-bold">
+              <h2 class="text-darkGray text-h4 font-weight-bold">
                 Done with the quiz!
               </h2>
               <LAButton class="mt-8" width="500px">
@@ -71,7 +69,7 @@
                   :to="'/course/' + topic?.toLowerCase()"
                   class="d-flex text-decoration-none align-center justify-center"
                 >
-                  <h2 class="text-eel text-h6">
+                  <h2 class="text-darkGray text-h6">
                     Continue to your custom course!
                   </h2>
                 </nuxt-link>
