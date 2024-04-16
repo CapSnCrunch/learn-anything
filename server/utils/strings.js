@@ -4,12 +4,31 @@ export function kebabCase(str) {
   }
 
   return str
-    .trim() // Remove leading and trailing whitespaces
-    .toLowerCase() // Convert to lowercase
-    .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/[^a-z0-9\-]/g, "") // Remove non-alphanumeric characters except hyphens
-    .replace(/-{2,}/g, "-") // Replace multiple consecutive hyphens with a single hyphen
-    .replace(/^-+|-+$/g, ""); // Remove leading and trailing hyphens
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function titleCase(str) {
+  if (!str) {
+    return str;
+  }
+
+  str = str
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return str
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export function removeCodeBlock(str) {

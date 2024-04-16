@@ -8,7 +8,7 @@
         <span v-if="!started">
           <div class="text-start">
             <h1 class="text-darkGray text-h4 font-weight-bold typingEffect">
-              Welcome to {{ formattedTopic }}!
+              Welcome to {{ titleCase(topicId) }}!
             </h1>
           </div>
           <div class="text-start mt-4">
@@ -27,7 +27,7 @@
           </LAButton>
           <LAButton style="max-width: 400px">
             <nuxt-link
-              :to="'/course/' + topic?.toLowerCase()"
+              :to="'/course/' + topicId?.toLowerCase()"
               class="d-flex text-decoration-none align-center justify-center"
             >
               <h2 class="text-darkGray text-h6">
@@ -66,7 +66,7 @@
               </h2>
               <LAButton class="mt-8" width="500px">
                 <nuxt-link
-                  :to="'/course/' + topic?.toLowerCase()"
+                  :to="'/course/' + topicId?.toLowerCase()"
                   class="d-flex text-decoration-none align-center justify-center"
                 >
                   <h2 class="text-darkGray text-h6">
@@ -84,11 +84,12 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { titleCase } from "@/server/utils/strings";
 import LAButton from "@/components/LAButton.vue";
 import LAProgressBar from "@/components/LAProgressBar.vue";
 
 const route = useRoute();
-const topic = route.params.topic;
+const topicId = route.params.topicId;
 
 const started = ref(false);
 const questionIndex = ref(0);
@@ -122,12 +123,6 @@ const currentQuestion = computed(() => {
 const progress = computed(() => {
   return (questionIndex.value / questions.value.length) * 100;
 });
-
-const toCamelCase = (str) => {
-  return str.replace(/\b\w/g, (char) => char.toUpperCase());
-};
-
-const formattedTopic = toCamelCase(topic);
 
 const submit = (answer) => {
   questionIndex.value += 1;
