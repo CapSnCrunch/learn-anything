@@ -18,12 +18,7 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!decodedClaims) {
-      return {
-        statusCode: 400,
-        data: JSON.stringify({
-          error: "Could not find userId",
-        }),
-      };
+      console.warn("Could not find userId");
     }
 
     // Find User's Progress
