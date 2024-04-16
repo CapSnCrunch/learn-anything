@@ -278,8 +278,8 @@ const getQuizQuestions = async (count) => {
 
 onMounted(async () => {
   loading.value = true;
-  // getQuizQuestions(7);
-  await getQuizQuestions(1);
+  getQuizQuestions(7);
+  await getQuizQuestions(3);
   loading.value = false;
 });
 
