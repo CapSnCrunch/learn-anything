@@ -213,7 +213,7 @@ const nextQuestion = () => {
   }
 };
 
-const totalQuestions = 1;
+const totalQuestions = 10;
 const progress = computed(() => {
   const completedQuestions = questions.value.filter(
     (question) => question.completed
@@ -278,7 +278,7 @@ const getQuizQuestions = async (count) => {
 
 onMounted(async () => {
   loading.value = true;
-  getQuizQuestions(7);
+  getQuizQuestions(totalQuestions - 3);
   await getQuizQuestions(3);
   loading.value = false;
 });
