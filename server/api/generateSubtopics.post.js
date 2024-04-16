@@ -2,21 +2,39 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
 import { removeCodeBlock } from "~/server/utils/strings";
 
-// // Parse Session Cookie for User
-// const cookies = parseCookies(event);
-// const sessionCookie = cookies?.__session;
-// if (sessionCookie) {
-//   const decodedClaims = await authAdmin.verifySessionCookie(
-//     sessionCookie,
-//     true
-//   );
-//   console.log(decodedClaims);
-// }
-
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const body = await readBody(event);
   const topicId = body?.topic;
+
+  let progress = null;
+  try {
+    // Parse Session Cookie for User
+    const cookies = parseCookies(event);
+    const sessionCookie = cookies?.__session;
+    let decodedClaims;
+    if (sessionCookie) {
+      decodedClaims = await authAdmin.verifySessionCookie(sessionCookie, true);
+    }
+
+    if (!decodedClaims) {
+      console.warn("Could not find userId");
+    }
+
+    // Find User's Progress
+    const userId = decodedClaims?.user_id;
+    const userRef = firestoreAdmin.collection("users");
+    const userDocRef = userRef.doc(userId);
+    const userSnapshot = await userDocRef.get();
+    const userExists = userSnapshot.exists;
+
+    if (userExists) {
+      const userProgress = userSnapshot.data();
+      progress = userProgress?.topics[topicId]?.progress;
+    }
+  } catch (error) {
+    console.error("Could not find user");
+  }
 
   try {
     // Find Topic from Firebase
@@ -35,6 +53,18 @@ export default defineEventHandler(async (event) => {
 
     let topic = docSnapshot.data();
     if (topic?.subtopics) {
+      if (progress) {
+        // Set Saved Progress for User
+        topic.subtopics.forEach((subtopic, subtopicIndex) => {
+          subtopic.progress = progress?.[subtopicIndex] || 0;
+        });
+      } else {
+        // Set Default Progress
+        topic.subtopics.forEach((subtopic) => {
+          subtopic.progress = 0;
+        });
+      }
+
       return {
         statusCode: 200,
         data: {
@@ -87,6 +117,11 @@ export default defineEventHandler(async (event) => {
     // Save Subtopics to Firebase on Topic
     await topicDocRef.update({
       subtopics: subtopicJsonResponse.subtopics,
+    });
+
+    // Set Default Progress
+    subtopicJsonResponse.subtopics.forEach((subtopic) => {
+      subtopic.progress = 0;
     });
 
     return {

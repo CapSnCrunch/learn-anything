@@ -42,15 +42,15 @@
             <div v-for="(quiz, quizIndex) of subtopic?.quizzes">
               <nuxt-link
                 :to="
-                  quizIndex == 0
-                    ? `/assessment/${kebabCase(topic)}/${quiz?.quizId}`
-                    : ''
+                  quizIndex > subtopic.progress
+                    ? ''
+                    : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`
                 "
                 class="d-flex text-decoration-none align-center justify-center"
               >
                 <LALessonButton
                   :color="colors[subtopicIndex]"
-                  :disabled="quizIndex != 0"
+                  :disabled="quizIndex > subtopic.progress"
                 />
               </nuxt-link>
               <v-tooltip
@@ -73,7 +73,9 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { useCurrentUser } from "vuefire";
 import { kebabCase } from "@/server/utils/strings";
+import { save, load } from "@/utils/localStorage";
 
 const colors = ref([
   "rgb(53.725% 88.627% 9.804%)",
@@ -89,30 +91,34 @@ const colors = ref([
 ]);
 
 const route = useRoute();
-const topic = route.params.topic;
+const topicId = route.params.topicId;
+const user = useCurrentUser();
 
 const loading = ref(false);
 const subtopics = ref();
 
 const getCourseSubtopics = async () => {
-  if (loading.value) {
+  const savedTopic = load(topicId);
+  if (savedTopic) {
+    subtopics.value = savedTopic;
     return;
   }
 
-  loading.value = true;
   try {
     const response = await axios.post("/api/generateSubtopics", {
-      topic: topic,
+      topic: topicId,
     });
     subtopics.value = response?.data?.data?.subtopics;
+    save(topicId, subtopics.value);
   } catch (error) {
-    console.error(`Error fetching subtopics for ${topic}:`, error);
+    console.error(`Error fetching subtopics for ${topicId}:`, error);
   }
-  loading.value = false;
 };
 
 onMounted(async () => {
+  loading.value = true;
   await getCourseSubtopics();
+  loading.value = false;
 });
 </script>
 
