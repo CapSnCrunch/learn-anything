@@ -59,9 +59,9 @@ export default defineEventHandler(async (event) => {
 
       // Make each progress value the max of the saved value and the local one
       // (This way the use won't accidentally lose progress)
-      const localProgressForSubtopic = subtopics.map(
+      const localProgressForSubtopic = subtopics?.map(
         (subtopic) => subtopic?.progress
-      );
+      ) || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       const oldProgresses = userProgress.topics[topicId].progress;
       const newProgresses = Array.from(
         {
