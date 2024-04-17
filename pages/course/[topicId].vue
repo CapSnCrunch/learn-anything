@@ -1,9 +1,9 @@
 <template>
-  <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center">
+  <v-container no-gutters fluid class="pa-0 ma-0">
+    <v-row class="d-flex flex-column align-center justify-center w-100">
       <v-col
         class="d-flex flex-column align-center ma-0"
-        style="padding-top: 100px"
+        style="padding-top: 100px; position: relative"
       >
         <span v-if="loading" class="w-100">
           <v-row class="d-flex w-100 mt-8">
@@ -66,6 +66,32 @@
           </div>
         </div>
       </v-col>
+
+      <div
+        v-if="!user && !loading"
+        class="side-card d-flex flex-column justify-center align-center pa-6"
+        style="position: fixed; top: 87px; right: 50px"
+      >
+        <h2 class="text-darkGray text-subtitle-1 font-weight-bold">
+          Create an account to save your progress!
+        </h2>
+        <LAButton class="mt-2" style="width: 300px">
+          <nuxt-link
+            to="/signup"
+            class="d-flex text-decoration-none align-center justify-center"
+          >
+            <h2 class="text-darkGray text-h6">Create an Account</h2>
+          </nuxt-link>
+        </LAButton>
+        <LAButton style="width: 300px">
+          <nuxt-link
+            to="/login"
+            class="d-flex text-decoration-none align-center justify-center"
+          >
+            <h2 class="text-darkGray text-h6">Login</h2>
+          </nuxt-link>
+        </LAButton>
+      </div>
     </v-row>
   </v-container>
 </template>
@@ -106,7 +132,42 @@ const getCourseSubtopics = async () => {
 
   try {
     const response = await axios.post("/api/generateSubtopics", {
-      topic: topicId,
+      topicId: topicId,
+    });
+
+    let subtopicsResponse = response?.data?.data?.subtopics;
+    save(`learn-anything.${topicId}`, subtopicsResponse);
+
+    if (
+      !subtopicsResponse?.every((subtopic) => subtopic?.quizzes?.length > 0)
+    ) {
+      subtopicsResponse.forEach((subtopic) => {
+        subtopic.quizzes = Array(7).fill({});
+      });
+    }
+
+    subtopics.value = subtopicsResponse;
+
+    const savedTopicsList = load(`learn-anything.topics`) || [];
+    if (!savedTopicsList.includes(topicId)) {
+      savedTopicsList.push(topicId);
+      save(`learn-anything.topics`, savedTopicsList);
+    }
+  } catch (error) {
+    console.error(`Error fetching subtopics for ${topicId}:`, error);
+  }
+};
+
+const getSubtopicQuizzes = async () => {
+  const savedTopic = load(`learn-anything.${topicId}`);
+  if (savedTopic?.every((subtopic) => subtopic?.quizzes?.length > 0)) {
+    subtopics.value = savedTopic;
+    return;
+  }
+
+  try {
+    const response = await axios.post("/api/generateQuizzes", {
+      topicId: topicId,
     });
     subtopics.value = response?.data?.data?.subtopics;
     save(`learn-anything.${topicId}`, subtopics.value);
@@ -114,10 +175,10 @@ const getCourseSubtopics = async () => {
     const savedTopicsList = load(`learn-anything.topics`) || [];
     if (!savedTopicsList.includes(topicId)) {
       savedTopicsList.push(topicId);
+      save(`learn-anything.topics`, savedTopicsList);
     }
-    save(`learn-anything.topics`, savedTopicsList);
   } catch (error) {
-    console.error(`Error fetching subtopics for ${topicId}:`, error);
+    console.error(`Error fetching quizzes for ${topicId}:`, error);
   }
 };
 
@@ -125,10 +186,16 @@ onMounted(async () => {
   loading.value = true;
   await getCourseSubtopics();
   loading.value = false;
+  getSubtopicQuizzes();
 });
 </script>
 
 <style scoped>
+.side-card {
+  background-color: #f0f0f0;
+  border-radius: 16px;
+}
+
 .section-card {
   display: flex;
   flex-direction: column;
