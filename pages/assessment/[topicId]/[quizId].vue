@@ -140,7 +140,7 @@
                   :to="'/course/' + topicId?.toLowerCase()"
                   class="d-flex text-decoration-none align-center justify-center"
                 >
-                  <h2 class="text-darkGray text-h6">Back to course</h2>
+                  <h2 class="text-darkGray text-h6">Back to Course</h2>
                 </nuxt-link>
               </LAButton>
             </v-col>
@@ -223,7 +223,7 @@ const progress = computed(() => {
 
 const updateProgress = () => {
   if (user) {
-    const response = axios.post("/api/updateProgress", {
+    const response = axios.post("/api/updateProgressByQuizId", {
       topicId: topicId,
       quizIds: [quizId],
     });
@@ -231,7 +231,7 @@ const updateProgress = () => {
 
   // Save progress locally
   try {
-    let savedTopic = load(topicId);
+    let savedTopic = load(`learn-anything.${topicId}`);
     const subtopicIndex = savedTopic.findIndex((subtopic) =>
       subtopic.quizzes.some((quiz) => quiz.quizId === quizId)
     );
@@ -245,7 +245,7 @@ const updateProgress = () => {
         savedTopic[subtopicIndex].progress,
         quizIndex + 1
       );
-      save(topicId, savedTopic);
+      save(`learn-anything.${topicId}`, savedTopic);
     }
   } catch (error) {
     console.error("Error updating progress");
@@ -278,8 +278,9 @@ const getQuizQuestions = async (count) => {
 
 onMounted(async () => {
   loading.value = true;
-  getQuizQuestions(totalQuestions - 3);
-  await getQuizQuestions(3);
+  getQuizQuestions(4);
+  getQuizQuestions(4);
+  await getQuizQuestions(2);
   loading.value = false;
 });
 

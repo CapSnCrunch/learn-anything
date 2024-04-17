@@ -98,7 +98,7 @@ const loading = ref(false);
 const subtopics = ref();
 
 const getCourseSubtopics = async () => {
-  const savedTopic = load(topicId);
+  const savedTopic = load(`learn-anything.${topicId}`);
   if (savedTopic) {
     subtopics.value = savedTopic;
     return;
@@ -109,7 +109,13 @@ const getCourseSubtopics = async () => {
       topic: topicId,
     });
     subtopics.value = response?.data?.data?.subtopics;
-    save(topicId, subtopics.value);
+    save(`learn-anything.${topicId}`, subtopics.value);
+
+    const savedTopicsList = load(`learn-anything.topics`) || [];
+    if (!savedTopicsList.includes(topicId)) {
+      savedTopicsList.push(topicId);
+    }
+    save(`learn-anything.topics`, savedTopicsList);
   } catch (error) {
     console.error(`Error fetching subtopics for ${topicId}:`, error);
   }
