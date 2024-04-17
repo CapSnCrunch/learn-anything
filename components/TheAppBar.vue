@@ -36,10 +36,10 @@ const error = ref<Error | null>(null);
 
 async function handleSignOut() {
   error.value = null;
-  clear();
   try {
     await signOut(auth);
-    router.push({ path: "/login" });
+    clear();
+    router.push({ path: "/" });
   } catch (e) {
     console.error("Failed signOut", e);
     error.value = e;

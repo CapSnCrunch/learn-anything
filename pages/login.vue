@@ -100,8 +100,10 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { load, clear } from "@/utils/localStorage";
 import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
 import {
@@ -129,21 +131,19 @@ async function signInWithEmailPassword() {
       password.value
     );
 
-    router.push({ path: "/welcome" });
+    // Consolidate local and saved progress
+    const userProgress = await saveUserProgress();
+    const topicWithMostProgress = findTopicWithMostProgress(
+      userProgress?.topics
+    );
+    if (topicWithMostProgress) {
+      router.push({ path: `/course/${topicWithMostProgress}` });
+    } else {
+      router.push({ path: "/welcome" });
+    }
   } catch (reason) {
     console.error("Failed signin with email and password", reason);
     error.value = reason;
-  }
-}
-
-async function resetPassword() {
-  try {
-    error.value = null;
-    message.value = null;
-    await sendPasswordResetEmail(auth, email.value);
-    message.value = "Password reset email sent.";
-  } catch (error) {
-    console.error("Error sending password reset email:", error);
   }
 }
 
@@ -153,12 +153,71 @@ async function signInWithGooglePopup() {
   const googleAuthProvider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, googleAuthProvider);
-    router.push({ path: "/welcome" });
+
+    // Consolidate local and saved progress
+    const userProgress = await saveUserProgress();
+    const topicWithMostProgress = findTopicWithMostProgress(
+      userProgress?.topics
+    );
+    if (topicWithMostProgress) {
+      console.log(`/course/${topicWithMostProgress}`);
+      router.push({ path: `/course/${topicWithMostProgress}` });
+    } else {
+      router.push({ path: "/welcome" });
+    }
   } catch (reason) {
     console.error("Failed signinPopup", reason);
     error.value = reason;
   }
 }
+
+const saveUserProgress = async () => {
+  // Set new user's progress to their current local progress
+  let localProgress = {};
+
+  const savedTopicsList = load("learn-anything.topics");
+  for (const topic of savedTopicsList) {
+    let savedTopic = load(`learn-anything.${topic}`);
+    localProgress[topic] = savedTopic;
+  }
+
+  const response = await axios.post("/api/updateProgressByLocalProgress", {
+    localProgress: localProgress,
+  });
+
+  clear();
+
+  return response?.data?.data;
+};
+
+async function resetPassword() {
+  error.value = null;
+  message.value = null;
+  try {
+    await sendPasswordResetEmail(auth, email.value);
+    message.value = "Password reset email sent.";
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+  }
+}
+
+const findTopicWithMostProgress = (topics) => {
+  let maxTotalProgress = 0;
+  let topicWithMaxProgress = "";
+
+  for (const topic in topics) {
+    let totalProgress = topics[topic].progress.reduce(
+      (total, value) => total + value,
+      0
+    );
+    if (totalProgress > maxTotalProgress) {
+      maxTotalProgress = totalProgress;
+      topicWithMaxProgress = topic;
+    }
+  }
+
+  return topicWithMaxProgress;
+};
 </script>
 
 <style>

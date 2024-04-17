@@ -90,7 +90,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       statusCode: 200,
-      data: [],
+      data: userProgress,
     };
   } catch (error) {
     console.error("Failed to update user's progress:", error);
