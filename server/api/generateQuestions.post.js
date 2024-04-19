@@ -50,12 +50,11 @@ export default defineEventHandler(async (event) => {
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `You are a helpful teacher trying to create a quiz for your students learning ${topic?.name}. You are creating a quiz for the 
         ${filteredSubtopic?.name} unit described by ${filteredSubtopic?.description}. This quiz should focus on ${filteredSubtopic?.quiz?.description}. 
-        The questions should have a difficulty between ${body?.difficulty - 1} and ${body?.difficulty + 1} out of 10 (where 1 is a complete beginner, 
-        5 is a student of the topic, and 10 is a subject matter expert). Your response should be a JSON object with an attribute 'questions' that is a 
-        list of JSON objects containing a 'question' (fully articulated question as a string), 'answers' (a list of objects with an 'answer' string and 
-        a 'correct' boolean), and 'difficulty' (a value 1-10). Generate exactly ${body?.count || 5} questions for this topic within the given range of difficulties. 
-        Give each question 4 possible answers with one correct answer. IMPORTANT: Do not put the response in a code block, just send the stringified JSON as plain text. 
-        If appropriate for the topic, be sure include some questions that rely on doing practical calculations or the student 'working out the problem' 
+        The questions should have a difficulty between ${body?.difficulty - 1} and ${body?.difficulty + 1} out of 10 (where 1 is a beginner and 10 is an expert). 
+        Your response should be a JSON object with an attribute 'q' that is a list of JSON objects containing a 'q' (fully articulated question as a string), 'a' 
+        (a list of objects with an 'answer' string and a 'c' correct boolean), and 'd' (difficult value 1-10). Generate exactly ${body?.count || 5} questions. 
+        Give each question 4 possible answers and exactly one correct answer. IMPORTANT: Do not put the response in a code block, just send the stringified JSON as plain text. 
+        If appropriate for the topic, be sure include some questions that rely on doing practical calculations or the student 'working out the problem'
         logically in some way. BE THOUGHTFUL WHEN CREATING THE QUESTIONS; TAKE YOUR TIME AND MAKE SURE THAT THEY ARE CORRECT AND OF APPROPRIATE DIFFICULTY.`; // prettier-ignore
     const result = await model.generateContent(prompt);
     const response = result.response;
