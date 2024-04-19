@@ -6,9 +6,9 @@
           <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
         <v-row class="d-flex justify-end">
-          <LAButton v-if="user" classes="px-4 py-1" @click="handleSignOut()"
-            >Logout</LAButton
-          >
+          <LAButton v-if="user" classes="px-4 py-1" @click="handleSignOut()">
+            Logout
+          </LAButton>
           <nuxt-link
             v-else
             :to="{ path: '/signup' }"

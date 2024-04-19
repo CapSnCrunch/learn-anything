@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
       quiz: subtopicWithQuiz.quizzes[quizIndex],
     };
 
-    // Generate Topics with Gemini
+    // Generate Questions with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `You are a helpful teacher trying to create a quiz for your students learning ${topic?.name}. You are creating a quiz for the 
         ${filteredSubtopic?.name} unit described by ${filteredSubtopic?.description}. This quiz should focus on ${filteredSubtopic?.quiz?.description}. 
