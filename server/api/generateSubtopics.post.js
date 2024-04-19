@@ -92,7 +92,7 @@ export default defineEventHandler(async (event) => {
     const subtopicJsonResponse = JSON.parse(removeCodeBlock(subtopicText));
 
     // Save Subtopics to Firebase on Topic
-    await topicDocRef.update({
+    topicDocRef.update({
       subtopics: subtopicJsonResponse.subtopics,
     });
 

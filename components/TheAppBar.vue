@@ -9,13 +9,21 @@
           <LAButton v-if="user" classes="px-4 py-1" @click="handleSignOut()">
             Logout
           </LAButton>
-          <nuxt-link
-            v-else
-            :to="{ path: '/signup' }"
-            class="text-decoration-none"
-          >
-            <LAButton classes="px-4 py-1">Create Account</LAButton>
-          </nuxt-link>
+          <div class="d-flex" v-else>
+            <nuxt-link
+              :to="{ path: '/login' }"
+              class="text-decoration-none mr-4"
+            >
+              <LAButton classes="px-4 py-1" style="width: 150px">
+                Login
+              </LAButton>
+            </nuxt-link>
+            <nuxt-link :to="{ path: '/signup' }" class="text-decoration-none">
+              <LAButton classes="px-4 py-1" style="width: 150px">
+                Create Account
+              </LAButton>
+            </nuxt-link>
+          </div>
         </v-row>
       </v-row>
     </v-container>

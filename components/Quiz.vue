@@ -241,13 +241,11 @@ const nextQuestion = () => {
     }
   }
 
-  console.log(questions.value[questionIndex.value]);
   const newQuestion = questions.value[questionIndex.value];
   questions.value[questionIndex.value] = {
     ...newQuestion,
     answers: newQuestion.answers.slice().sort(() => Math.random() - 0.5),
   };
-  console.log(questions.value[questionIndex.value]);
 };
 
 const progress = computed(() => {

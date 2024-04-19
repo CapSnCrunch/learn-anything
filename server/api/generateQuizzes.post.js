@@ -107,7 +107,7 @@ export default defineEventHandler(async (event) => {
       subtopic.progress = 0;
     });
 
-    await topicDocRef.update({
+    topicDocRef.update({
       subtopics: topic.subtopics,
     });
 

@@ -64,38 +64,6 @@ export default defineEventHandler(async (event) => {
     // Strip code block if present
     const jsonResponse = JSON.parse(removeCodeBlock(text));
 
-    // // Save Topics to Firestore
-    // const batch = firestoreAdmin.batch();
-    // const topicsRef = firestoreAdmin.collection("topics");
-    // const timestamp = new Date();
-
-    // for (const topic of jsonResponse?.topics) {
-    //   const topicId = kebabCase(topic.name);
-    //   const topicDocRef = topicsRef.doc(topicId);
-
-    //   try {
-    //     // Check if the document already exists
-    //     const docSnapshot = await topicDocRef.get();
-    //     const docExists = docSnapshot.exists;
-
-    //     if (!docExists) {
-    //       batch.set(topicDocRef, {
-    //         ...topic,
-    //         createdOn: timestamp,
-    //         updatedOn: timestamp,
-    //       });
-    //     } else {
-    //       batch.update(topicDocRef, {
-    //         updatedOn: timestamp,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.error("Error updating document with ID:", topicId, error);
-    //   }
-    // }
-
-    // await batch.commit();
-
     return {
       statusCode: 200,
       data: jsonResponse,
