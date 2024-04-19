@@ -176,7 +176,6 @@ const getQuizQuestions = async (count) => {
         difficulty: props.difficulty,
         count: count,
       });
-      s;
     }
 
     const responseQuestions = response?.data?.data?.questions;
@@ -184,6 +183,7 @@ const getQuizQuestions = async (count) => {
       responseQuestions.map((question) => {
         return {
           ...question,
+          answers: question.answers.slice().sort(() => Math.random() - 0.5),
           completed: false,
         };
       })
@@ -240,6 +240,14 @@ const nextQuestion = () => {
       );
     }
   }
+
+  console.log(questions.value[questionIndex.value]);
+  const newQuestion = questions.value[questionIndex.value];
+  questions.value[questionIndex.value] = {
+    ...newQuestion,
+    answers: newQuestion.answers.slice().sort(() => Math.random() - 0.5),
+  };
+  console.log(questions.value[questionIndex.value]);
 };
 
 const progress = computed(() => {
@@ -248,4 +256,6 @@ const progress = computed(() => {
   ).length;
   return (completedQuestions / props.totalQuestions) * 100;
 });
+
+const randomizeAnswers = () => {};
 </script>

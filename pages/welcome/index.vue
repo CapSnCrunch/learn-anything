@@ -39,7 +39,7 @@
           >
             <LAButton class="w-100">
               <nuxt-link
-                :to="'/assessment/' + kebabCase(topic?.name)"
+                :to="'/welcome/' + kebabCase(topic?.name)"
                 class="d-flex text-decoration-none align-center justify-center"
               >
                 <h2 class="text-darkGray text-h6">{{ topic?.name }}</h2>

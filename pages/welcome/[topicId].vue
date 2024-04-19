@@ -18,6 +18,9 @@
           <h2 class="text-darkGray text-h4 font-weight-bold">
             Quiz completed!
           </h2>
+          <!-- <h2 class="text-darkGray text-h4 font-weight-bold">
+            
+          </h2> -->
           <LAButton class="mt-8" width="500px">
             <nuxt-link
               :to="'/course/' + topicId?.toLowerCase()"
