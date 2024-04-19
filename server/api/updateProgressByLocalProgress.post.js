@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Save user progress to Firebase
-    userDocRef.set(userProgress, { merge: true });
+    await userDocRef.set(userProgress, { merge: true });
 
     return {
       statusCode: 200,
