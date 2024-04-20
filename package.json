@@ -20,6 +20,7 @@
     "nuxt-vuefire": "^0.4.1",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
+    "vue3-marquee": "^4.2.0",
     "vuefire": "^3.1.18"
   },
   "devDependencies": {
