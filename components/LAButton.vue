@@ -1,21 +1,47 @@
 <template>
-  <div class="button-wrapper text-decoration-none">
-    <div class="button ma-0" :class="classes" :style="styleObject">
-      <div class="content text-darkGray">
+  <div class="hover d-flex align-center justify-center text-decoration-none position-relative">
+    <div class="button ma-0 align-center justify-center position-absolute"
+      :style="{
+        'height': height,
+        'width': width,
+        '--border-size': border,
+        '--background-color': colors.backgroundColor,
+        '--background-color-hover': colors.backgroundColorHover,
+        '--border-color': colors.borderColor,
+        '--border-color-hover': colors.borderColorHover,
+      }"
+    >
+      <div class="text-darkGray">
         <slot />
       </div>
+    </div>
+    <div class="button-side"
+      :style="{
+        'height': height,
+        'width': width,
+        '--border-color': colors.borderColor,
+        '--border-color-hover': colors.borderColorHover
+      }"
+    >
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, computed } from "vue";
 
 const props = defineProps({
-  text: String,
-  classes: {
+  width: {
     type: String,
-    default: "w-100",
+    default: "100%",
+  },
+  height: {
+    type: String,
+    default: "60px",
+  },
+  border: {
+    type: String,
+    default: "5px"
   },
   colors: {
     type: Object,
@@ -27,61 +53,42 @@ const props = defineProps({
     }),
   },
 });
-
-const styleObject = computed(() => {
-  return {
-    "--border-color": props.colors?.borderColor,
-    "--border-color-hover": props.colors?.borderColorHover,
-    "--background-color": props.colors?.backgroundColor,
-    "--background-color-hover": props.colors?.backgroundColorHover,
-  };
-});
 </script>
 
 <style scoped>
-.button-wrapper {
-  height: 80px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .button {
-  background-color: var(--background-color);
   border-radius: 16px;
-  border: 2px solid var(--border-color);
-  border-bottom: 6px solid var(--border-color);
   transition: all 0.1s;
   display: inline-flex;
   padding: 12px 16px;
   cursor: pointer;
-}
-
-.button:hover {
-  background-color: var(--background-color-hover);
-  border-color: var(--border-color-hover);
+  border: 2px solid var(--border-color);
+  bottom: var(--border-size);
+  background-color: var(--background-color);
+  background: var(--background-color);
 }
 
 .button:active {
-  border-bottom: 2px solid var(--border-color-hover);
+  bottom: 0px;
 }
 
-.content {
-  width: 100%;
-  text-align: center;
-  font-size: 16px;
-  color: #4b4b4b;
-  user-select: none;
+.button-side {
+  border-radius: 16px;
+  transition: all 0.1s;
+  background-color: var(--border-color);
+  background: var(--border-color);
 }
 
-.answer-number {
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
+.hover:hover {
+  .button {
+    background-color: var(--background-color-hover);
+    background: var(--background-color-hover);
+    border: 2px solid var(--border-color-hover);
+  }
+
+  .button-side {
+    background-color: var(--border-color-hover);
+    background: var(--border-color-hover);
+  }
 }
 </style>

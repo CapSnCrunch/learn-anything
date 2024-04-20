@@ -36,7 +36,7 @@
         <v-col
           cols="6"
           v-for="(answer, answerIndex) of currentQuestion?.answers"
-          class="d-flex align-center justify-center px-3 py-0"
+          class="d-flex align-center justify-center px-3 py-0 mb-4"
         >
           <LAButton
             v-if="submitted && answer?.correct"
@@ -47,6 +47,7 @@
               backgroundColorHover: '#ddffde',
             }"
             class="w-100"
+            height="70px"
             @click="submit(answerIndex)"
           >
             {{ answer?.answer }}
@@ -60,11 +61,12 @@
               backgroundColorHover: '#ffdddd',
             }"
             class="w-100"
+            height="70px"
             @click="submit(answerIndex)"
           >
             {{ answer?.answer }}
           </LAButton>
-          <LAButton v-else class="w-100" @click="submit(answerIndex)">{{
+          <LAButton v-else class="w-100" height="70px" @click="submit(answerIndex)">{{
             answer?.answer
           }}</LAButton>
         </v-col>

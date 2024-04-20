@@ -41,11 +41,11 @@
             />
 
             <LAButton
-              class="w-100 mt-2"
+              class="w-100 mt-5"
               :class="error ? 'mb-0' : 'mb-4'"
               @click="signUpWithEmailAndPassword()"
             >
-              <h4 class="text-gray font-weight-bold">SIGN UP</h4>
+              <h4 class="text-gray text-subtitle-1 font-weight-bold">SIGN UP</h4>
             </LAButton>
 
             <div
@@ -64,10 +64,10 @@
             </div>
 
             <v-row class="w-100" no-gutters>
-              <LAButton class="w-100" @click="signInWithGooglePopup()">
+              <LAButton class="w-100 mt-1" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-gray font-weight-bold">GOOGLE</h4>
+                  <h4 class="pl-4 text-gray text-subtitle-1 font-weight-bold">GOOGLE</h4>
                 </div>
               </LAButton>
             </v-row>
@@ -153,7 +153,7 @@ const saveUserProgress = async () => {
   // Set new user's progress to their current local progress
   let localProgress = {};
 
-  const savedTopicsList = load("learn-anything.topics");
+  const savedTopicsList = load("learn-anything.topics") || [];
   for (const topic of savedTopicsList) {
     let savedTopic = load(`learn-anything.${topic}`);
     localProgress[topic] = savedTopic;

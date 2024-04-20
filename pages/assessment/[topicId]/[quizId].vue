@@ -13,7 +13,8 @@
       >
         <template #back-button>
           <LAButton
-            style="width: 55px"
+            width="55px"
+            height="50px"
             @click="backToCourseDialogIsOpen = true"
           >
             <v-icon icon="mdi-arrow-left" size="20px" color="black" />
@@ -39,13 +40,13 @@
                   </span>
                 </h2>
                 <v-row class="d-flex justify-end mt-12">
-                  <LAButton @click="backToCourseDialogIsOpen = false">
-                    <h2 class="font-weight-medium" style="width: 125px">
+                  <LAButton @click="backToCourseDialogIsOpen = false" width="150px">
+                    <h2 class="font-weight-medium">
                       Stay Here
                     </h2>
                   </LAButton>
-                  <LAButton class="ml-4" @click="exit()">
-                    <h2 class="font-weight-medium" style="width: 125px">
+                  <LAButton class="ml-4" @click="exit()" width="150px">
+                    <h2 class="font-weight-medium">
                       Exit
                     </h2>
                   </LAButton>

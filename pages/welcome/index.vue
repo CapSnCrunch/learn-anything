@@ -37,7 +37,7 @@
             v-for="topic of topicsToShow"
             class="d-flex align-center justify-center px-3 py-0"
           >
-            <LAButton class="w-100">
+            <LAButton class="w-100 mt-4">
               <nuxt-link
                 :to="'/welcome/' + kebabCase(topic?.name)"
                 class="d-flex text-decoration-none align-center justify-center"

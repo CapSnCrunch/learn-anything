@@ -38,7 +38,7 @@ const progress = computed(() => props.value);
   border-radius: 16px;
   transition: width 0.3s ease;
   background-image: linear-gradient(
-    90deg,
+    270deg,
     rgb(53.725% 88.627% 9.804%) 0%,
     rgb(51.054% 87.402% 15.221%) 6.25%,
     rgb(48.382% 86.176% 20.637%) 12.5%,
