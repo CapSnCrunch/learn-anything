@@ -1,14 +1,17 @@
 <template>
   <v-app-bar app elevation="0">
     <v-container class="d-flex align-center" style="max-width: 1200px">
-      <v-row class="d-flex align-center pl-4 pr-2">
+      <v-row class="d-flex align-center pl-4 pr-4">
         <nuxt-link :to="{ path: '/' }" class="text-decoration-none">
           <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
         <v-row class="d-flex justify-end">
-          <LAButton v-if="user" width="150px" height="35px" @click="handleSignOut()">
-            Logout
-          </LAButton>
+          <div v-if="user" class="d-flex">
+            <LAButton :width="xs ? '45px' : '150px'" :height="xs ? '40px' : '35px'" class="pr-4" @click="handleSignOut()">
+              <v-icon v-if="xs" icon="mdi-logout" size="20px" color="darkGray" />
+              <span v-else>Logout</span>
+            </LAButton>
+          </div>
           <div class="d-flex" v-else>
             <nuxt-link
               :to="{ path: '/login' }"

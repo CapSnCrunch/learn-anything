@@ -1,27 +1,30 @@
 <template>
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-sheet class="section d-flex align-start" style="padding-top: 150px">
+    <v-sheet class="section d-flex align-start" style="padding-top: 100px">
       <div
         class="d-flex flex-column justify-center align-center w-100"
         style="max-width: 1000px"
       >
-        <h2 class="text-darkGray mb-3">What do you want to learn?</h2>
-        <LAInput
-          v-model="inputValue"
-          placeholder="I want to learn..."
-          width="500px"
-          class="mb-10 d-flex align-center"
-          @enter="getSuggestedTopics"
-        >
-          <v-icon
-            v-if="!loading"
-            icon="mdi-magnify"
-            size="20px"
-            color="black"
-            @click="getSuggestedTopics"
-          />
-          <img v-else src="../assets/loading.gif" width="20px" height="20px" />
-        </LAInput>
+        <h2 class="text-darkGray text-h4 font-weight-bold mb-6">What do you want to learn?</h2>
+        <div class="d-flex align-center justify-center w-100 px-4">
+          <LAInput
+            v-model="inputValue"
+            placeholder="I want to learn..."
+            width="100%"
+            class="mb-10 d-flex align-center"
+            style="max-width: 600px;"
+            @enter="getSuggestedTopics"
+          >
+            <v-icon
+              v-if="!loading"
+              icon="mdi-magnify"
+              size="20px"
+              color="black"
+              @click="getSuggestedTopics"
+            />
+            <img v-else src="../assets/loading.gif" width="20px" height="20px" />
+          </LAInput>
+        </div>
 
         <h4 class="text-darkGray mb-8">
           {{
@@ -33,7 +36,9 @@
 
         <v-row class="d-flex w-100">
           <v-col
-            cols="4"
+            cols="12"
+            sm="6"
+            lg="4"
             v-for="topic of topicsToShow"
             class="d-flex align-center justify-center px-3 py-0"
           >
