@@ -75,7 +75,7 @@
         <h2 class="text-darkGray text-subtitle-1 font-weight-bold">
           Create an account to save your progress!
         </h2>
-        <LAButton class="mt-2" style="width: 300px">
+        <LAButton class="mt-4" width="300px">
           <nuxt-link
             to="/signup"
             class="d-flex text-decoration-none align-center justify-center"
@@ -83,7 +83,7 @@
             <h2 class="text-darkGray text-h6">Create an Account</h2>
           </nuxt-link>
         </LAButton>
-        <LAButton style="width: 300px">
+        <LAButton class="mt-4" width="300px">
           <nuxt-link
             to="/login"
             class="d-flex text-decoration-none align-center justify-center"
@@ -104,16 +104,16 @@ import { kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
 
 const colors = ref([
-  "rgb(53.725% 88.627% 9.804%)",
-  "rgb(48.382% 86.176% 20.637%)",
-  "rgb(43.039% 83.725% 31.471%)",
-  "rgb(37.696% 81.275% 42.304%)",
-  "rgb(32.353% 78.824% 53.137%)",
-  "rgb(29.681% 77.598% 58.554%)",
-  "rgb(27.01% 76.373% 63.971%)",
-  "rgb(18.995% 72.696% 80.221%)",
-  "rgb(13.652% 70.245% 91.054%)",
   "rgb(10.98% 69.02% 96.471%)",
+  "rgb(13.652% 70.245% 91.054%)",
+  "rgb(18.995% 72.696% 80.221%)",
+  "rgb(27.01% 76.373% 63.971%)",
+  "rgb(29.681% 77.598% 58.554%)",
+  "rgb(32.353% 78.824% 53.137%)",
+  "rgb(37.696% 81.275% 42.304%)",
+  "rgb(43.039% 83.725% 31.471%)",
+  "rgb(48.382% 86.176% 20.637%)",
+  "rgb(53.725% 88.627% 9.804%)",
 ]);
 
 const route = useRoute();

@@ -6,7 +6,7 @@
           <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
         <v-row class="d-flex justify-end">
-          <LAButton v-if="user" classes="px-4 py-1" @click="handleSignOut()">
+          <LAButton v-if="user" width="150px" height="35px" @click="handleSignOut()">
             Logout
           </LAButton>
           <div class="d-flex" v-else>
@@ -14,12 +14,12 @@
               :to="{ path: '/login' }"
               class="text-decoration-none mr-4"
             >
-              <LAButton classes="px-4 py-1" style="width: 150px">
+              <LAButton width="150px" height="35px">
                 Login
               </LAButton>
             </nuxt-link>
             <nuxt-link :to="{ path: '/signup' }" class="text-decoration-none">
-              <LAButton classes="px-4 py-1" style="width: 150px">
+              <LAButton width="150px" height="35px">
                 Create Account
               </LAButton>
             </nuxt-link>
