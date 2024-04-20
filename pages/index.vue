@@ -42,7 +42,9 @@
       <v-row class="d-flex w-100 ma-0 pa-0" :class="lgAndUp ? 'pb-8' : 'pt-8'">
         <Vue3Marquee style="height: 80px;" duration="80">
           <LAButton v-for="topic in topics" width="300px" height="50px" class="mx-2 pt-2">
-            <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">{{ topic.name }}</h2>
+            <nuxt-link :to="'/welcome/' + topic.topicId" class="text-decoration-none">
+              <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">{{ topic.name }}</h2>
+            </nuxt-link>
           </LAButton>
         </Vue3Marquee>
       </v-row>

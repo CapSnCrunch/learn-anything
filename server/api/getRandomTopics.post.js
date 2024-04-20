@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
     const jsonResponse = randomTopics.map(topic => ({
       name: topic.name,
-      id: kebabCase(topic.name)
+      topicId: kebabCase(topic.name)
     }))
 
     return {

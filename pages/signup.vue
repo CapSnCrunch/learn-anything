@@ -12,7 +12,7 @@
             lg="4"
             xl="3"
             xxl="3"
-            class="d-flex flex-column justify-center align-center"
+            class="d-flex flex-column justify-center align-center ma-0 pl-8 pr-4"
           >
             <h3 class="text-darkGray text-center mb-2">Sign Up</h3>
             <h4 class="text-darkGray text-body-1 text-center mb-8">
