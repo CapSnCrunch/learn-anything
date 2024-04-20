@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app elevation="0">
     <v-container class="d-flex align-center" style="max-width: 1200px">
-      <v-row class="d-flex align-center pl-4 pr-6">
+      <v-row class="d-flex align-center pl-4 pr-2">
         <nuxt-link :to="{ path: '/' }" class="text-decoration-none">
           <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
@@ -14,11 +14,12 @@
               :to="{ path: '/login' }"
               class="text-decoration-none mr-4"
             >
-              <LAButton width="150px" height="35px">
-                Login
+              <LAButton :width="xs ? '45px' : '150px'" :height="xs ? '40px' : '35px'">
+                <v-icon v-if="xs" icon="mdi-login" size="20px" color="darkGray" />
+                <span v-else>Login</span>
               </LAButton>
             </nuxt-link>
-            <nuxt-link :to="{ path: '/signup' }" class="text-decoration-none">
+            <nuxt-link v-if="!xs" :to="{ path: '/signup' }" class="text-decoration-none">
               <LAButton width="150px" height="35px">
                 Create Account
               </LAButton>
@@ -33,9 +34,12 @@
 <script setup lang="ts">
 import { signOut } from "firebase/auth";
 import { useCurrentUser } from "vuefire";
-import LAButton from "./LAButton.vue";
+import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { clear } from "@/utils/localStorage";
+import LAButton from "@/components/LAButton.vue";
+
+const { xs, lgAndUp } = useDisplay();
 
 const auth = useFirebaseAuth()!;
 const user = useCurrentUser();
