@@ -21,8 +21,11 @@
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
-          class="d-flex justify-end w-100"
+          class="d-flex justify-end align-center w-100"
         >
+          <div class="pr-8">
+            <img :src="`../assets/mascots/${mascots[subtopicIndex]}.png`" width="200px" height="200px">
+          </div>
           <div
             class="section-card d-flex flex-column align-center w-100 mb-6"
             style="max-width: 800px; height: 250px"
@@ -80,7 +83,7 @@
         <div class="side-card-section h-100 w-100 pr-8" style="max-width: 400px">
           <div class="d-flex flex-column h-100 w-100 pr-8">
             <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 524px;'">
-              <h2 class="text-darkGray text-subtitle-1 font-weight-bold pb-2">
+              <h2 class="text-darkGray text-h6 font-weight-bold pb-2">
                 Your Courses
               </h2>
               <div :class="Object.keys(userProgress).length < 2 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
@@ -155,6 +158,16 @@ const colors = ref([
   "rgb(48.382% 86.176% 20.637%)",
   "rgb(53.725% 88.627% 9.804%)",
 ]);
+
+const mascots = [
+  "turtle",
+  "rabbit",
+  "mouse",
+  "beaver",
+  "squirrel",
+  "bear",
+  "lion"
+]
 
 const route = useRoute();
 const topicId = route.params.topicId;
