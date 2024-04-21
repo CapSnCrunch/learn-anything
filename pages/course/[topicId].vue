@@ -1,9 +1,12 @@
 <template>
-  <v-container no-gutters fluid class="pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center w-100">
+  <v-container no-gutters fluid class="d-flex justify-center pa-0 ma-0">
+    <v-row class="d-flex justify-center w-100" style="max-width: 1600px">
       <v-col
-        class="d-flex flex-column align-center ma-0"
-        style="padding-top: 100px; position: relative"
+        cols="12"
+        md="8"
+        lg="9"
+        class="d-flex flex-column align-end ma-0"
+        style="padding-top: 100px;"
       >
         <span v-if="loading" class="w-100">
           <v-row class="d-flex w-100 mt-8">
@@ -15,83 +18,133 @@
             </v-col>
           </v-row>
         </span>
-
-        <div
-          v-else
+      
+        <v-row v-else
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
-          class="section-card d-flex flex-column justify-center align-center w-75 mb-8"
-          style="max-width: 800px"
-          ref="sections"
+          class="d-flex justify-end align-center w-100 mb-3"
         >
+          <div v-if="lgAndUp" class="pr-8">
+            <img :src="mascots[subtopicIndex]" width="220px" height="220px">
+          </div>
           <div
-            class="section-card-top d-flex flex-column w-100 align-start justify-center"
+            class="section-card d-flex flex-column align-center w-100"
+            style="max-width: 800px"
+            ref="sections"
           >
-            <h1 class="text-darkGray text-subtitle-1 font-weight-bold">
-              Section 1, Unit {{ subtopicIndex + 1 }}
-            </h1>
-            <h1 class="text-darkGray text-h5 font-weight-bold">
-              {{ subtopic.name }}
-            </h1>
-            <h1 class="text-darkGray text-body-1 mt-1">
-              {{ subtopic.description }}
-            </h1>
-          </div>
-          <div class="d-flex justify-space-around w-100 mt-8 mb-6">
-            <div v-for="(quiz, quizIndex) of subtopic?.quizzes">
-              <nuxt-link
-                :to="
-                  quizIndex > subtopic.progress
-                    ? ''
-                    : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`
-                "
-                class="d-flex text-decoration-none align-center justify-center"
-              >
-                <LALessonButton
-                  :color="colors[subtopicIndex]"
-                  :disabled="quizIndex > subtopic.progress"
-                />
-              </nuxt-link>
-              <v-tooltip
-                v-if="quiz?.description"
-                activator="parent"
-                location="top"
-                offset="20px"
-                max-width="300px"
-              >
-                {{ quiz?.description }}
-              </v-tooltip>
+            <div
+              class="section-card-top d-flex flex-column w-100 align-start justify-center"
+            >
+              <h1 class="text-darkGray text-subtitle-1 font-weight-bold">
+                Section 1, Unit {{ subtopicIndex + 1 }}
+              </h1>
+              <h1 class="text-darkGray text-h5 font-weight-bold">
+                {{ subtopic.name }}
+              </h1>
+              <h1 class="text-darkGray text-body-1 mt-1">
+                {{ subtopic.description }}
+              </h1>
             </div>
+
+            <v-row class="d-flex w-100 mt-8 mb-6 align-center">
+              <v-col v-if="!lgAndUp" cols="4" class="w-100">
+                <img :src="mascots[subtopicIndex]" width="220px" height="220px">
+              </v-col>
+              <v-col cols="8" lg="12"> <!-- Adjust the number of columns based on your needs -->
+                <v-row class="d-flex flex-wrap justify-space-around">
+                  <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
+                    <nuxt-link
+                      :to="quizIndex > subtopic.progress ? '' : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`"
+                      class="d-flex flex-wrap text-decoration-none align-center justify-center"
+                    >
+                      <LALessonButton
+                        :color="colors[subtopicIndex]"
+                        :disabled="quizIndex > subtopic.progress"
+                        class="px-1"
+                      />
+                    </nuxt-link>
+                    <v-tooltip
+                      v-if="quiz?.description"
+                      activator="parent"
+                      location="top"
+                      offset="20px"
+                      max-width="300px"
+                    >
+                      {{ quiz?.description }}
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
           </div>
-        </div>
+        </v-row>
       </v-col>
 
-      <div
-        v-if="!user && !loading"
-        class="side-card d-flex flex-column justify-center align-center pa-6"
-        style="position: fixed; top: 87px; right: 50px"
+      <v-col
+        v-if="!loading"
+        cols="12"
+        md="4"
+        lg="3"
+        class="d-flex justify-start align-start px-4"
+        style="margin-top: 100px; position: relative;"
       >
-        <h2 class="text-darkGray text-subtitle-1 font-weight-bold">
-          Create an account to save your progress!
-        </h2>
-        <LAButton class="mt-4" width="300px">
-          <nuxt-link
-            to="/signup"
-            class="d-flex text-decoration-none align-center justify-center"
-          >
-            <h2 class="text-darkGray text-h6">Create an Account</h2>
-          </nuxt-link>
-        </LAButton>
-        <LAButton class="mt-4" width="300px">
-          <nuxt-link
-            to="/login"
-            class="d-flex text-decoration-none align-center justify-center"
-          >
-            <h2 class="text-darkGray text-h6">Login</h2>
-          </nuxt-link>
-        </LAButton>
+        <div class="side-card-section h-100 w-100 pr-8" style="max-width: 400px">
+          <div class="d-flex flex-column h-100 w-100 pr-8">
+            <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 400px;'">
+              <h2 class="text-darkGray text-h6 font-weight-bold pb-2">
+                Your Courses
+              </h2>
+              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
+                <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
+                  <LAButton class="w-100 mt-3 mb-1" style="max-width: 300px">
+                    <nuxt-link
+                      :to="'/course/' + topicId"
+                      class="d-flex text-decoration-none align-center justify-center"
+                    >
+                      <div class="d-flex flex-column align-center justify-center w-100">
+                        <h2 class="text-darkGray text-h6">{{ titleCase(topicId) }}</h2>
+                        <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
+                      </div>
+                    </nuxt-link>
+                  </LAButton>
+                </div>
+              </div>
+              <LAButton class="pt-4 w-100" style="max-width: 300px">
+                <nuxt-link
+                  to="/welcome"
+                  class="d-flex align-center text-decoration-none justify-center"
+                >
+                  <v-icon icon="mdi-plus-thick" size="35px" color="darkGray" />
+                </nuxt-link>
+              </LAButton>
+            </div>
+            <div v-if="!user" class="side-card d-flex flex-column justify-center align-center pa-6 mt-6" style="height: 250px;">
+              <h2 class="text-darkGray text-subtitle-1 font-weight-bold">
+                Create an account to save your progress!
+              </h2>
+              <LAButton class="mt-4" width="300px">
+                <nuxt-link
+                  to="/signup"
+                  class="d-flex text-decoration-none align-center justify-center"
+                >
+                  <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">Create an Account</h2>
+                </nuxt-link>
+              </LAButton>
+              <LAButton class="mt-4" width="300px">
+                <nuxt-link
+                  to="/login"
+                  class="d-flex text-decoration-none align-center justify-center"
+                >
+                  <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">Login</h2>
+                </nuxt-link>
+              </LAButton>
+          </div>
+        </div>
       </div>
+
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -100,8 +153,20 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useCurrentUser } from "vuefire";
-import { kebabCase } from "@/server/utils/strings";
+import { useDisplay } from "vuetify";
+import { titleCase, kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
+
+import turtle from "@/assets/turtle.png"
+import rabbit from "@/assets/rabbit.png"
+import mouse from "@/assets/mouse.png"
+import beaver from "@/assets/beaver.png"
+import squirrel from "@/assets/squirrel.png"
+import bear from "@/assets/bear.png"
+import lion from "@/assets/lion.png"
+import owl from "@/assets/owl.png"
+import fox from "@/assets/fox.png"
+import elephant from "@/assets/elephant.png"
 
 const colors = ref([
   "rgb(10.98% 69.02% 96.471%)",
@@ -116,12 +181,32 @@ const colors = ref([
   "rgb(53.725% 88.627% 9.804%)",
 ]);
 
+const mascots = ref([
+  turtle,
+  mouse,
+  rabbit,
+  beaver,
+  squirrel,
+  bear,
+  lion,
+  owl,
+  fox,
+  elephant
+])
+
+const { xs, lgAndUp } = useDisplay();
+
 const route = useRoute();
 const topicId = route.params.topicId;
 const user = useCurrentUser();
+const userProgress = ref({})
 
 const loading = ref(false);
-const subtopics = ref();
+const subtopics = ref([]);
+
+const computeTotalTopicProgress = (topic) => {
+  return (topic?.progress.reduce((a, b) => a + b, 0) * (100/70)) || 0
+}
 
 const getCourseSubtopics = async () => {
   const savedTopic = load(`learn-anything.${topicId}`);
@@ -182,24 +267,50 @@ const getSubtopicQuizzes = async () => {
   }
 };
 
+const getUserProgress = async () => {
+  const response = await axios.get("/api/getUserProgress");
+  let progress = response?.data?.data?.topics || null
+  userProgress.value = progress
+
+  if (progress) {
+    return
+  }
+
+  progress = {}
+
+  const savedTopicsList = load(`learn-anything.topics`) || [];
+  for (const topicId of savedTopicsList) {
+    const savedTopic = load(`learn-anything.${topicId}`)
+    progress[topicId] = {
+      difficulty: 5,
+      progress: savedTopic.map(subtopic => subtopic.progress || 0)
+    }
+  }
+
+  userProgress.value = progress
+}
+
 onMounted(async () => {
   loading.value = true;
   await getCourseSubtopics();
   loading.value = false;
   getSubtopicQuizzes();
+  getUserProgress();
 });
 </script>
 
 <style scoped>
+.side-card-section {
+  position: fixed;
+  top: 75px;
+}
+
 .side-card {
   background-color: #f0f0f0;
   border-radius: 16px;
 }
 
 .section-card {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
   background-color: #f0f0f0;
   border-radius: 16px;
 }
@@ -209,5 +320,16 @@ onMounted(async () => {
   padding: 15px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+}
+
+.scrollbox {
+  overflow-y: auto;
+  scrollbar-color: #afafaf #f0f0f0;
+  height: 100%;
+  z-index: 999;
+}
+
+.scrollbox:hover {
+  box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
 }
 </style>

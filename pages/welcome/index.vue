@@ -3,6 +3,7 @@
     <v-sheet class="section d-flex align-start" style="padding-top: 100px">
       <div
         class="d-flex flex-column justify-center align-center w-100"
+        :class="xs ? 'mt-0' : 'mt-12'"
         style="max-width: 1000px"
       >
         <h2 class="text-darkGray text-h4 font-weight-bold mb-6">What do you want to learn?</h2>
@@ -73,6 +74,9 @@ import LAInput from "@/components/LAInput.vue";
 import LAButton from "@/components/LAButton.vue";
 import { useCurrentUser } from "vuefire";
 import { kebabCase } from "@/server/utils/strings";
+import { useDisplay } from "vuetify";
+
+const { xs, lgAndUp } = useDisplay();
 
 const user = useCurrentUser();
 

@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex flex-column justify-center align-start w-100"
-    style="max-width: 1000px"
+    style="max-width: 1200px"
   >
     <span v-if="loading" class="w-100">
       <v-row class="d-flex w-100 mt-8">
