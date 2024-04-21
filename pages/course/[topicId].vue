@@ -2,7 +2,9 @@
   <v-container no-gutters fluid class="d-flex justify-center pa-0 ma-0">
     <v-row class="d-flex justify-center w-100" style="max-width: 1600px">
       <v-col
-        cols="9"
+        cols="12"
+        md="8"
+        lg="9"
         class="d-flex flex-column align-end ma-0"
         style="padding-top: 100px;"
       >
@@ -21,14 +23,14 @@
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
-          class="d-flex justify-end align-center w-100"
+          class="d-flex justify-end align-center w-100 mb-3"
         >
-          <div class="pr-8">
-            <img :src="`../assets/mascots/${mascots[subtopicIndex]}.png`" width="200px" height="200px">
+          <div v-if="lgAndUp" class="pr-8">
+            <img :src="mascots[subtopicIndex]" width="220px" height="220px">
           </div>
           <div
-            class="section-card d-flex flex-column align-center w-100 mb-6"
-            style="max-width: 800px; height: 250px"
+            class="section-card d-flex flex-column align-center w-100"
+            style="max-width: 800px"
             ref="sections"
           >
             <div
@@ -44,51 +46,59 @@
                 {{ subtopic.description }}
               </h1>
             </div>
-            <div class="d-flex justify-space-around w-100 mt-8 mb-6">
-              <div v-for="(quiz, quizIndex) of subtopic?.quizzes">
-                <nuxt-link
-                  :to="
-                    quizIndex > subtopic.progress
-                      ? ''
-                      : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`
-                  "
-                  class="d-flex text-decoration-none align-center justify-center"
-                >
-                  <LALessonButton
-                    :color="colors[subtopicIndex]"
-                    :disabled="quizIndex > subtopic.progress"
-                  />
-                </nuxt-link>
-                <v-tooltip
-                  v-if="quiz?.description"
-                  activator="parent"
-                  location="top"
-                  offset="20px"
-                  max-width="300px"
-                >
-                  {{ quiz?.description }}
-                </v-tooltip>
-              </div>
-            </div>
+
+            <v-row class="d-flex w-100 mt-8 mb-6 align-center">
+              <v-col v-if="!lgAndUp" cols="4" class="w-100">
+                <img :src="mascots[subtopicIndex]" width="220px" height="220px">
+              </v-col>
+              <v-col cols="8" lg="12"> <!-- Adjust the number of columns based on your needs -->
+                <v-row class="d-flex flex-wrap justify-space-around">
+                  <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
+                    <nuxt-link
+                      :to="quizIndex > subtopic.progress ? '' : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`"
+                      class="d-flex flex-wrap text-decoration-none align-center justify-center"
+                    >
+                      <LALessonButton
+                        :color="colors[subtopicIndex]"
+                        :disabled="quizIndex > subtopic.progress"
+                        class="px-1"
+                      />
+                    </nuxt-link>
+                    <v-tooltip
+                      v-if="quiz?.description"
+                      activator="parent"
+                      location="top"
+                      offset="20px"
+                      max-width="300px"
+                    >
+                      {{ quiz?.description }}
+                    </v-tooltip>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
           </div>
         </v-row>
       </v-col>
 
       <v-col
         v-if="!loading"
-        cols="3"
+        cols="12"
+        md="4"
+        lg="3"
         class="d-flex justify-start align-start px-4"
         style="margin-top: 100px; position: relative;"
       >
         <div class="side-card-section h-100 w-100 pr-8" style="max-width: 400px">
           <div class="d-flex flex-column h-100 w-100 pr-8">
-            <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 524px;'">
+            <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 400px;'">
               <h2 class="text-darkGray text-h6 font-weight-bold pb-2">
                 Your Courses
               </h2>
-              <div :class="Object.keys(userProgress).length < 2 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
+              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
                 <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
-                  <LAButton class="w-100 mt-4 mb-1" style="max-width: 300px">
+                  <LAButton class="w-100 mt-3 mb-1" style="max-width: 300px">
                     <nuxt-link
                       :to="'/course/' + topicId"
                       class="d-flex text-decoration-none align-center justify-center"
@@ -101,7 +111,7 @@
                   </LAButton>
                 </div>
               </div>
-              <LAButton class="pt-6 w-100" style="max-width: 300px">
+              <LAButton class="pt-4 w-100" style="max-width: 300px">
                 <nuxt-link
                   to="/welcome"
                   class="d-flex align-center text-decoration-none justify-center"
@@ -143,8 +153,20 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useCurrentUser } from "vuefire";
+import { useDisplay } from "vuetify";
 import { titleCase, kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
+
+import turtle from "@/assets/turtle.png"
+import rabbit from "@/assets/rabbit.png"
+import mouse from "@/assets/mouse.png"
+import beaver from "@/assets/beaver.png"
+import squirrel from "@/assets/squirrel.png"
+import bear from "@/assets/bear.png"
+import lion from "@/assets/lion.png"
+import owl from "@/assets/owl.png"
+import fox from "@/assets/fox.png"
+import elephant from "@/assets/elephant.png"
 
 const colors = ref([
   "rgb(10.98% 69.02% 96.471%)",
@@ -159,15 +181,20 @@ const colors = ref([
   "rgb(53.725% 88.627% 9.804%)",
 ]);
 
-const mascots = [
-  "turtle",
-  "rabbit",
-  "mouse",
-  "beaver",
-  "squirrel",
-  "bear",
-  "lion"
-]
+const mascots = ref([
+  turtle,
+  mouse,
+  rabbit,
+  beaver,
+  squirrel,
+  bear,
+  lion,
+  owl,
+  fox,
+  elephant
+])
+
+const { xs, lgAndUp } = useDisplay();
 
 const route = useRoute();
 const topicId = route.params.topicId;
@@ -258,7 +285,6 @@ const getUserProgress = async () => {
       difficulty: 5,
       progress: savedTopic.map(subtopic => subtopic.progress || 0)
     }
-    console.log(topicId, progress)
   }
 
   userProgress.value = progress

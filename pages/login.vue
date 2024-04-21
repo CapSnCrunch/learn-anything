@@ -158,7 +158,6 @@ async function signInWithGooglePopup() {
       userProgress?.topics
     );
     if (topicWithMostProgress) {
-      console.log(`/course/${topicWithMostProgress}`);
       router.push({ path: `/course/${topicWithMostProgress}` });
     } else {
       router.push({ path: "/welcome" });
