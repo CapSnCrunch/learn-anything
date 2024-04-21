@@ -34,9 +34,14 @@
           </h2>
         </LAButton>
         <LAButton style="max-width: 350px" class="mt-4">
-          <h2 class="text-darkGray text-darkGray font-weight-bold" style="font-size: 18px;">
-            Skip Quiz, Start with Basics
-          </h2>
+          <nuxt-link
+            :to="'/course/' + topicId"
+            class="d-flex text-decoration-none align-center justify-center"
+          >
+            <h2 class="text-darkGray text-darkGray font-weight-bold" style="font-size: 18px;">
+              Skip Quiz, Start with Basics
+            </h2>
+          </nuxt-link>
         </LAButton>
       </span>
       <span class="w-100 align-center justify-center" :class="started ? 'd-flex' : 'd-none'">

@@ -33,7 +33,8 @@
 
             <LAInput v-model="password" placeholder="Password" type="password">
               <h2
-                class="highlight text-subtitle-1 font-weight-bold"
+                class="highlight text-gray font-weight-bold mt-1"
+                style="font-size: 16px;"
                 @click="resetPassword()"
               >
                 FORGOT?
@@ -45,7 +46,7 @@
               :class="error || message ? 'mb-0' : 'mb-4'"
               @click="signInWithEmailPassword()"
             >
-              <h4 class="text-gray text-subtitle-1 font-weight-bold">LOGIN</h4>
+              <h4 class="text-darkGray font-weight-bold" style="font-size: 18px">LOGIN</h4>
             </LAButton>
 
             <div
@@ -78,12 +79,12 @@
               <LAButton class="w-100 mt-1" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-gray text-subtitle-1 font-weight-bold">GOOGLE</h4>
+                  <h2 class="pl-4 text-darkGray font-weight-bold" style="font-size: 18px">GOOGLE</h2>
                 </div>
               </LAButton>
             </v-row>
 
-            <v-row class="d-flex justify-center w-100">
+            <v-row class="d-flex justify-center w-100 mt-6">
               <h2 class="text-darkGray text-h6">
                 Don't have an account?
                 <nuxt-link :to="{ path: '/signup' }"> Create one </nuxt-link>

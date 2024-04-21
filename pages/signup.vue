@@ -45,7 +45,7 @@
               :class="error ? 'mb-0' : 'mb-4'"
               @click="signUpWithEmailAndPassword()"
             >
-              <h4 class="text-gray text-subtitle-1 font-weight-bold">SIGN UP</h4>
+              <h4 class="text-darkGray font-weight-bold" style="font-size: 18px">SIGN UP</h4>
             </LAButton>
 
             <div
@@ -67,12 +67,12 @@
               <LAButton class="w-100 mt-1" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-gray text-subtitle-1 font-weight-bold">GOOGLE</h4>
+                  <h2 class="pl-4 text-darkGray font-weight-bold" style="font-size: 18px">GOOGLE</h2>
                 </div>
               </LAButton>
             </v-row>
 
-            <v-row class="d-flex justify-center w-100">
+            <v-row class="d-flex justify-center w-100 mt-6">
               <h2 class="text-darkGray text-h6">
                 Already have an account?
                 <nuxt-link :to="{ path: '/login' }"> Login instead </nuxt-link>
