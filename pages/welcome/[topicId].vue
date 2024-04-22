@@ -86,6 +86,10 @@ import { titleCase } from "@/server/utils/strings";
 import { load, save } from "@/utils/localStorage";
 import Quiz from "@/components/Quiz.vue";
 
+useHead({
+  title: 'Learn Anything | Welcome',
+})
+
 const router = useRouter();
 const route = useRoute();
 const topicId = route.params.topicId;

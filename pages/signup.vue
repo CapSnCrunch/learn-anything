@@ -92,6 +92,10 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useFirebaseAuth, useIsCurrentUserLoaded } from "vuefire";
 
+useHead({
+  title: 'Learn Anything | Sign Up',
+})
+
 const email = ref("");
 const password = ref("");
 

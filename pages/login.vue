@@ -111,6 +111,10 @@ import {
 } from "firebase/auth";
 import { useFirebaseAuth } from "vuefire";
 
+useHead({
+  title: 'Learn Anything | Login',
+})
+
 const email = ref("");
 const password = ref("");
 
