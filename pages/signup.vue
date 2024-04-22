@@ -7,7 +7,6 @@
             cols="12"
             sm="10"
             lg="4"
-            xl="3"
             class="d-flex flex-column justify-center align-center ma-0"
             style="max-width: 100vw"
           >

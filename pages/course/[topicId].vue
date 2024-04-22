@@ -94,52 +94,52 @@
           <div class="d-flex flex-column h-100 w-100 pr-8">
             <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 400px;'">
               <h2 class="text-darkGray text-h6 font-weight-bold pb-2">
-                Your Courses
+                My Courses
               </h2>
               <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
                 <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
-                  <LAButton class="w-100 mt-3 mb-1" style="max-width: 300px">
-                    <nuxt-link
-                      :to="'/course/' + topicId"
-                      class="d-flex text-decoration-none align-center justify-center"
-                    >
+                  <nuxt-link
+                    :to="'/course/' + topicId"
+                    class="text-decoration-none"
+                  >
+                    <LAButton class="w-100 mt-3 mb-1" style="max-width: 300px">
                       <div class="d-flex flex-column align-center justify-center w-100">
                         <h2 class="text-darkGray text-subtitle-1 text-no-wrap">{{ titleCase(topicId) }}</h2>
                         <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
                       </div>
-                    </nuxt-link>
-                  </LAButton>
+                    </LAButton>
+                  </nuxt-link>
                 </div>
               </div>
-              <LAButton class="pt-4 w-100" style="max-width: 300px">
-                <nuxt-link
-                  to="/welcome"
-                  class="d-flex align-center text-decoration-none justify-center"
-                >
-                  <v-icon icon="mdi-plus-thick" size="35px" color="darkGray" />
-                </nuxt-link>
-              </LAButton>
+              <nuxt-link
+                to="/welcome"
+                class="d-flex text-decoration-none w-100"
+              >
+                <LAButton class="pt-4 w-100" style="max-width: 300px">
+                    <v-icon icon="mdi-plus-thick" size="35px" color="darkGray" />
+                </LAButton>
+              </nuxt-link>
             </div>
             <div v-if="!user" class="side-card d-flex flex-column justify-center align-center pa-6 mt-6" style="height: 250px;">
               <h2 class="text-darkGray text-subtitle-1 font-weight-bold">
                 Create an account to save your progress!
               </h2>
-              <LAButton class="mt-4" width="300px">
-                <nuxt-link
-                  to="/signup"
-                  class="d-flex text-decoration-none align-center justify-center"
-                >
+              <nuxt-link
+                to="/signup"
+                class="text-decoration-none"
+              >
+                <LAButton class="mt-4" width="300px">
                   <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">Create an Account</h2>
-                </nuxt-link>
-              </LAButton>
-              <LAButton class="mt-4" width="300px">
-                <nuxt-link
-                  to="/login"
-                  class="d-flex text-decoration-none align-center justify-center"
-                >
+                </LAButton>
+              </nuxt-link>
+              <nuxt-link
+                to="/login"
+                class="text-decoration-none"
+              >
+                <LAButton clas`s="mt-4" width="300px">
                   <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">Login</h2>
-                </nuxt-link>
-              </LAButton>
+                </LAButton>
+              </nuxt-link>
           </div>
         </div>
       </div>
