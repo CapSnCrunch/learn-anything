@@ -5,7 +5,7 @@
         <v-col cols="12" lg="6" class="d-flex align-end ma-0 pa-4" :class="lgAndUp ? 'justify-end' : 'justify-center mt-8'">
           <img
             src="../assets/login-image.png"
-            style="width: 100%; max-width: 700px;"
+            style="width: 100%; max-width: 650px;"
           />
         </v-col>
 
