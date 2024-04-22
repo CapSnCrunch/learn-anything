@@ -1,10 +1,12 @@
 <template>
-  <NuxtLayout>
-    <v-app>
-      <TheAppBar />
-      <NuxtPage />
-    </v-app>
-  </NuxtLayout>
+  <div>
+    <NuxtLayout>
+      <v-app>
+        <TheAppBar />
+        <NuxtPage />
+      </v-app>
+    </NuxtLayout>
+  </div>
 </template>
 
 <script setup>
