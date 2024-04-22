@@ -104,7 +104,7 @@
                       class="d-flex text-decoration-none align-center justify-center"
                     >
                       <div class="d-flex flex-column align-center justify-center w-100">
-                        <h2 class="text-darkGray text-h6">{{ titleCase(topicId) }}</h2>
+                        <h2 class="text-darkGray text-subtitle-1 text-no-wrap">{{ titleCase(topicId) }}</h2>
                         <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
                       </div>
                     </nuxt-link>
@@ -203,6 +203,10 @@ const userProgress = ref({})
 
 const loading = ref(false);
 const subtopics = ref([]);
+
+useHead({
+  title: `Learn Anything | ${titleCase(topicId)}`,
+})
 
 const computeTotalTopicProgress = (topic) => {
   return (topic?.progress.reduce((a, b) => a + b, 0) * (100/70)) || 0

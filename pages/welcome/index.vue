@@ -76,6 +76,10 @@ import { useCurrentUser } from "vuefire";
 import { kebabCase } from "@/server/utils/strings";
 import { useDisplay } from "vuetify";
 
+useHead({
+  title: 'Learn Anything | Welcome',
+})
+
 const { xs, lgAndUp } = useDisplay();
 
 const user = useCurrentUser();

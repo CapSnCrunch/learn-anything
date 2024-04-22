@@ -80,6 +80,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useCurrentUser } from "vuefire";
 import { load, save } from "@/utils/localStorage";
+import { titleCase, kebabCase } from "@/server/utils/strings";
 import Quiz from "@/components/Quiz.vue";
 
 const router = useRouter();
@@ -87,6 +88,10 @@ const route = useRoute();
 const topicId = route.params.topicId;
 const quizId = route.params.quizId;
 const user = useCurrentUser();
+
+useHead({
+  title: `Learn Anything | ${titleCase(topicId)}`,
+})
 
 const updateProgress = () => {
   if (user) {

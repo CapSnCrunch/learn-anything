@@ -5,7 +5,7 @@
         <v-col cols="12" lg="6" class="d-flex align-end ma-0 pa-4" :class="lgAndUp ? 'justify-end' : 'justify-center mt-8'">
           <img
             src="../assets/login-image.png"
-            style="width: 100%; max-width: 650px;"
+            style="width: 100%; max-width: 600px;"
           />
         </v-col>
 
@@ -13,7 +13,7 @@
           <v-row
             class="d-flex flex-column align-center justify-center"
             :class="lgAndUp ? 'px-0' : 'mx-4 ml-6'"
-            style="width: 100%; max-width: 600px"
+            style="width: 100%; max-width: 500px"
           >
             <h2 class="text-darkGray text-center text-h4 font-weight-bold mb-6">
               AI-crafted, personalized learning paths for any topic!
@@ -39,7 +39,7 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-row class="d-flex w-100 ma-0 pa-0" :class="lgAndUp ? 'pb-8' : 'pt-8'">
+      <v-row class="d-flex w-100 ma-0 pa-0" :class="lgAndUp ? 'pb-4' : 'pt-4'">
         <Vue3Marquee style="height: 80px;" duration="80">
           <LAButton v-for="topic in topics" width="300px" height="50px" class="mx-2 pt-2">
             <nuxt-link :to="'/welcome/' + topic.topicId" class="text-decoration-none">
@@ -79,6 +79,13 @@ import LAButton from "@/components/LAButton.vue";
 
 const { xs, lgAndUp } = useDisplay();
 const topics = ref([])
+
+useHead({
+  title: 'Learn Anything',
+  // meta: [
+  //   { name: 'description', content: 'My amazing site.' }
+  // ],
+})
 
 onMounted(async () => {
   const response = await axios.post("/api/getRandomTopics", {
