@@ -43,23 +43,23 @@
             v-for="topic of topicsToShow"
             class="d-flex align-center justify-center px-3 py-0"
           >
-            <LAButton class="w-100 mt-4">
-              <nuxt-link
-                :to="'/welcome/' + kebabCase(topic?.name)"
-                class="d-flex text-decoration-none align-center justify-center"
-              >
+            <nuxt-link
+              :to="'/welcome/' + kebabCase(topic?.name)"
+              class="d-flex text-decoration-none align-center justify-center w-100"
+            >
+              <LAButton class="w-100 mt-4">
                 <h2 class="text-darkGray text-h6">{{ topic?.name }}</h2>
-              </nuxt-link>
-              <v-tooltip
-                v-if="topic?.description"
-                activator="parent"
-                location="top"
-                offset="20px"
-                max-width="300px"
-              >
-                {{ topic?.description }}
-              </v-tooltip>
-            </LAButton>
+                <v-tooltip
+                  v-if="topic?.description"
+                  activator="parent"
+                  location="top"
+                  offset="20px"
+                  max-width="300px"
+                >
+                  {{ topic?.description }}
+                </v-tooltip>
+              </LAButton>
+            </nuxt-link>
           </v-col>
         </v-row>
       </div>
