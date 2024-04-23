@@ -136,7 +136,7 @@
                 to="/login"
                 class="text-decoration-none"
               >
-                <LAButton clas`s="mt-4" width="300px">
+                <LAButton class="mt-4" width="300px">
                   <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">Login</h2>
                 </LAButton>
               </nuxt-link>
@@ -168,19 +168,6 @@ import owl from "@/assets/owl.png"
 import fox from "@/assets/fox.png"
 import elephant from "@/assets/elephant.png"
 
-const colors = ref([
-  "rgb(10.98% 69.02% 96.471%)",
-  "rgb(13.652% 70.245% 91.054%)",
-  "rgb(18.995% 72.696% 80.221%)",
-  "rgb(27.01% 76.373% 63.971%)",
-  "rgb(29.681% 77.598% 58.554%)",
-  "rgb(32.353% 78.824% 53.137%)",
-  "rgb(37.696% 81.275% 42.304%)",
-  "rgb(43.039% 83.725% 31.471%)",
-  "rgb(48.382% 86.176% 20.637%)",
-  "rgb(53.725% 88.627% 9.804%)",
-]);
-
 const mascots = ref([
   turtle,
   mouse,
@@ -193,6 +180,19 @@ const mascots = ref([
   fox,
   elephant
 ])
+
+const colors = ref([
+  "rgb(10.98% 69.02% 96.471%)",
+  "rgb(13.652% 70.245% 91.054%)",
+  "rgb(18.995% 72.696% 80.221%)",
+  "rgb(27.01% 76.373% 63.971%)",
+  "rgb(29.681% 77.598% 58.554%)",
+  "rgb(32.353% 78.824% 53.137%)",
+  "rgb(37.696% 81.275% 42.304%)",
+  "rgb(43.039% 83.725% 31.471%)",
+  "rgb(48.382% 86.176% 20.637%)",
+  "rgb(53.725% 88.627% 9.804%)",
+]);
 
 const { xs, lgAndUp } = useDisplay();
 

@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center" style="max-width: 1200px">
       <v-row class="d-flex align-center pl-4 pr-4">
         <nuxt-link :to="{ path: '/' }" class="d-flex align-center text-decoration-none">
-          <img src="../public/favicon.ico" height="30px" class="mr-1" />
+          <img src="../public/favicon.ico" height="30px" class="mr-2" />
           <img src="../assets/logo.png" height="40px" />
         </nuxt-link>
         <v-row class="d-flex justify-end">

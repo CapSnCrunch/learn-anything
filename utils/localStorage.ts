@@ -1,9 +1,9 @@
 export const save = (key: string, value: any): void => {
-  window.localStorage.setItem(key, JSON.stringify(value));
+  window?.localStorage.setItem(key, JSON.stringify(value));
 };
 
 export const load = (key: string): any => {
-  const data = window.localStorage.getItem(key);
+  const data = window?.localStorage.getItem(key);
 
   try {
     return data ? JSON.parse(data) : data;
@@ -14,9 +14,9 @@ export const load = (key: string): any => {
 };
 
 export const remove = (key: string): void => {
-  window.localStorage.removeItem(key);
+  window?.localStorage.removeItem(key);
 };
 
 export const clear = (): void => {
-  window.localStorage.clear();
+  window?.localStorage.clear();
 };
