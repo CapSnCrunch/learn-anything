@@ -14,12 +14,11 @@ export default defineEventHandler(async (event) => {
     // Generate Questions for Knowledge Assessment with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `You are a helpful teaching assistant trying to help your student learn about the topic ${topicId}. The course is currently focused on ${quizId}.
-      The student is working on the question '${question?.question}' which has the following answers: ${question?.answers}. They need help but you should not reveal
-      the exact answer to the question they are working on (its okay to talk about things related to the question as long as it is not answering the question directly).
-      Instead, answer their relevant questions and guide them in the right direction. Teach them things they may not know about the subject and provided helpful links 
-      to outside learning material when possible. Please respond as if speaking with to the student who just said '${message}'. IMPORTANT: Respond in JSON format with 
-      a 'response' attribute (string) and a 'links' array of free-to-use helpful links the user might want to look at for this particular problem. Keep answers to only 
-      a few sentences and only use markup when necessary.`; // prettier-ignore
+      The student is working on the problem '${question?.question}' which has the following answers: ${question?.answers}. They need help but you should not reveal
+      the exact answer to the problem they are working on. If the student just needs help with definitions or understanding the problem better, try to help them directly
+      without revealing the correct answer. Please respond as if speaking with to the student who just said '${message}'. IMPORTANT: Respond in JSON format with a 
+      'response' attribute (string) and a 'links' array of free-to-use helpful links the user might want to look at for this particular problem. Keep answers to less 
+      than 4 sentences and only use markup when necessary. Try to send helpful links often.`; // prettier-ignore
     const result = await model.generateContent(prompt);
     const response = result.response;
     let text = response.text();

@@ -211,19 +211,21 @@ const chatWithAssistant = async () => {
     return
   }
 
-  chatLoading.value = true
-  conversation.value.push(message.value)
+  const userMessage = message.value
   message.value = ""
+  
+  chatLoading.value = true
+  conversation.value.push(userMessage)
   const response = await axios.post("/api/chatWithAssistant", {
-    topicId: 'fast-algorithms',
-    quizId: 'intro-to-time-complexity',
+    topicId: props.topicId,
+    quizId: props.quizId,
     question: {
       question: currentQuestion.value?.question,
       answers: currentQuestion.value?.answers.map(answer => answer.answer)
     },
-    message: message.value
+    message: userMessage
   });
-
+  
   conversation.value.push(response?.data?.data?.response)
   chatLoading.value = false
 }
