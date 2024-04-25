@@ -2,7 +2,7 @@
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
     <v-sheet
       class="d-flex justify-center align-start"
-      style="padding-top: 150px; height: 100vh"
+      style="padding-top: 100px; height: 100vh"
     >
       <Quiz
         v-model="questions"
@@ -13,7 +13,8 @@
       >
         <template #back-button>
           <LAButton
-            style="width: 55px"
+            width="55px"
+            height="50px"
             @click="backToCourseDialogIsOpen = true"
           >
             <v-icon icon="mdi-arrow-left" size="20px" color="black" />
@@ -39,13 +40,13 @@
                   </span>
                 </h2>
                 <v-row class="d-flex justify-end mt-12">
-                  <LAButton @click="backToCourseDialogIsOpen = false">
-                    <h2 class="font-weight-medium" style="width: 125px">
+                  <LAButton @click="backToCourseDialogIsOpen = false" width="150px">
+                    <h2 class="font-weight-medium">
                       Stay Here
                     </h2>
                   </LAButton>
-                  <LAButton class="ml-4" @click="exit()">
-                    <h2 class="font-weight-medium" style="width: 125px">
+                  <LAButton class="ml-4" @click="exit()" width="150px">
+                    <h2 class="font-weight-medium">
                       Exit
                     </h2>
                   </LAButton>
@@ -79,6 +80,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useCurrentUser } from "vuefire";
 import { load, save } from "@/utils/localStorage";
+import { titleCase, kebabCase } from "@/server/utils/strings";
 import Quiz from "@/components/Quiz.vue";
 
 const router = useRouter();
@@ -86,6 +88,10 @@ const route = useRoute();
 const topicId = route.params.topicId;
 const quizId = route.params.quizId;
 const user = useCurrentUser();
+
+useHead({
+  title: `Learn Anything | ${titleCase(topicId)}`,
+})
 
 const updateProgress = () => {
   if (user) {

@@ -1,7 +1,7 @@
 <template>
   <div
     class="d-flex flex-column justify-center align-start w-100"
-    style="max-width: 1000px"
+    style="max-width: 1200px"
   >
     <span v-if="loading" class="w-100">
       <v-row class="d-flex w-100 mt-8">
@@ -15,8 +15,10 @@
     </span>
 
     <span v-else class="w-100">
-      <v-row class="d-flex w-100 mb-4 align-center">
-        <slot name="back-button" />
+      <v-row class="d-flex w-100 mb-6 align-center">
+        <span class="ml-4">
+          <slot name="back-button" />
+        </span>
         <h2 class="text-darkGray ml-4 text-h4 font-weight-bold">
           {{ titleCase(topicId) }}
         </h2>
@@ -27,57 +29,90 @@
 
       <LAProgressBar :value="progress" />
 
-      <v-row v-if="progress < 100" class="d-flex w-100 mt-4">
-        <v-col cols="12" class="mb-4">
-          <h2 class="text-darkGray text-h5 text-start">
-            {{ currentQuestion?.question }}
-          </h2>
-        </v-col>
-        <v-col
-          cols="6"
-          v-for="(answer, answerIndex) of currentQuestion?.answers"
-          class="d-flex align-center justify-center px-3 py-0"
-        >
-          <LAButton
-            v-if="submitted && answer?.correct"
-            :colors="{
-              borderColor: '#58cc02',
-              borderColorHover: '#58cc02',
-              backgroundColor: '#ddffde',
-              backgroundColorHover: '#ddffde',
-            }"
-            class="w-100"
-            @click="submit(answerIndex)"
+      <div v-if="progress < 100" class="d-flex flex-column">
+        <v-row class="d-flex w-100 mt-4">
+          <v-col cols="12" class="mb-4">
+            <h2 class="text-darkGray text-h5 text-start">
+              {{ currentQuestion?.question }}
+            </h2>
+          </v-col>
+          <v-col
+            cols="6"
+            v-for="(answer, answerIndex) of currentQuestion?.answers"
+            class="d-flex align-center justify-center px-3 py-0 mb-4"
           >
-            {{ answer?.answer }}
-          </LAButton>
-          <LAButton
-            v-else-if="submitted && selectedAnswers.includes(answerIndex)"
-            :colors="{
-              borderColor: '#ff4b4b',
-              borderColorHover: '#ff4b4b',
-              backgroundColor: '#ffdddd',
-              backgroundColorHover: '#ffdddd',
-            }"
-            class="w-100"
-            @click="submit(answerIndex)"
-          >
-            {{ answer?.answer }}
-          </LAButton>
-          <LAButton v-else class="w-100" @click="submit(answerIndex)">{{
-            answer?.answer
-          }}</LAButton>
-        </v-col>
-        <v-col cols="12" class="d-flex justify-end">
-          <LAButton
-            v-if="submitted"
-            style="width: 200px"
-            @click="nextQuestion()"
-          >
-            Next Question
-          </LAButton>
-        </v-col>
-      </v-row>
+            <LAButton
+              v-if="submitted && answer?.correct"
+              :colors="{
+                borderColor: '#58cc02',
+                borderColorHover: '#58cc02',
+                backgroundColor: '#ddffde',
+                backgroundColorHover: '#ddffde',
+              }"
+              class="w-100"
+              height="70px"
+              @click="submit(answerIndex)"
+            >
+              {{ answer?.answer }}
+            </LAButton>
+            <LAButton
+              v-else-if="submitted && selectedAnswers.includes(answerIndex)"
+              :colors="{
+                borderColor: '#ff4b4b',
+                borderColorHover: '#ff4b4b',
+                backgroundColor: '#ffdddd',
+                backgroundColorHover: '#ffdddd',
+              }"
+              class="w-100"
+              height="70px"
+              @click="submit(answerIndex)"
+            >
+              {{ answer?.answer }}
+            </LAButton>
+            <LAButton v-else class="w-100" height="70px" @click="submit(answerIndex)">{{
+              answer?.answer
+            }}</LAButton>
+          </v-col>
+          <v-col cols="12" v-show="submitted" class="d-flex justify-end">
+            <span v-show="submitted">
+              <LAButton
+                width="150px"
+                height="50px"
+                @click="nextQuestion()"
+              >
+                Next Question
+              </LAButton>
+            </span>
+          </v-col>
+        </v-row>
+
+        <v-row class="d-flex w-100 h-100">
+          <v-col cols="4">
+          <div class="d-flex justify-end">
+              <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
+            </div>
+          </v-col>
+          <v-col cols="8" class="pa-6" style="max-height: 500px; margin-top: -30px;">
+            <transition name="chat-bubble-transition h-100">
+              <div class="chat-bubble" :class="{ 'expanded': conversation?.length > 0 }">
+                <div :class="{ 'triangle-left': conversation?.length > 0 }"></div>
+                <div class="scrollbox" ref="scrollbox">
+                  <div v-for="(chat, chatIndex) of conversation" :class="chatIndex % 2 === 0 ? 'chat-message-student' : 'chat-message-assistant'">
+                    {{ chat }}
+                  </div>  
+                </div>
+                <LAInput
+                  v-model="message"
+                  placeholder="Ask a question..."
+                  style="height: 50px"
+                  smaller-input
+                  @enter="chatWithAssistant()"
+                />
+              </div>
+            </transition>
+          </v-col>
+        </v-row>
+      </div>
 
       <v-row v-else class="d-flex w-100 mt-8">
         <v-col cols="12" class="d-flex flex-column align-center">
@@ -90,13 +125,35 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { defineProps, defineEmits } from "vue";
+import { load } from "@/utils/localStorage";
+import { watch, nextTick, defineProps, defineEmits } from "vue";
 import { titleCase } from "@/server/utils/strings";
 import LAButton from "@/components/LAButton.vue";
-import LAModal from "@/components/LAModal.vue";
 import LAProgressBar from "@/components/LAProgressBar.vue";
 
-const emits = defineEmits(["submitted", "complete"]);
+import turtle from "@/assets/turtle.png"
+import rabbit from "@/assets/rabbit.png"
+import mouse from "@/assets/mouse.png"
+import beaver from "@/assets/beaver.png"
+import squirrel from "@/assets/squirrel.png"
+import bear from "@/assets/bear.png"
+import lion from "@/assets/lion.png"
+import owl from "@/assets/owl.png"
+import fox from "@/assets/fox.png"
+import elephant from "@/assets/elephant.png"
+
+const mascots = ref([
+  turtle,
+  mouse,
+  rabbit,
+  beaver,
+  squirrel,
+  bear,
+  lion,
+  owl,
+  fox,
+  elephant
+])
 
 interface Answer {
   answer: string;
@@ -107,6 +164,8 @@ interface Question {
   question: string;
   answers: Answer[];
 }
+
+const emits = defineEmits(["submitted", "complete"]);
 
 const props = defineProps({
   topicId: {
@@ -143,6 +202,51 @@ const props = defineProps({
   },
 });
 
+const message = ref("")
+const conversation = ref([])
+const chatLoading = ref(false)
+
+const scrollbox = ref(null);
+watch(conversation, () => {
+  nextTick(() => {
+    if (scrollbox.value) {
+      scrollbox.value.scrollTop = scrollbox.value.scrollHeight;
+    }
+  });
+}, {deep: true});
+
+const chatWithAssistant = async () => {
+  if (chatLoading.value) {
+    return
+  }
+
+  const userMessage = message.value
+  message.value = ""
+  
+  chatLoading.value = true
+  conversation.value.push(userMessage)
+  const response = await axios.post("/api/chatWithAssistant", {
+    topicId: props.topicId,
+    quizId: props.quizId,
+    question: {
+      question: currentQuestion.value?.question,
+      answers: currentQuestion.value?.answers.map(answer => answer.answer)
+    },
+    message: userMessage
+  });
+
+  conversation.value.push(response?.data?.data?.response)
+  chatLoading.value = false
+}
+
+const subtopicIndex = computed(() => {
+  let savedTopic = load(`learn-anything.${props.topicId}`) || [];
+  let index = savedTopic.findIndex((subtopic) =>
+    subtopic.quizzes.some((quiz) => quiz.quizId === props.quizId)
+  )
+  return index < 0 ? 0 : index
+});
+
 const loading = ref(false);
 onMounted(async () => {
   loading.value = true;
@@ -161,7 +265,7 @@ onMounted(async () => {
   loading.value = false;
 });
 
-const getQuizQuestions = async (count) => {
+const getQuizQuestions = async (count: number) => {
   try {
     let response;
     if (props.knowledgeAssessment) {
@@ -180,7 +284,7 @@ const getQuizQuestions = async (count) => {
 
     const responseQuestions = response?.data?.data?.questions;
     questions.value = questions.value.concat(
-      responseQuestions.map((question) => {
+      responseQuestions?.map((question: any) => {
         return {
           ...question,
           answers: question.answers.slice().sort(() => Math.random() - 0.5),
@@ -201,7 +305,7 @@ const currentQuestion = computed(() => {
 
 const selectedAnswers = ref([]);
 const submitted = ref(false);
-const submit = (answerIndex) => {
+const submit = (answerIndex: number) => {
   if (submitted.value) {
     return;
   }
@@ -227,6 +331,7 @@ const nextQuestion = () => {
   submitted.value = false;
   selectedAnswers.value = [];
   questionIndex.value += 1;
+  conversation.value = []
 
   while (
     questions.value[questionIndex.value]?.completed ||
@@ -251,9 +356,73 @@ const nextQuestion = () => {
 const progress = computed(() => {
   const completedQuestions = questions.value?.filter(
     (question) => question.completed
-  ).length;
+  )?.length;
   return (completedQuestions / props.totalQuestions) * 100;
 });
-
-const randomizeAnswers = () => {};
 </script>
+
+<style scoped>
+.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 16px;
+  height: 65px;
+  transition: height 0.5s ease;
+  position: relative;
+}
+
+.chat-bubble.expanded {
+  height: 95%;
+}
+
+.chat-bubble-transition-enter-active,
+.chat-bubble-transition-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.chat-bubble-transition-enter,
+.chat-bubble-transition-leave-to {
+  opacity: 0;
+}
+
+.chat-message-student {
+  padding: 4px 10px;
+  align-self: end;
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  max-width: 70%;
+  margin-bottom: 5px;
+}
+
+.chat-message-assistant {
+  padding: 8px;
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  max-width: 70%;
+  margin-bottom: 5px;
+}
+
+.scrollbox {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-color: #afafaf #f0f0f0;
+  height: 100%;
+  z-index: 999;
+}
+
+.triangle-left {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #f0f0f0;
+  position: absolute;
+  left: -10px;
+  top: 20%;
+  transform: translateY(-50%);
+}
+</style>

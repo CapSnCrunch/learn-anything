@@ -1,18 +1,14 @@
 <template>
-  <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center">
-      <v-col class="pa-0 ma-0">
+  <v-container no-gutters fluid fill-height class="d-flex justify-center pa-0 ma-0">
+    <v-row class="d-flex flex-column align-center justify-center" style="max-width: 100vw">
+      <v-col class="pa-0 ma-0" style="max-width: 1200px;">
         <v-sheet class="section d-flex align-center justify-center">
-          <!-- Right side for login component -->
           <v-col
             cols="12"
-            xs="12"
             sm="10"
-            md="10"
             lg="4"
-            xl="3"
-            xxl="3"
-            class="d-flex flex-column justify-center align-center"
+            class="d-flex flex-column justify-center align-center ma-0"
+            style="max-width: 100vw"
           >
             <h3 class="text-darkGray text-center mb-2">Sign Up</h3>
             <h4 class="text-darkGray text-body-1 text-center mb-8">
@@ -41,11 +37,11 @@
             />
 
             <LAButton
-              class="w-100 mt-2"
+              class="w-100 mt-5"
               :class="error ? 'mb-0' : 'mb-4'"
               @click="signUpWithEmailAndPassword()"
             >
-              <h4 class="text-gray font-weight-bold">SIGN UP</h4>
+              <h4 class="text-darkGray font-weight-bold" style="font-size: 18px">SIGN UP</h4>
             </LAButton>
 
             <div
@@ -64,15 +60,15 @@
             </div>
 
             <v-row class="w-100" no-gutters>
-              <LAButton class="w-100" @click="signInWithGooglePopup()">
+              <LAButton class="w-100 mt-1" @click="signInWithGooglePopup()">
                 <div class="d-flex justify-center">
                   <img src="../assets/google-icon.svg" />
-                  <h4 class="pl-4 text-gray font-weight-bold">GOOGLE</h4>
+                  <h2 class="pl-4 text-darkGray font-weight-bold" style="font-size: 18px">GOOGLE</h2>
                 </div>
               </LAButton>
             </v-row>
 
-            <v-row class="d-flex justify-center w-100">
+            <v-row class="d-flex justify-center w-100 mt-6">
               <h2 class="text-darkGray text-h6">
                 Already have an account?
                 <nuxt-link :to="{ path: '/login' }"> Login instead </nuxt-link>
@@ -94,6 +90,10 @@ import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useFirebaseAuth, useIsCurrentUserLoaded } from "vuefire";
+
+useHead({
+  title: 'Learn Anything | Sign Up',
+})
 
 const email = ref("");
 const password = ref("");
@@ -153,7 +153,7 @@ const saveUserProgress = async () => {
   // Set new user's progress to their current local progress
   let localProgress = {};
 
-  const savedTopicsList = load("learn-anything.topics");
+  const savedTopicsList = load("learn-anything.topics") || [];
   for (const topic of savedTopicsList) {
     let savedTopic = load(`learn-anything.${topic}`);
     localProgress[topic] = savedTopic;
@@ -190,12 +190,6 @@ const findTopicWithMostProgress = (topics) => {
 <style>
 .section {
   height: 100vh;
-  display: flex !important;
-  align-items: start;
-  justify-content: center;
-  text-align: center;
-  font-size: 24px;
-  position: relative;
 }
 
 .highlight:hover {
