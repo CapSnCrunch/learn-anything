@@ -96,7 +96,7 @@
             <transition name="chat-bubble-transition h-100">
               <div class="chat-bubble" :class="{ 'expanded': conversation?.length > 0 }">
                 <div :class="{ 'triangle-left': conversation?.length > 0 }"></div>
-                <div class="scrollbox">
+                <div class="scrollbox" ref="scrollbox">
                   <div v-for="(chat, chatIndex) of conversation" :class="chatIndex % 2 === 0 ? 'chat-message-student' : 'chat-message-assistant'">
                     {{ chat }}
                   </div>  
@@ -125,8 +125,8 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { load} from "@/utils/localStorage";
-import { defineProps, defineEmits } from "vue";
+import { load } from "@/utils/localStorage";
+import { watch, nextTick, defineProps, defineEmits } from "vue";
 import { titleCase } from "@/server/utils/strings";
 import LAButton from "@/components/LAButton.vue";
 import LAProgressBar from "@/components/LAProgressBar.vue";
@@ -206,6 +206,15 @@ const message = ref("")
 const conversation = ref([])
 const chatLoading = ref(false)
 
+const scrollbox = ref(null);
+watch(conversation, () => {
+  nextTick(() => {
+    if (scrollbox.value) {
+      scrollbox.value.scrollTop = scrollbox.value.scrollHeight;
+    }
+  });
+}, {deep: true});
+
 const chatWithAssistant = async () => {
   if (chatLoading.value) {
     return
@@ -225,7 +234,7 @@ const chatWithAssistant = async () => {
     },
     message: userMessage
   });
-  
+
   conversation.value.push(response?.data?.data?.response)
   chatLoading.value = false
 }
@@ -322,6 +331,7 @@ const nextQuestion = () => {
   submitted.value = false;
   selectedAnswers.value = [];
   questionIndex.value += 1;
+  conversation.value = []
 
   while (
     questions.value[questionIndex.value]?.completed ||
