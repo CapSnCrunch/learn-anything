@@ -1,5 +1,5 @@
 <template>
-  <div class="input-wrapper" :style="{ width: width }">
+  <div class="input-wrapper" :class="smallerInput ? 'smaller-input' : ''" :style="{ width: width }">
     <input
       class="input d-flex w-100"
       :type="type"
@@ -32,6 +32,10 @@ const props = defineProps({
     type: String,
     default: "100%",
   },
+  smallerInput: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emits = defineEmits(["enter"]);
@@ -56,6 +60,12 @@ const handleEnterKey = (event) => {
   display: inline-flex;
   padding: 12px 16px;
   cursor: pointer;
+}
+
+.smaller-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 16px;
 }
 
 .input {

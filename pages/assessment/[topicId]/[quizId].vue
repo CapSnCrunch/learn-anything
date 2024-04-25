@@ -2,7 +2,7 @@
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
     <v-sheet
       class="d-flex justify-center align-start"
-      style="padding-top: 150px; height: 100vh"
+      style="padding-top: 100px; height: 100vh"
     >
       <Quiz
         v-model="questions"
