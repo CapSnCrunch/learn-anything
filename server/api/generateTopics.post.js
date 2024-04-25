@@ -11,8 +11,9 @@ export default defineEventHandler(async (event) => {
     // Generate Topics with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
-      Respond with a JSON object in the format { topics: [{ name: 'Example Topic', description: 'no more than 20 words...'}] }. 
-      Generate exactly 6 distinct topics. IMPORTANT: Your response must be in json format, do not include a code block.`;
+      Consider topics like Web Development, Baking, Archaeology, etc. Respond with a JSON object in the format 
+      { topics: [{ name: 'Example Topic', description: 'no more than 20 words...'}] }. Generate exactly 6 distinct topics.
+      IMPORTANT: Your response must be in json format, do not include a code block.`;
 
     const result = await model.generateContent(prompt);
     const response = result.response;
@@ -21,7 +22,37 @@ export default defineEventHandler(async (event) => {
     // Strip code block if present
     const jsonResponse = JSON.parse(removeCodeBlock(text));
 
-    saveData(jsonResponse)
+    // Save Topics to Firestore
+    const batch = firestoreAdmin.batch();
+    const topicsRef = firestoreAdmin.collection("topics");
+    const timestamp = new Date();
+
+    for (const topic of jsonResponse?.topics) {
+      const topicId = kebabCase(topic.name);
+      const topicDocRef = topicsRef.doc(topicId);
+
+      try {
+        // Check if the document already exists
+        const docSnapshot = await topicDocRef.get();
+        const docExists = docSnapshot.exists;
+
+        if (!docExists) {
+          batch.set(topicDocRef, {
+            ...topic,
+            createdOn: timestamp,
+            updatedOn: timestamp,
+          });
+        } else {
+          batch.update(topicDocRef, {
+            updatedOn: timestamp,
+          });
+        }
+      } catch (error) {
+        console.error("Error updating document with ID:", topicId, error);
+      }
+    }
+
+    batch.commit();
 
     return {
       statusCode: 200,
@@ -35,38 +66,3 @@ export default defineEventHandler(async (event) => {
     };
   }
 });
-
-const saveData = async (jsonData) => {
-  // Save Topics to Firestore
-  const batch = firestoreAdmin.batch();
-  const topicsRef = firestoreAdmin.collection("topics");
-  const timestamp = new Date();
-  
-  for (const topic of jsonData.topics) {
-
-    const topicId = kebabCase(topic.name);
-    const topicDocRef = topicsRef.doc(topicId);
-
-    try {
-      // Check if the document already exists
-      const docSnapshot = await topicDocRef.get();
-      const docExists = docSnapshot.exists;
-
-      if (!docExists) {
-        batch.set(topicDocRef, {
-          ...topic,
-          createdOn: timestamp,
-          updatedOn: timestamp,
-        });
-      } else {
-        batch.update(topicDocRef, {
-          updatedOn: timestamp,
-        });
-      }
-    } catch (error) {
-      console.error("Error updating document with ID:", topicId, error);
-    }
-  }
-
-  batch.commit();
-}
