@@ -23,8 +23,6 @@ export default defineEventHandler(async (event) => {
     const response = result.response;
     let text = response.text();
 
-    console.log(text)
-
     // Strip code block if present
     const jsonResponse = JSON.parse(removeCodeBlock(text));
 
