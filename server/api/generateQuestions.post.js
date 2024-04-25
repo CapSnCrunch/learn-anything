@@ -5,11 +5,13 @@ import { kebabCase, removeCodeBlock } from "~/server/utils/strings";
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const body = await readBody(event);
+  const topicId = body?.topicId
+  const quizId = body?.quizId
 
   try {
     // Find Topic from Firebase
     const topicsRef = firestoreAdmin.collection("topics");
-    const topicDocRef = topicsRef.doc(body?.topicId);
+    const topicDocRef = topicsRef.doc(topicId);
     const docSnapshot = await topicDocRef.get();
     const docExists = docSnapshot.exists;
     if (!docExists) {
@@ -23,7 +25,7 @@ export default defineEventHandler(async (event) => {
 
     let topic = docSnapshot.data();
     const subtopicWithQuiz = topic.subtopics.find((subtopic) =>
-      subtopic.quizzes.some((quiz) => quiz.quizId === body?.quizId)
+      subtopic.quizzes.some((quiz) => quiz.quizId === quizId)
     );
 
     if (!subtopicWithQuiz) {
@@ -37,7 +39,7 @@ export default defineEventHandler(async (event) => {
 
     let filteredSubtopic = {};
     const quizIndex = subtopicWithQuiz.quizzes.findIndex(
-      (quiz) => quiz.quizId === body?.quizId
+      (quiz) => quiz.quizId === quizId
     );
 
     filteredSubtopic = {

@@ -92,15 +92,21 @@
               <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
             </div>
           </v-col>
-          <v-col cols="8" class="pa-6">
-            <transition name="chat-bubble-transition">
-              <div class="chat-bubble" :class="{ 'expanded': message != '' }">
-                <div :class="{ 'triangle-left': message != '' }"></div>
+          <v-col cols="8" class="pa-6" style="max-height: 500px; margin-top: -30px;">
+            <transition name="chat-bubble-transition h-100">
+              <div class="chat-bubble" :class="{ 'expanded': conversation?.length > 0 }">
+                <div :class="{ 'triangle-left': conversation?.length > 0 }"></div>
+                <div class="scrollbox">
+                  <div v-for="(chat, chatIndex) of conversation" :class="chatIndex % 2 === 0 ? 'chat-message-student' : 'chat-message-assistant'">
+                    {{ chat }}
+                  </div>  
+                </div>
                 <LAInput
                   v-model="message"
                   placeholder="Ask a question..."
                   style="height: 50px"
                   smaller-input
+                  @enter="chatWithAssistant()"
                 />
               </div>
             </transition>
@@ -197,13 +203,37 @@ const props = defineProps({
 });
 
 const message = ref("")
-const conversationActive = ref(false);
+const conversation = ref([])
+const chatLoading = ref(false)
+
+const chatWithAssistant = async () => {
+  if (chatLoading.value) {
+    return
+  }
+
+  chatLoading.value = true
+  conversation.value.push(message.value)
+  message.value = ""
+  const response = await axios.post("/api/chatWithAssistant", {
+    topicId: 'fast-algorithms',
+    quizId: 'intro-to-time-complexity',
+    question: {
+      question: currentQuestion.value?.question,
+      answers: currentQuestion.value?.answers.map(answer => answer.answer)
+    },
+    message: message.value
+  });
+
+  conversation.value.push(response?.data?.data?.response)
+  chatLoading.value = false
+}
 
 const subtopicIndex = computed(() => {
   let savedTopic = load(`learn-anything.${props.topicId}`) || [];
-  return savedTopic.findIndex((subtopic) =>
+  let index = savedTopic.findIndex((subtopic) =>
     subtopic.quizzes.some((quiz) => quiz.quizId === props.quizId)
-  ) || 0
+  )
+  return index < 0 ? 0 : index
 });
 
 const loading = ref(false);
@@ -243,7 +273,7 @@ const getQuizQuestions = async (count: number) => {
 
     const responseQuestions = response?.data?.data?.questions;
     questions.value = questions.value.concat(
-      responseQuestions.map((question) => {
+      responseQuestions?.map((question: any) => {
         return {
           ...question,
           answers: question.answers.slice().sort(() => Math.random() - 0.5),
@@ -314,7 +344,7 @@ const nextQuestion = () => {
 const progress = computed(() => {
   const completedQuestions = questions.value?.filter(
     (question) => question.completed
-  ).length;
+  )?.length;
   return (completedQuestions / props.totalQuestions) * 100;
 });
 </script>
@@ -322,17 +352,18 @@ const progress = computed(() => {
 <style scoped>
 .chat-bubble {
   display: flex;
-  align-items: end;
+  flex-direction: column;
+  justify-content: end;
   padding: 10px;
   background-color: #f0f0f0;
   border-radius: 16px;
-  height: 70px;
+  height: 65px;
   transition: height 0.5s ease;
   position: relative;
 }
 
 .chat-bubble.expanded {
-  height: 90%;
+  height: 95%;
 }
 
 .chat-bubble-transition-enter-active,
@@ -343,6 +374,32 @@ const progress = computed(() => {
 .chat-bubble-transition-enter,
 .chat-bubble-transition-leave-to {
   opacity: 0;
+}
+
+.chat-message-student {
+  padding: 4px 10px;
+  align-self: end;
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  max-width: 70%;
+  margin-bottom: 5px;
+}
+
+.chat-message-assistant {
+  padding: 8px;
+  background-color: #e5e5e5;
+  border-radius: 8px;
+  max-width: 70%;
+  margin-bottom: 5px;
+}
+
+.scrollbox {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-color: #afafaf #f0f0f0;
+  height: 100%;
+  z-index: 999;
 }
 
 .triangle-left {

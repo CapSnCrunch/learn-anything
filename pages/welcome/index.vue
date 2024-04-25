@@ -14,7 +14,7 @@
             width="100%"
             class="mb-10 d-flex align-center"
             style="max-width: 600px;"
-            @enter="getSuggestedTopics"
+            @enter="getSuggestedTopics()"
           >
             <v-icon
               v-if="!loading"
