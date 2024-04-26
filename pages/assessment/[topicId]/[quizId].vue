@@ -15,14 +15,14 @@
           <LAButton
             width="55px"
             height="50px"
-            @click="backToCourseDialogIsOpen = true"
+            @click="backToCourseModalOpen = true"
           >
             <v-icon icon="mdi-arrow-left" size="20px" color="black" />
           </LAButton>
           <ExitQuizModal
-            v-model="backToCourseDialogIsOpen" 
+            v-model="backToCourseModalOpen" 
             :exit-path="`/course/${topicId}`" 
-            @close="backToCourseDialogIsOpen = false"
+            @close="backToCourseModalOpen = false"
           />
         </template>
 
@@ -57,7 +57,7 @@ const route = useRoute();
 const topicId = route.params.topicId;
 const quizId = route.params.quizId;
 const user = useCurrentUser();
-const backToCourseDialogIsOpen = ref(false);
+const backToCourseModalOpen = ref(false);
 
 useHead({
   title: `Learn Anything | ${titleCase(topicId)}`,

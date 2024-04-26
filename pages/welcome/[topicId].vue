@@ -1,7 +1,7 @@
 <template>
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
     <v-sheet
-      class="d-flex justify-center align-start"
+      class="d-flex justify-center align-start px-4"
       style="padding-top: 150px; height: 100vh"
     >
       <span v-if="!started">
@@ -59,17 +59,18 @@
             <h2 class="text-darkGray text-h4 font-weight-bold">
               Quiz completed!
             </h2>
-            <!-- <h2 class="text-darkGray text-h4 font-weight-bold">
-              
-            </h2> -->
-            <LAButton class="mt-8" width="500px">
-              <nuxt-link
-                :to="'/course/' + topicId?.toLowerCase()"
-                class="d-flex text-decoration-none align-center justify-center"
-              >
-                <h2 class="text-darkGray text-h6">Continue to Course</h2>
-              </nuxt-link>
-            </LAButton>
+            <h2 class="text-darkGray text-h5 font-weight-medium mt-3">
+              Great, now we can get started on learning!
+            </h2>
+            <nuxt-link
+              :to="'/course/' + topicId?.toLowerCase()"
+              class="d-flex text-decoration-none align-center justify-center w-100"
+              style="max-width: 350px"
+            >
+              <LAButton class="mt-8 w-100">
+                  <h2 class="text-darkGray text-h6">Continue to Course</h2>
+              </LAButton>
+            </nuxt-link>
           </template>
         </Quiz>
       </span>

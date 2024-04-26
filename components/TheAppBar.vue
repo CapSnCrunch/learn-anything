@@ -7,29 +7,29 @@
           <img src="../assets/logo.png" height="40px" />
         </div>
         <v-row class="d-flex justify-end">
-          <LAButton class="mr-2" width="150px" :height="xs ? '40px' : '35px'" @click="handleMyCourses()">
+          <LAButton v-if="!xs" class="mr-2" width="150px" height="40px" @click="handleMyCourses()">
             My Courses
           </LAButton>
           <div v-if="user" class="d-flex">
-            <LAButton :width="xs ? '45px' : '150px'" :height="xs ? '40px' : '35px'" class="pr-4" @click="handleSignOut()">
+            <LAButton :width="xs ? '45px' : '150px'" height="40px" class="pr-4" @click="handleSignOut()">
               <v-icon v-if="xs" icon="mdi-logout" size="20px" color="darkGray" />
               <span v-else>Logout</span>
             </LAButton>
           </div>
           <div class="d-flex" v-else>
-            <LAButton class="mr-2" :width="xs ? '45px' : '150px'" :height="xs ? '40px' : '35px'" @click="handleLogin()">
+            <LAButton class="mr-2" :width="xs ? '45px' : '150px'" height="40px" @click="handleLogin()">
               <v-icon v-if="xs" icon="mdi-login" size="20px" color="darkGray" />
               <span v-else>Login</span>
             </LAButton>
-            <LAButton width="150px" height="35px" @click="handleCreateAccount()">
+            <LAButton v-if="!xs" width="150px" height="40px" @click="handleCreateAccount()">
               Create Account
             </LAButton>
           </div>
         </v-row>
         <ExitQuizModal
-          v-model="backToCourseDialogIsOpen" 
+          v-model="backToCourseModalOpen" 
           :exit-path="exitPath"
-          @close="backToCourseDialogIsOpen = false"
+          @close="backToCourseModalOpen = false"
         />
       </v-row>
     </v-container>
@@ -55,7 +55,7 @@ const route = useRoute();
 const router = useRouter();
 
 const exitPath = ref<string>("/")
-const backToCourseDialogIsOpen = ref<boolean>(false);
+const backToCourseModalOpen = ref<boolean>(false);
 
 const savedProgress = ref<any>([])
 
@@ -104,7 +104,7 @@ const handleCreateAccount = (): void => {
 const handleRoutingForAction = (path: string): void => {
   exitPath.value = path || '/'
   if (assessmentRoutes.includes(route.name?.toString() || '')) {
-    backToCourseDialogIsOpen.value = true
+    backToCourseModalOpen.value = true
   } else {
     router.push({ path: exitPath.value });
   }
