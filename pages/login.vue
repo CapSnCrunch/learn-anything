@@ -119,13 +119,13 @@ const password = ref("");
 
 const auth = useFirebaseAuth()!;
 const error = ref<Error | null>(null);
-const message = ref("");
+const message = ref<string>("");
 const router = useRouter();
 
 async function signInWithEmailPassword() {
   try {
     error.value = null;
-    message.value = null;
+    message.value = "";
     const credential = await signInWithEmailAndPassword(
       auth,
       email.value,
@@ -142,7 +142,7 @@ async function signInWithEmailPassword() {
     } else {
       router.push({ path: "/welcome" });
     }
-  } catch (reason) {
+  } catch (reason: any) {
     console.error("Failed signin with email and password", reason);
     error.value = reason;
   }
@@ -150,7 +150,7 @@ async function signInWithEmailPassword() {
 
 async function signInWithGooglePopup() {
   error.value = null;
-  message.value = null;
+  message.value = "";
   const googleAuthProvider = new GoogleAuthProvider();
   try {
     await signInWithPopup(auth, googleAuthProvider);
@@ -165,7 +165,7 @@ async function signInWithGooglePopup() {
     } else {
       router.push({ path: "/welcome" });
     }
-  } catch (reason) {
+  } catch (reason: any) {
     console.error("Failed signinPopup", reason);
     error.value = reason;
   }
@@ -173,7 +173,7 @@ async function signInWithGooglePopup() {
 
 const saveUserProgress = async () => {
   // Set new user's progress to their current local progress
-  let localProgress = {};
+  let localProgress: any = {};
 
   const savedTopicsList = load("learn-anything.topics") || [];
   for (const topic of savedTopicsList) {
@@ -192,7 +192,7 @@ const saveUserProgress = async () => {
 
 async function resetPassword() {
   error.value = null;
-  message.value = null;
+  message.value = "";
   try {
     await sendPasswordResetEmail(auth, email.value);
     message.value = "Password reset email sent.";
@@ -201,13 +201,13 @@ async function resetPassword() {
   }
 }
 
-const findTopicWithMostProgress = (topics) => {
-  let maxTotalProgress = 0;
+const findTopicWithMostProgress = (topics: any[]) => {
+  let maxTotalProgress = -1;
   let topicWithMaxProgress = "";
 
   for (const topic in topics) {
     let totalProgress = topics[topic].progress.reduce(
-      (total, value) => total + value,
+      (total: number, value: number) => total + value,
       0
     );
     if (totalProgress > maxTotalProgress) {

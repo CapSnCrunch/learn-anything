@@ -18,8 +18,22 @@
             </v-col>
           </v-row>
         </span>
+        
+        <v-row 
+          v-if="!loading"
+          class="d-flex justify-end align-center w-100 mb-3"
+        >
+          <div
+            class="section-card d-flex flex-column align-center w-100"
+            style="max-width: 800px; padding: 24px 0;"
+            ref="sections"
+          >
+            <h2 class="text-darkGray text-h4 font-weight-bold">{{ titleCase(topicId) }}</h2>
+            <LAProgressBar :value="computeTotalTopicProgress(currentTopic)" class="mt-3" style="height: 18px; width: 75%;" />
+          </div>
+        </v-row>
       
-        <v-row v-else
+        <v-row v-if="!loading"
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
@@ -209,8 +223,12 @@ useHead({
 })
 
 const computeTotalTopicProgress = (topic) => {
-  return (topic?.progress.reduce((a, b) => a + b, 0) * (100/70)) || 0
+  return (topic?.progress?.reduce((a, b) => a + b, 0) * (100/70)) || 0
 }
+
+const currentTopic = computed(() => {
+  return userProgress.value[topicId]
+});
 
 const getCourseSubtopics = async () => {
   const savedTopic = load(`learn-anything.${topicId}`);

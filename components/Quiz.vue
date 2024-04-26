@@ -29,20 +29,20 @@
 
       <LAProgressBar :value="progress" />
 
-      <div v-if="progress < 100" class="d-flex flex-column">
+      <div v-if="progress < 100 && currentQuestion != null" class="d-flex flex-column">
         <v-row class="d-flex w-100 mt-4">
           <v-col cols="12" class="mb-4">
             <h2 class="text-darkGray text-h5 text-start">
-              {{ currentQuestion?.question }}
+              {{ currentQuestion.question }}
             </h2>
           </v-col>
           <v-col
             cols="6"
-            v-for="(answer, answerIndex) of currentQuestion?.answers"
-            class="d-flex align-center justify-center px-3 py-0 mb-4"
+            v-for="(answer, answerIndex) of currentQuestion.answers"
+            class="d-flex align-center justify-center px-1 py-0 mb-3"
           >
             <LAButton
-              v-if="submitted && answer?.correct"
+              v-if="submitted && answer.correct"
               :colors="{
                 borderColor: '#58cc02',
                 borderColorHover: '#58cc02',
@@ -73,7 +73,7 @@
               answer?.answer
             }}</LAButton>
           </v-col>
-          <v-col cols="12" v-show="submitted" class="d-flex justify-end">
+          <v-col cols="12" v-show="submitted" class="d-flex justify-end pa-0">
             <span v-show="submitted">
               <LAButton
                 width="150px"
@@ -86,7 +86,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="d-flex w-100 h-100">
+        <v-row class="d-flex w-100 h-100 pt-4">
           <v-col cols="4">
           <div class="d-flex justify-end">
               <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
@@ -97,8 +97,11 @@
               <div class="chat-bubble" :class="{ 'expanded': conversation?.length > 0 }">
                 <div :class="{ 'triangle-left': conversation?.length > 0 }"></div>
                 <div class="scrollbox" ref="scrollbox">
-                  <div v-for="(chat, chatIndex) of conversation" :class="chatIndex % 2 === 0 ? 'chat-message-student' : 'chat-message-assistant'">
-                    {{ chat }}
+                  <div v-for="chat of conversation" :class="chat.role == 'user' ? 'chat-message-user' : 'chat-message-assistant'">
+                    {{ chat.message }}
+                  </div>  
+                  <div v-if="chatLoading" class="chat-message-assistant d-flex justify-center align-center py-3" style="width: 75px;">
+                    <img src="../assets/message-loading.gif" height="10px"/>
                   </div>  
                 </div>
                 <LAInput
@@ -163,6 +166,12 @@ interface Answer {
 interface Question {
   question: string;
   answers: Answer[];
+  completed: boolean;
+}
+
+interface Chat {
+  role: "user" | "assistant";
+  message: string;
 }
 
 const emits = defineEmits(["submitted", "complete"]);
@@ -202,11 +211,11 @@ const props = defineProps({
   },
 });
 
-const message = ref("")
-const conversation = ref([])
-const chatLoading = ref(false)
+const message = ref<string>("")
+const conversation = ref<Chat[]>([])
+const chatLoading = ref<boolean>(false)
 
-const scrollbox = ref(null);
+const scrollbox = ref<HTMLInputElement | null>(null);
 watch(conversation, () => {
   nextTick(() => {
     if (scrollbox.value) {
@@ -220,29 +229,34 @@ const chatWithAssistant = async () => {
     return
   }
 
-  const userMessage = message.value
-  message.value = ""
-  
   chatLoading.value = true
-  conversation.value.push(userMessage)
+  conversation.value.push({
+    role: 'user',
+    message: message.value
+  })
+  message.value = ""
+
   const response = await axios.post("/api/chatWithAssistant", {
     topicId: props.topicId,
     quizId: props.quizId,
     question: {
-      question: currentQuestion.value?.question,
-      answers: currentQuestion.value?.answers.map(answer => answer.answer)
+      question: currentQuestion.value.question,
+      answers: currentQuestion.value.answers.map(answer => answer.answer)
     },
-    message: userMessage
+    conversation: conversation.value
   });
 
-  conversation.value.push(response?.data?.data?.response)
+  conversation.value.push({
+    role: 'assistant',
+    message: response?.data?.data?.response || 'Sorry, can you ask that again?'
+  })
   chatLoading.value = false
 }
 
 const subtopicIndex = computed(() => {
   let savedTopic = load(`learn-anything.${props.topicId}`) || [];
-  let index = savedTopic.findIndex((subtopic) =>
-    subtopic.quizzes.some((quiz) => quiz.quizId === props.quizId)
+  let index = savedTopic.findIndex((subtopic: any) =>
+    subtopic.quizzes.some((quiz: any) => quiz.quizId === props.quizId)
   )
   return index < 0 ? 0 : index
 });
@@ -297,13 +311,13 @@ const getQuizQuestions = async (count: number) => {
   }
 };
 
-const questionIndex = ref(0);
-const questions = ref([]);
-const currentQuestion = computed(() => {
+const questionIndex = ref<number>(0);
+const questions = ref<Question[]>([]);
+const currentQuestion = computed((): Question => {
   return questions.value[questionIndex.value];
 });
 
-const selectedAnswers = ref([]);
+const selectedAnswers = ref<Number[]>([]);
 const submitted = ref(false);
 const submit = (answerIndex: number) => {
   if (submitted.value) {
@@ -388,7 +402,7 @@ const progress = computed(() => {
   opacity: 0;
 }
 
-.chat-message-student {
+.chat-message-user {
   padding: 4px 10px;
   align-self: end;
   background-color: #e5e5e5;
