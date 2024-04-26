@@ -65,7 +65,7 @@
               <v-col v-if="!lgAndUp" cols="4" class="w-100">
                 <img :src="mascots[subtopicIndex]" width="220px" height="220px">
               </v-col>
-              <v-col cols="8" lg="12"> <!-- Adjust the number of columns based on your needs -->
+              <v-col cols="8" lg="12">
                 <v-row class="d-flex flex-wrap justify-space-around">
                   <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
                     <nuxt-link
@@ -117,7 +117,7 @@
                 <SettingsModal
                   v-model="settingsModalOpen" 
                   :user-progress="userProgress"
-                  @refresh="getUserProgress()"
+                  @refresh="topicId => getUserProgress(topicId)"
                   @close="settingsModalOpen = false"
                 />
               </div>
@@ -173,11 +173,12 @@
   </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useCurrentUser } from "vuefire";
 import { useDisplay } from "vuetify";
+import { useRoute, useRouter } from "vue-router";
 import { titleCase, kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
 import SettingsModal from "~/components/SettingsModal.vue";
@@ -223,6 +224,7 @@ const { xs, lgAndUp } = useDisplay();
 const settingsModalOpen = ref(false);
 
 const route = useRoute();
+const router = useRouter();
 const topicId = route.params.topicId;
 const user = useCurrentUser();
 const userProgress = ref({})
@@ -301,7 +303,11 @@ const getSubtopicQuizzes = async () => {
   }
 };
 
-const getUserProgress = async () => {
+const getUserProgress = async (deletedTopicId?: string) => {
+  if (deletedTopicId == topicId) {
+    router.push({ path: '/' });
+  }
+
   const response = await axios.get("/api/getUserProgress");
   let progress = response?.data?.data?.topics || null
   userProgress.value = progress

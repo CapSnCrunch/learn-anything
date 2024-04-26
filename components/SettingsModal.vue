@@ -42,18 +42,18 @@
                             width="45px"
                             height="40px" 
                             :colors="isInputCorrect(index, topicId) ?
-                                {
-                                    borderColor: '#ff4b4b',
-                                    borderColorHover: '#ff4b4b',
-                                    backgroundColor: '#ffdddd',
-                                    backgroundColorHover: '#ffdddd',
-                                } :
-                                {
-                                    borderColor: '#afafaf',
-                                    borderColorHover: '#afafaf',
-                                    backgroundColor: '#e5e5e5',
-                                    backgroundColorHover: '#e5e5e5',
-                                }
+                              {
+                                borderColor: '#ff4b4b',
+                                borderColorHover: '#ff4b4b',
+                                backgroundColor: '#ffdddd',
+                                backgroundColorHover: '#ffdddd',
+                              } :
+                              {
+                                borderColor: '#afafaf',
+                                borderColorHover: '#afafaf',
+                                backgroundColor: '#e5e5e5',
+                                backgroundColorHover: '#e5e5e5',
+                              }
                             "
                             @click="handleDelete(index, topicId)"
                         >
@@ -114,7 +114,7 @@ const handleDelete = async (index: number, topicId: string): Promise<void> => {
   }
 
   inputs.value = []
-  emits("refresh");
+  emits("refresh", topicId);
 };
 
 function close() {
