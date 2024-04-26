@@ -46,11 +46,11 @@
 
 <script setup>
 import axios from "axios";
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 import { useCurrentUser } from "vuefire";
 import { load, save } from "@/utils/localStorage";
-import { titleCase, kebabCase } from "@/server/utils/strings";
+import { titleCase } from "@/server/utils/strings";
 import Quiz from "@/components/Quiz.vue";
 
 const route = useRoute();

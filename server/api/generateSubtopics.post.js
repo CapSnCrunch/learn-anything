@@ -1,3 +1,4 @@
+import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
 import { removeCodeBlock } from "~/server/utils/strings";
