@@ -8,17 +8,26 @@ export default defineEventHandler(async (event) => {
   const topicId = body?.topicId
   const quizId = body?.quizId
   const question = body?.question
-  const message = body?.message
+  const conversation = body?.conversation
+
+  let conversationHistory = "";
+  for (const chat of conversation) {
+    conversationHistory += `${chat.role}: ${chat.message}\n`
+  }
+
+  console.log(conversationHistory)
 
   try {
     // Generate Questions for Knowledge Assessment with Gemini
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const prompt = `You are a helpful teaching assistant trying to help your student learn about the topic ${topicId}. The course is currently focused on ${quizId}.
-      The student is working on the problem '${question?.question}' which has the following answers: ${question?.answers}. They need help but you should not reveal
-      the exact answer to the problem they are working on. If the student just needs help with definitions or understanding the problem better, try to help them directly
-      without revealing the correct answer. Please respond as if speaking with to the student who just said '${message}'. IMPORTANT: Respond in JSON format with a 
-      'response' attribute (string) and a 'links' array of free-to-use helpful links the user might want to look at for this particular problem. Keep answers to less 
-      than 4 sentences and only use markup when necessary. Try to send helpful links often.`; // prettier-ignore
+    const prompt = `You are a fun helpful teaching assistant trying to help your student learn about the topic ${topicId}. The course is currently focused on ${quizId}.
+      The student is working on the problem '${question?.question}' which has the following answers: ${question?.answers}. Please help the student determine the right 
+      answer without revealing the correct answer verbatim. Instead, you should answer their questions, provide explanations, and link them to helpful resources to better
+      understand the specific topic. Its okay to go a little off-topic as long as it is related material in the question. IMPORTANT: Respond in JSON format with a 
+      'response' attribute (string). DO NOT INCLUDE THE ROLE ex: 'Assistant:' in your response. Keep answers to less than 3-4 sentences and only use markup when necessary. 
+      Avoid being overly repetitive unless the user asks. Provide helpful links 10% of the time to resources like wikipedia that you think might be helpful if the 
+      question is complex (only provide links you are confident still exist). Please respond as if speaking with to the student who you just had the following conversation 
+      with: '${conversationHistory}'`; // prettier-ignore
     const result = await model.generateContent(prompt);
     const response = result.response;
     let text = response.text();

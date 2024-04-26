@@ -50,15 +50,13 @@ const fullscreen = false;
 
 const emits = defineEmits(["close"]);
 
-function keyListener(event) {
+function keyListener(event: KeyboardEvent) {
   if (event.keyCode === 27) {
-    value.value = false;
     emits("close");
   }
 }
 
 function close() {
-  value.value = false;
   emits("close");
 }
 </script>

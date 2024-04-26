@@ -121,7 +121,7 @@ async function signUpWithEmailAndPassword() {
     } else {
       router.push({ path: "/welcome" });
     }
-  } catch (reason) {
+  } catch (reason: any) {
     console.error("Failed signup", reason);
     error.value = reason;
   }
@@ -143,7 +143,7 @@ async function signInWithGooglePopup() {
     } else {
       router.push({ path: "/welcome" });
     }
-  } catch (reason) {
+  } catch (reason: any) {
     console.error("Failed signinPopup", reason);
     error.value = reason;
   }
@@ -151,7 +151,7 @@ async function signInWithGooglePopup() {
 
 const saveUserProgress = async () => {
   // Set new user's progress to their current local progress
-  let localProgress = {};
+  let localProgress: any = {};
 
   const savedTopicsList = load("learn-anything.topics") || [];
   for (const topic of savedTopicsList) {
@@ -168,13 +168,13 @@ const saveUserProgress = async () => {
   return response?.data?.data;
 };
 
-const findTopicWithMostProgress = (topics) => {
-  let maxTotalProgress = 0;
+const findTopicWithMostProgress = (topics: any[]) => {
+  let maxTotalProgress = -1;
   let topicWithMaxProgress = "";
 
   for (const topic in topics) {
     let totalProgress = topics[topic].progress.reduce(
-      (total, value) => total + value,
+      (total: number, value: number) => total + value,
       0
     );
     if (totalProgress > maxTotalProgress) {

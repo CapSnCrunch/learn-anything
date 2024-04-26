@@ -19,41 +19,11 @@
           >
             <v-icon icon="mdi-arrow-left" size="20px" color="black" />
           </LAButton>
-          <LAModal
-            v-model="backToCourseDialogIsOpen"
-            width="600px"
-            max-width="600px"
-            height="300px"
+          <ExitQuizModal
+            v-model="backToCourseDialogIsOpen" 
+            :exit-path="`/course/${topicId}`" 
             @close="backToCourseDialogIsOpen = false"
-          >
-            <template #title>
-              <h2 class="text-darkGray text-h4 font-weight-bold">
-                Back to Course Page
-              </h2>
-            </template>
-            <template #text>
-              <v-row class="d-flex flex-column px-3 mt-4">
-                <h2 class="text-darkGray text-h5">
-                  Are you sure you want to return to the course page?
-                  <span class="font-weight-bold">
-                    Your progress will not be saved.
-                  </span>
-                </h2>
-                <v-row class="d-flex justify-end mt-12">
-                  <LAButton @click="backToCourseDialogIsOpen = false" width="150px">
-                    <h2 class="font-weight-medium">
-                      Stay Here
-                    </h2>
-                  </LAButton>
-                  <LAButton class="ml-4" @click="exit()" width="150px">
-                    <h2 class="font-weight-medium">
-                      Exit
-                    </h2>
-                  </LAButton>
-                </v-row>
-              </v-row>
-            </template>
-          </LAModal>
+          />
         </template>
 
         <template #completed-screen>
@@ -83,11 +53,11 @@ import { load, save } from "@/utils/localStorage";
 import { titleCase, kebabCase } from "@/server/utils/strings";
 import Quiz from "@/components/Quiz.vue";
 
-const router = useRouter();
 const route = useRoute();
 const topicId = route.params.topicId;
 const quizId = route.params.quizId;
 const user = useCurrentUser();
+const backToCourseDialogIsOpen = ref(false);
 
 useHead({
   title: `Learn Anything | ${titleCase(topicId)}`,
@@ -124,10 +94,6 @@ const updateProgress = () => {
   }
 };
 
-const backToCourseDialogIsOpen = ref(false);
-const exit = () => {
-  router.push({ path: `/course/${topicId}` });
-};
 </script>
 
 <style scoped>
