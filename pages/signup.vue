@@ -5,7 +5,8 @@
         <v-sheet class="section d-flex align-center justify-center">
           <v-col
             cols="12"
-            sm="10"
+            sm="8"
+            md="6"
             lg="4"
             class="d-flex flex-column justify-center align-center ma-0"
             style="max-width: 100vw"

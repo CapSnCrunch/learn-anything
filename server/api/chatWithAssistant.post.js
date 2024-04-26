@@ -1,6 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { firestoreAdmin } from "~/server/utils/firebase";
-import { kebabCase, removeCodeBlock } from "~/server/utils/strings";
+import { removeCodeBlock } from "~/server/utils/strings";
 
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -14,8 +13,6 @@ export default defineEventHandler(async (event) => {
   for (const chat of conversation) {
     conversationHistory += `${chat.role}: ${chat.message}\n`
   }
-
-  console.log(conversationHistory)
 
   try {
     // Generate Questions for Knowledge Assessment with Gemini

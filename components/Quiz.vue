@@ -86,7 +86,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="d-flex w-100 h-100 pt-4">
+        <v-row v-if="!knowledgeAssessment" class="d-flex w-100 h-100 pt-4">
           <v-col cols="4">
           <div class="d-flex justify-end">
               <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
@@ -225,7 +225,7 @@ watch(conversation, () => {
 }, {deep: true});
 
 const chatWithAssistant = async () => {
-  if (chatLoading.value) {
+  if (!message.value || chatLoading.value) {
     return
   }
 

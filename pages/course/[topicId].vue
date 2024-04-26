@@ -65,7 +65,7 @@
               <v-col v-if="!lgAndUp" cols="4" class="w-100">
                 <img :src="mascots[subtopicIndex]" width="220px" height="220px">
               </v-col>
-              <v-col cols="8" lg="12"> <!-- Adjust the number of columns based on your needs -->
+              <v-col cols="8" lg="12">
                 <v-row class="d-flex flex-wrap justify-space-around">
                   <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
                     <nuxt-link
@@ -106,11 +106,22 @@
       >
         <div class="side-card-section h-100 w-100 pr-8" style="max-width: 400px">
           <div class="d-flex flex-column h-100 w-100 pr-8">
-            <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 400px;'">
-              <h2 class="text-darkGray text-h6 font-weight-bold pb-2">
-                My Courses
-              </h2>
-              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'ml-4 scrollbox'" class="w-100">
+            <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 350px;'">
+              <div class="d-flex justify-center w-100 pl-10">
+                <h2 class="text-darkGray text-h6 font-weight-bold pb-2 ml-auto">
+                  My Courses
+                </h2>
+                <LAButton class="ml-auto" width="45px" height="40px" @click="settingsModalOpen = true">
+                  <v-icon icon="mdi-cog" size="18px" color="darkGray" />
+                </LAButton>
+                <SettingsModal
+                  v-model="settingsModalOpen" 
+                  :user-progress="userProgress"
+                  @refresh="topicId => getUserProgress(topicId)"
+                  @close="settingsModalOpen = false"
+                />
+              </div>
+              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'scrollbox'" class="w-100">
                 <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
                   <nuxt-link
                     :to="'/course/' + topicId"
@@ -157,19 +168,20 @@
           </div>
         </div>
       </div>
-
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useCurrentUser } from "vuefire";
 import { useDisplay } from "vuetify";
+import { useRoute, useRouter } from "vue-router";
 import { titleCase, kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
+import SettingsModal from "~/components/SettingsModal.vue";
 
 import turtle from "@/assets/turtle.png"
 import rabbit from "@/assets/rabbit.png"
@@ -209,8 +221,10 @@ const colors = ref([
 ]);
 
 const { xs, lgAndUp } = useDisplay();
+const settingsModalOpen = ref(false);
 
 const route = useRoute();
+const router = useRouter();
 const topicId = route.params.topicId;
 const user = useCurrentUser();
 const userProgress = ref({})
@@ -289,7 +303,11 @@ const getSubtopicQuizzes = async () => {
   }
 };
 
-const getUserProgress = async () => {
+const getUserProgress = async (deletedTopicId?: string) => {
+  if (deletedTopicId == topicId) {
+    router.push({ path: '/' });
+  }
+
   const response = await axios.get("/api/getUserProgress");
   let progress = response?.data?.data?.topics || null
   userProgress.value = progress
