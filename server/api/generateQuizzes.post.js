@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
         a 'description' (no more than 10 words describing what the sub-unit will cover) and a 'quizId' (a short, unique, lowercase kebab-case
         identifier for this quiz). Generate exactly 7 distinct quizzes for ${subtopic.name}.  Order the quizzes in the order that would make 
         the most sense for students to learn them in. IMPORTANT: Do not put the response in a code block, just send the stringified JSON as 
-        plain text. DO NOT PUT THE DIFFICULTY IN THE ACTUAL QUESTION STRING.`;
+        plain text. DO NOT PUT THE ANSWERS OR THE DIFFICULTY IN THE ACTUAL QUESTION STRING.`;
 
       const quizPromise = model.generateContent(quizPlanPrompt);
       quizPromises.push(quizPromise);
