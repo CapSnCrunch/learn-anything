@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
 
     return {
       statusCode: 200,
-      data: jsonResponse,
+      data: jsonResponse.questions,
     };
   } catch (error) {
     console.error("Error generating content:", error);

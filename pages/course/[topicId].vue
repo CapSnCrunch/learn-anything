@@ -70,12 +70,12 @@
                   <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
                     <nuxt-link
                       :to="quizIndex > subtopic.progress ? '' : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`"
-                      class="d-flex flex-wrap text-decoration-none align-center justify-center"
+                      class="d-flex flex-wrap text-decoration-none cursor-pointer align-center justify-center"
                     >
                       <LALessonButton
                         :color="colors[subtopicIndex]"
                         :disabled="quizIndex > subtopic.progress"
-                        class="px-1"
+                        class="px-1 cursor-pointer"
                       />
                     </nuxt-link>
                     <v-tooltip
@@ -227,7 +227,7 @@ const route = useRoute();
 const router = useRouter();
 const topicId = route.params.topicId;
 const user = useCurrentUser();
-const userProgress = ref({})
+const userProgress = ref<any>({})
 
 const loading = ref(false);
 const subtopics = ref([]);
@@ -236,8 +236,8 @@ useHead({
   title: `Learn Anything | ${titleCase(topicId)}`,
 })
 
-const computeTotalTopicProgress = (topic) => {
-  return (topic?.progress?.reduce((a, b) => a + b, 0) * (100/70)) || 0
+const computeTotalTopicProgress = (topic: any) => {
+  return (topic?.progress?.reduce((a: number, b: number) => a + b, 0) * (100/70)) || 0
 }
 
 const currentTopic = computed(() => {
@@ -260,9 +260,9 @@ const getCourseSubtopics = async () => {
     save(`learn-anything.${topicId}`, subtopicsResponse);
 
     if (
-      !subtopicsResponse?.every((subtopic) => subtopic?.quizzes?.length > 0)
+      !subtopicsResponse?.every((subtopic: any) => subtopic?.quizzes?.length > 0)
     ) {
-      subtopicsResponse.forEach((subtopic) => {
+      subtopicsResponse.forEach((subtopic: any) => {
         subtopic.quizzes = Array(7).fill({});
       });
     }
@@ -281,7 +281,7 @@ const getCourseSubtopics = async () => {
 
 const getSubtopicQuizzes = async () => {
   const savedTopic = load(`learn-anything.${topicId}`);
-  if (savedTopic?.every((subtopic) => subtopic?.quizzes?.length > 0)) {
+  if (savedTopic?.every((subtopic: any) => subtopic?.quizzes?.length > 0)) {
     subtopics.value = savedTopic;
     return;
   }

@@ -3,7 +3,7 @@
     class="d-flex flex-column justify-center align-start w-100"
     style="max-width: 1200px"
   >
-    <span v-if="loading" class="w-100">
+    <span v-if="loading || questions.length < 1" class="w-100">
       <v-row class="d-flex w-100 mt-8">
         <v-col cols="12" class="d-flex flex-column align-center">
           <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
@@ -164,8 +164,10 @@ interface Answer {
 }
 
 interface Question {
+  questionId: number;
   question: string;
   answers: Answer[];
+  difficulty: number;
   completed: boolean;
 }
 
@@ -265,20 +267,13 @@ const loading = ref(false);
 onMounted(async () => {
   loading.value = true;
 
-  const requests = [];
-  let remainingQuestions = props.totalQuestions;
-
-  while (remainingQuestions > 0) {
-    const batchSize = Math.min(remainingQuestions, 4);
-    requests.push(getQuizQuestions(batchSize));
-    remainingQuestions -= batchSize;
-  }
-
-  await Promise.any(requests);
+  await getQuizQuestions(2);
 
   loading.value = false;
 });
 
+let attempts = 0;
+let maxAttempts = 10;
 const getQuizQuestions = async (count: number) => {
   try {
     let response;
@@ -288,15 +283,17 @@ const getQuizQuestions = async (count: number) => {
         count: count,
       });
     } else {
-      response = await axios.post("/api/generateQuestions", {
+      let questionIds = questions.value.map(question => question.questionId)
+      response = await axios.post("/api/getQuestions", {
         topicId: props.topicId,
         quizId: props.quizId,
+        questionIds: questionIds,
         difficulty: props.difficulty,
         count: count,
       });
     }
 
-    const responseQuestions = response?.data?.data?.questions;
+    const responseQuestions = response?.data?.data;
     questions.value = questions.value.concat(
       responseQuestions?.map((question: any) => {
         return {
@@ -306,8 +303,21 @@ const getQuizQuestions = async (count: number) => {
         };
       })
     );
+
+    // Cap the questions at totalQuestions
+    if (questions.value.length > props.totalQuestions) {
+      questions.value = questions.value.slice(0, props.totalQuestions);
+    }
   } catch (error) {
     console.error(`Error fetching questions for ${props.quizId}:`, error);
+  }
+
+  if (questions.value.length < props.totalQuestions && attempts < maxAttempts) {
+    const wait = props.knowledgeAssessment ? 1000 : 3500
+    setTimeout(() => {
+      attempts += 1
+      getQuizQuestions(2)
+    }, wait);
   }
 };
 

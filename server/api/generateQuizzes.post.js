@@ -1,3 +1,4 @@
+import axios from "axios"
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
 import { removeCodeBlock } from "~/server/utils/strings";
@@ -82,13 +83,13 @@ export default defineEventHandler(async (event) => {
     const quizPromises = [];
     for (const subtopic of topic?.subtopics) {
       const quizPlanPrompt = `You are a helpful teacher trying to create a course plan for your students learning ${topic.name}. The course
-            consists of several units. Write a lesson plan for 7 sub-units in the form of quizzes within the unit ${subtopic.name} which covers 
-            '${subtopic.description}'. For example, the unit 'HTML' in the 'Web Development' course might include quizzes on 'basic elements', 
-            'input elements', etc. Your response should be a JSON object with an attribute 'quizzes' that is a list of JSON objects containing 
-            a 'description' (no more than 10 words describing what the sub-unit will cover) and a 'quizId' (a short, unique, lowercase kebab-case
-            identifier for this quiz). Generate exactly 7 distinct quizzes for ${subtopic.name}.  Order the quizzes in the order that would make 
-            the most sense for students to learn them in. IMPORTANT: Do not put the response in a code block, just send the stringified JSON as 
-            plain text.`;
+        consists of several units. Write a lesson plan for 7 sub-units in the form of quizzes within the unit ${subtopic.name} which covers 
+        '${subtopic.description}'. For example, the unit 'HTML' in the 'Web Development' course might include quizzes on 'basic elements', 
+        'input elements', etc. Your response should be a JSON object with an attribute 'quizzes' that is a list of JSON objects containing 
+        a 'description' (no more than 10 words describing what the sub-unit will cover) and a 'quizId' (a short, unique, lowercase kebab-case
+        identifier for this quiz). Generate exactly 7 distinct quizzes for ${subtopic.name}.  Order the quizzes in the order that would make 
+        the most sense for students to learn them in. IMPORTANT: Do not put the response in a code block, just send the stringified JSON as 
+        plain text. DO NOT PUT THE DIFFICULTY IN THE ACTUAL QUESTION STRING.`;
 
       const quizPromise = model.generateContent(quizPlanPrompt);
       quizPromises.push(quizPromise);
