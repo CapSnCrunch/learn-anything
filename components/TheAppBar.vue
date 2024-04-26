@@ -62,10 +62,12 @@ const savedProgress = ref<any>([])
 const assessmentRoutes = ['welcome-topicId', 'assessment-topicId-quizId']
 
 const handleSignOut = async (): Promise<void> => {
+  exitPath.value = '/'
   error.value = null;
   try {
     await signOut(auth);
     clear();
+    savedProgress.value = []
     router.push({ path: exitPath.value });
   } catch (e: any) {
     console.error("Failed signOut", e);
