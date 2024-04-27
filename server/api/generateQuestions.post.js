@@ -1,16 +1,26 @@
+import axios from "axios"
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
-import { kebabCase, removeCodeBlock } from "~/server/utils/strings";
-import { v4 } from 'uuid'
+import { removeCodeBlock } from "~/server/utils/strings";
+import { v4 } from "uuid"
 
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const body = await readBody(event);
   const topicId = body?.topicId
-  const quizId = body?.quizId
+  const quizIds = body?.quizIds || []
   const difficulty = body?.difficulty || 5
+  const count = body?.count || 2
 
-  console.log('Generating questions for ' + quizId)
+  if (!quizIds.length) {
+    return {
+      statusCode: 400,
+      data: JSON.stringify({ error: "No quizIds provided for generateQuestions." }),
+    };
+  }
+
+  const quizId = quizIds?.[0]
+  console.log(`Generating questions for topicId: ${topicId}, quizId: ${quizId} (${quizIds.length} calls remaining)`)
 
   try {
     // See if any questions already exist
@@ -116,6 +126,21 @@ export default defineEventHandler(async (event) => {
           console.error("Error creating document with ID:", questionId, error);
         }
       }
+
+      const shiftedQuizIds = quizIds.slice(1);
+      if (shiftedQuizIds.length) {
+        try {
+          const baseURL = process.env.VERCEL_ENV === "production" ? process.env.SERVER_URL : process.env.LOCAL_URL
+          axios.post(`${baseURL}/api/generateQuestions`, {
+            topicId: topicId,
+            quizIds: shiftedQuizIds,
+            difficulty: difficulty,
+            count: count,
+          });
+        } catch (error) {
+          console.warn(`Failed to call generateQuestions for ${shiftedQuizIds}`, error)
+        }
+      } 
 
       await batch.commit();
 

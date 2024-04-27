@@ -38,17 +38,17 @@ export default defineEventHandler(async (event) => {
     
     // If the backlog of questions is not large enough, generate more and save them
     if (questions.length < 20) {
-        try {
-            const baseURL = process.env.VERCEL_ENV === "production" ? process.env.SERVER_URL : process.env.LOCAL_URL
-            axios.post(`${baseURL}/api/generateQuestions`, {
-                topicId: topicId,
-                quizId: quizId,
-                difficulty: difficulty,
-                count: count,
-            });
-        } catch (error) {
-            console.warn('Failed to call generateQuestions', error)
-        }
+      try {
+        const baseURL = process.env.VERCEL_ENV === "production" ? process.env.SERVER_URL : process.env.LOCAL_URL
+        axios.post(`${baseURL}/api/generateQuestions`, {
+          topicId: topicId,
+          quizIds: [quizId],
+          difficulty: difficulty,
+          count: count,
+        });
+      } catch (error) {
+        console.warn('Failed to call generateQuestions', error)
+      }
     } 
 
     return {
