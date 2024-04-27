@@ -114,7 +114,7 @@
                 <LAButton class="ml-auto" width="45px" height="40px" @click="settingsModalOpen = true">
                   <v-icon icon="mdi-cog" size="18px" color="darkGray" />
                 </LAButton>
-                <SettingsModal
+                <CourseSettingsModal
                   v-model="settingsModalOpen" 
                   :user-progress="userProgress"
                   @refresh="topicId => getUserProgress(topicId)"
@@ -181,7 +181,7 @@ import { useDisplay } from "vuetify";
 import { useRoute, useRouter } from "vue-router";
 import { titleCase, kebabCase } from "@/server/utils/strings";
 import { save, load } from "@/utils/localStorage";
-import SettingsModal from "~/components/SettingsModal.vue";
+import CourseSettingsModal from "~/components/CourseSettingsModal.vue";
 
 import turtle from "@/assets/turtle.png"
 import rabbit from "@/assets/rabbit.png"
@@ -225,7 +225,7 @@ const settingsModalOpen = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-const topicId = route.params.topicId;
+const topicId: string = route.params.topicId.toString();
 const user = useCurrentUser();
 const userProgress = ref<any>({})
 
@@ -323,7 +323,7 @@ const getUserProgress = async (deletedTopicId?: string) => {
     const savedTopic = load(`learn-anything.${topicId}`)
     progress[topicId] = {
       difficulty: 5,
-      progress: savedTopic.map(subtopic => subtopic.progress || 0)
+      progress: savedTopic.map((subtopic) => subtopic.progress || 0)
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-column justify-center align-start w-100"
+    class="d-flex flex-column justify-center align-start w-100 px-4"
     style="max-width: 1200px"
   >
     <span class="w-100">
@@ -78,6 +78,20 @@
               <LAButton
                 width="150px"
                 height="50px"
+                :colors="canGoToNextQuestion ? 
+                  {
+                    borderColor: '#e5e5e5',
+                    borderColorHover: '#1cb0f6',
+                    backgroundColor: '#ffffff',
+                    backgroundColorHover: '#ddf4ff',
+                  } :
+                  {
+                    borderColor: '#afafaf',
+                    borderColorHover: '#afafaf',
+                    backgroundColor: '#e5e5e5',
+                    backgroundColorHover: '#e5e5e5',
+                  }
+                "
                 @click="nextQuestion()"
               >
                 Next Question
@@ -167,6 +181,7 @@ interface Question {
   questionId: number;
   question: string;
   answers: Answer[];
+  explanation: string;
   difficulty: number;
   completed: boolean;
 }
@@ -198,10 +213,6 @@ const props = defineProps({
   totalQuestions: {
     type: Number,
     default: 10,
-  },
-  revealCorrect: {
-    type: Boolean,
-    default: true,
   },
   knowledgeAssessment: {
     type: Boolean,
@@ -273,7 +284,7 @@ onMounted(async () => {
 });
 
 let attempts = 0;
-let maxAttempts = 10;
+let maxAttempts = 15;
 const getQuizQuestions = async (count: number) => {
   try {
     let response;
@@ -318,7 +329,7 @@ const getQuizQuestions = async (count: number) => {
   }
 
   if (questions.value.length < props.totalQuestions && attempts < maxAttempts) {
-    const wait = props.knowledgeAssessment ? 1000 : 4500
+    const wait = props.knowledgeAssessment ? 1000 : 4000
     setTimeout(() => {
       attempts += 1
       getQuizQuestions(2)
@@ -332,6 +343,14 @@ const currentQuestion = computed((): Question => {
   return questions.value[questionIndex.value];
 });
 
+const canGoToNextQuestion = ref(false)
+watch(currentQuestion, () => {
+  canGoToNextQuestion.value = false;
+  setTimeout(() => {
+    canGoToNextQuestion.value = true
+  }, 1250);
+});
+
 const selectedAnswers = ref<Number[]>([]);
 const submitted = ref(false);
 const submit = (answerIndex: number) => {
@@ -339,12 +358,31 @@ const submit = (answerIndex: number) => {
     return;
   }
 
-  if (props.revealCorrect) {
+  if (!props.knowledgeAssessment) {
     submitted.value = true;
     selectedAnswers.value = [answerIndex];
-    if (currentQuestion.value?.answers[answerIndex]?.correct) {
+    const correct: boolean = currentQuestion.value?.answers[answerIndex]?.correct;
+    if (correct) {
       questions.value[questionIndex.value].completed = true;
     }
+
+    const correctOptions: string[] = ['Nice!', 'Correct!', 'Well done!', 'Exactly right!', 'You got it!']
+    const incorrectOptions: string[] = ['Not quite!', 'Alomst there, but not quite.', 'Close, but not correct.']
+    conversation.value.push({
+      role: 'assistant',
+      message: correct ? 
+        correctOptions[Math.floor(Math.random() * correctOptions.length)] : 
+        incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)]
+    })
+
+    const explanation: string = currentQuestion.value?.explanation
+    if (explanation) {
+      conversation.value.push({
+        role: 'assistant',
+        message: explanation
+      })
+    }
+
   } else {
     questions.value[questionIndex.value].completed = true;
     emits("submitted", currentQuestion.value?.answers[answerIndex]?.correct);
@@ -357,6 +395,10 @@ const submit = (answerIndex: number) => {
 };
 
 const nextQuestion = () => {
+  if (!canGoToNextQuestion.value) {
+    return
+  }
+
   submitted.value = false;
   selectedAnswers.value = [];
   questionIndex.value += 1;
