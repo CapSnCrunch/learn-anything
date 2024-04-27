@@ -65,7 +65,7 @@ useHead({
 
 const updateProgress = () => {
   if (user) {
-    const response = axios.post("/api/updateProgressByQuizId", {
+    axios.post('/api/updateProgressByQuizId', {
       topicId: topicId,
       quizIds: [quizId],
     });
@@ -82,13 +82,22 @@ const updateProgress = () => {
       (quiz) => quiz.quizId === quizId
     );
 
+    const nextQuizIndex = quizIndex + 1
     if (quizIndex !== -1) {
       savedTopic[subtopicIndex].progress = Math.max(
         savedTopic[subtopicIndex].progress,
-        quizIndex + 1
+        nextQuizIndex
       );
       save(`learn-anything.${topicId}`, savedTopic);
     }
+
+    const quizIds = savedTopic.map(subtopic => subtopic?.quizzes[subtopic?.progress].quizId || nextQuizIndex)
+    axios.post('/api/generateQuestions', {
+      topicId: topicId,
+      quizIds: quizIds,
+      difficulty: 5,
+      count: 2,
+    });
   } catch (error) {
     console.error("Error updating progress");
   }
