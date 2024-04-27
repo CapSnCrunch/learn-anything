@@ -104,9 +104,23 @@ export default defineEventHandler(async (event) => {
     });
 
     // Set Default Progress
+    const quizIds = []
     topic.subtopics.forEach((subtopic) => {
       subtopic.progress = 0;
+      quizIds.push(subtopic?.quizzes[0].quizId)
     });
+
+    try {
+      const baseURL = process.env.VERCEL_ENV === "production" ? process.env.SERVER_URL : process.env.LOCAL_URL
+      axios.post(`${baseURL}/api/generateQuestions`, {
+        topicId: topicId,
+        quizIds: quizIds,
+        difficulty: 5,
+        count: 2,
+      });
+    } catch (error) {
+      console.warn(`Failed to call generateQuestions for ${quizIds}`, error)
+    }
 
     topicDocRef.update({
       subtopics: topic.subtopics,

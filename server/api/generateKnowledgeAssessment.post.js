@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
-import { kebabCase, removeCodeBlock } from "~/server/utils/strings";
+import { removeCodeBlock } from "~/server/utils/strings";
+import { v4 } from 'uuid'
+
 
 export default defineEventHandler(async (event) => {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -40,9 +42,16 @@ export default defineEventHandler(async (event) => {
     // Strip code block if present
     const jsonResponse = JSON.parse(removeCodeBlock(text));
 
+    const questions = jsonResponse.questions.map(question => {
+      return {
+        ...question,
+        questionId: v4()
+      }
+    })
+
     return {
       statusCode: 200,
-      data: jsonResponse.questions,
+      data: questions,
     };
   } catch (error) {
     console.error("Error generating content:", error);

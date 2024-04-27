@@ -1,4 +1,3 @@
-import axios from "axios";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { firestoreAdmin } from "~/server/utils/firebase";
 import { removeCodeBlock } from "~/server/utils/strings";
@@ -16,10 +15,6 @@ export default defineEventHandler(async (event) => {
     let decodedClaims;
     if (sessionCookie) {
       decodedClaims = await authAdmin.verifySessionCookie(sessionCookie, true);
-    }
-
-    if (!decodedClaims) {
-      console.warn("Could not find userId");
     }
 
     // Find User's Progress

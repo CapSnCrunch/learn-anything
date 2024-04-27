@@ -277,13 +277,14 @@ let maxAttempts = 10;
 const getQuizQuestions = async (count: number) => {
   try {
     let response;
+    let questionIds = questions.value.map(question => question.questionId)
+
     if (props.knowledgeAssessment) {
       response = await axios.post("/api/generateKnowledgeAssessment", {
         topicId: props.topicId,
         count: count,
       });
     } else {
-      let questionIds = questions.value.map(question => question.questionId)
       response = await axios.post("/api/getQuestions", {
         topicId: props.topicId,
         quizId: props.quizId,
@@ -294,8 +295,12 @@ const getQuizQuestions = async (count: number) => {
     }
 
     const responseQuestions = response?.data?.data;
+    const filteredResponseQuestions = responseQuestions.filter(
+      (question: Question) => !questionIds.includes(question.questionId)
+    )
+
     questions.value = questions.value.concat(
-      responseQuestions?.map((question: any) => {
+      filteredResponseQuestions?.map((question: any) => {
         return {
           ...question,
           answers: question.answers.slice().sort(() => Math.random() - 0.5),
@@ -313,7 +318,7 @@ const getQuizQuestions = async (count: number) => {
   }
 
   if (questions.value.length < props.totalQuestions && attempts < maxAttempts) {
-    const wait = props.knowledgeAssessment ? 1000 : 3500
+    const wait = props.knowledgeAssessment ? 1000 : 4500
     setTimeout(() => {
       attempts += 1
       getQuizQuestions(2)
