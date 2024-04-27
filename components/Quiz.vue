@@ -3,18 +3,7 @@
     class="d-flex flex-column justify-center align-start w-100"
     style="max-width: 1200px"
   >
-    <span v-if="loading || questions.length < 1" class="w-100">
-      <v-row class="d-flex w-100 mt-8">
-        <v-col cols="12" class="d-flex flex-column align-center">
-          <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
-            {{ loadingMessage }}
-          </h2>
-          <img src="../assets/loading.gif" width="50px" height="50px" />
-        </v-col>
-      </v-row>
-    </span>
-
-    <span v-else class="w-100">
+    <span class="w-100">
       <v-row class="d-flex w-100 mb-6 align-center">
         <span class="ml-4">
           <slot name="back-button" />
@@ -29,7 +18,18 @@
 
       <LAProgressBar :value="progress" />
 
-      <div v-if="progress < 100 && currentQuestion != null" class="d-flex flex-column">
+      <span v-if="loading || questions.length < 1 || currentQuestion == null" class="w-100">
+        <v-row class="d-flex w-100 mt-8">
+          <v-col cols="12" class="d-flex flex-column align-center">
+            <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
+              {{ loadingMessage }}
+            </h2>
+            <img src="../assets/loading.gif" width="50px" height="50px" />
+          </v-col>
+        </v-row>
+      </span>
+
+      <div v-else-if="progress < 100" class="d-flex flex-column">
         <v-row class="d-flex w-100 mt-4">
           <v-col cols="12" class="mb-4">
             <h2 class="text-darkGray text-h5 text-start">
