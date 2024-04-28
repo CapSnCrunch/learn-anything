@@ -113,7 +113,7 @@
               }"
             >
               <h2 class="text-white text-h6 font-weight-bold">Start Learning!</h2>
-            </LAButton>
+          </LAButton>
           </nuxt-link>
         </v-col>
       </v-row>

@@ -1,6 +1,6 @@
 <template>
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
-    <v-sheet class="section d-flex align-start" style="padding-top: 100px">
+    <v-sheet class="section d-flex align-start justify-center" style="padding-top: 100px">
       <div
         class="d-flex flex-column justify-center align-center w-100"
         :class="xs ? 'mt-0' : 'mt-12'"

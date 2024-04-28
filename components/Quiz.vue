@@ -428,7 +428,7 @@ const nextQuestion = () => {
   const nextQuestion = questions.value[questionIndex.value];
   questions.value[questionIndex.value] = {
     ...nextQuestion,
-    answers: nextQuestion.answers.slice().sort(() => Math.random() - 0.5),
+    answers: nextQuestion?.answers?.slice()?.sort(() => Math.random() - 0.5),
   };
 };
 

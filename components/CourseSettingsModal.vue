@@ -28,7 +28,7 @@
                       >
                         <LAButton class="w-100 mt-3 mb-1" style="max-width: 350px">
                           <div class="d-flex flex-column align-center justify-center w-100">
-                          <h2 class="text-darkGray text-subtitle-1 text-no-wrap font-weight-bold">{{ titleCase(topicId) }}</h2>
+                          <h2 class="text-darkGray text-subtitle-1 text-center font-weight-bold">{{ titleCase(topicId) }}</h2>
                             <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
                           </div>
                         </LAButton>
