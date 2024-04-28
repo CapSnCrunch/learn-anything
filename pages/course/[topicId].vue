@@ -4,14 +4,14 @@
       <!-- Main Course Content -->
       <v-col
         cols="12"
-        md="8"
+        md="10"
         lg="9"
         class="d-flex flex-column align-end ma-0 pa-0"
         style="padding-top: 100px;"
       >
         <span v-if="loading" class="w-100">
           <v-row class="d-flex w-100 mt-8">
-            <v-col cols="12" class="d-flex flex-column align-center" :class="xs ? 'mt-12' : ''">
+            <v-col cols="12" class="d-flex flex-column align-center mt-12">
               <h2 class="text-darkGray text-h4 text-center font-weight-bold mb-8">
                 Loading your custom course...
               </h2>
@@ -31,7 +31,7 @@
             style="max-width: 800px; padding: 24px 0;"
             ref="sections"
           >
-            <h2 class="text-darkGray text-h4 font-weight-bold">{{ titleCase(topicId) }}</h2>
+            <h2 class="text-darkGray text-h4 text-center font-weight-bold">{{ titleCase(topicId) }}</h2>
             <LAProgressBar :value="computeTotalTopicProgress(currentTopic)" class="mt-3" style="height: 18px; width: 75%;" />
           </div>
         </v-row>
@@ -129,15 +129,15 @@
                   @close="settingsModalOpen = false"
                 />
               </div>
-              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'scrollbox'" class="w-100 mt-2">
+              <div :class="Object.keys(userProgress).length < 3 ? 'ml-0' : 'scrollbox'" class="w-100 mt-2">
                 <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
                   <nuxt-link
                     :to="'/course/' + topicId"
                     class="text-decoration-none w-100"
                   >
-                    <LAButton class="w-100 mt-3 mb-1" style="max-width: 350px">
-                      <div class="d-flex flex-column align-center justify-center w-100">
-                        <h2 class="text-darkGray text-subtitle-1 text-no-wrap">{{ titleCase(topicId) }}</h2>
+                    <LAButton class="w-100 mt-3 mb-1" style="max-width: 350px;">
+                      <div class="d-flex flex-column align-center justify-center w-100 text-center">
+                        <h2 class="text-darkGray text-subtitle-1">{{ titleCase(topicId) }}</h2>
                         <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
                       </div>
                     </LAButton>
@@ -338,12 +338,31 @@ const getUserProgress = async (deletedTopicId?: string) => {
   userProgress.value = progress
 }
 
+let attempts = 0;
+let maxAttempts = 2;
 onMounted(async () => {
   loading.value = true;
-  await getCourseSubtopics();
+  
+  while (attempts < maxAttempts) {
+    try {
+      await getCourseSubtopics();
+      break;
+    } catch (error) {
+      console.error('Failed to load course:', error);
+      attempts += 1;
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+
   loading.value = false;
-  getSubtopicQuizzes();
-  getUserProgress();
+
+  if (attempts === maxAttempts) {
+    console.error('Failed to load course after maximum attempts');
+  } else {
+    getSubtopicQuizzes();
+    getUserProgress();
+  }
 });
 </script>
 

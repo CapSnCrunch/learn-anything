@@ -13,7 +13,8 @@ export default defineEventHandler(async (event) => {
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
       Consider topics like Web Development, Baking, Archaeology, etc. Respond with a JSON object in the format 
       { topics: [{ name: 'Example Topic', description: 'no more than 20 words...'}] }. Generate exactly 6 distinct topics.
-      IMPORTANT: Your response must be in json format, do not include a code block.`;
+      IMPORTANT: Your response must be in json format, do not include a code block. If the user's input is a specific type of
+      certification (ex: AWS Solutions Architect, CompTIA, etc.) be sure to include a topic specifically for that certification.`;
 
     const result = await model.generateContent(prompt);
     const response = result.response;
