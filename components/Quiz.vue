@@ -24,7 +24,7 @@
         </v-col>
       </v-row>
 
-      <span v-else-if="loading || questions.length < 1 || currentQuestion == null" class="w-100">
+      <span v-else-if="loading || questions.length < 1 || !currentQuestion?.question" class="w-100">
         <v-row class="d-flex w-100 mt-8">
           <v-col cols="12" class="d-flex flex-column align-center">
             <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
@@ -202,10 +202,6 @@ const props = defineProps({
     type: String,
     default: "quiz",
   },
-  questions: {
-    type: Array as () => Question[],
-    default: [],
-  },
   difficulty: {
     type: Number,
     default: 5,
@@ -278,7 +274,10 @@ const loading = ref(false);
 onMounted(async () => {
   loading.value = true;
 
-  await getQuizQuestions(2);
+  Promise.any([
+    getQuizQuestions(3),
+    getQuizQuestions(4)
+  ])
 
   loading.value = false;
 });
@@ -332,7 +331,7 @@ const getQuizQuestions = async (count: number) => {
     const wait = props.knowledgeAssessment ? 1000 : 4000
     setTimeout(() => {
       attempts += 1
-      getQuizQuestions(2)
+      getQuizQuestions(props.knowledgeAssessment ? 4 : 2)
     }, wait);
   }
 };
@@ -395,7 +394,7 @@ const submit = (answerIndex: number) => {
 };
 
 const nextQuestion = () => {
-  if (!canGoToNextQuestion.value) {
+  if (!canGoToNextQuestion.value && !props.knowledgeAssessment) {
     return
   }
 
@@ -417,10 +416,10 @@ const nextQuestion = () => {
     }
   }
 
-  const newQuestion = questions.value[questionIndex.value];
+  const nextQuestion = questions.value[questionIndex.value];
   questions.value[questionIndex.value] = {
-    ...newQuestion,
-    answers: newQuestion.answers.slice().sort(() => Math.random() - 0.5),
+    ...nextQuestion,
+    answers: nextQuestion.answers.slice().sort(() => Math.random() - 0.5),
   };
 };
 
