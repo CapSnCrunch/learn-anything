@@ -2,7 +2,8 @@
   <v-container no-gutters fluid fill-height class="pa-0 ma-0">
     <v-sheet
       class="d-flex justify-center align-start"
-      style="padding-top: 100px; height: 100vh"
+      style="padding-top: 100px;"
+      :style="xs ? 'height: 100%' : mdAndUp ? 'height: 100vh' : 'height: 165vh'"
     >
       <Quiz
         v-model="questions"
@@ -22,6 +23,7 @@
           <ExitQuizModal
             v-model="backToCourseModalOpen" 
             :exit-path="`/course/${topicId}`" 
+            :fullscreen="xs"
             @close="backToCourseModalOpen = false"
           />
         </template>
@@ -49,9 +51,12 @@ import axios from "axios";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useCurrentUser } from "vuefire";
+import { useDisplay } from "vuetify";
 import { load, save } from "@/utils/localStorage";
 import { titleCase } from "@/server/utils/strings";
 import Quiz from "@/components/Quiz.vue";
+
+const { xs, mdAndUp } = useDisplay()
 
 const route = useRoute();
 const topicId = route.params.topicId;

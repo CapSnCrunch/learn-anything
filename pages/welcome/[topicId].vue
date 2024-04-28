@@ -4,13 +4,16 @@
       class="d-flex justify-center align-start px-4"
       style="padding-top: 150px; height: 100vh"
     >
-      <span v-if="!started">
-        <div class="text-start">
+      <span v-if="!started" class="d-flex flex-column w-100 align-center">
+        <div :class="xs ? 'text-center' : 'text-start'">
           <h1 class="text-darkGray text-h4 font-weight-bold typingEffect">
-            Welcome to {{ titleCase(topicId) }}!
+            Welcome to <span v-if="!xs">{{ titleCase(topicId) }}!</span>
+          </h1>
+          <h1 v-if="xs" class="text-darkGray text-h4 font-weight-bold typingEffect">
+            {{ titleCase(topicId) }}!
           </h1>
         </div>
-        <div class="text-start mt-4">
+        <div class="mt-4 text-center">
           <h2
             class="text-darkGray text-h6 font-weight-medium"
             style="max-width: 800px"
@@ -20,7 +23,7 @@
           </h2>
         </div>
         <LAButton 
-          class="mt-6" 
+          class="mt-6 w-100"
           style="max-width: 350px"
           :colors="{
             borderColor: 'linear-gradient(90deg, rgb(7.882% 49.92% 68.824%), rgb(37.06% 60.502% 6.824%))',
@@ -35,7 +38,7 @@
         </LAButton>
         <nuxt-link
           :to="'/course/' + topicId"
-          class="text-decoration-none"
+          class="text-decoration-none w-100 d-flex align-center justify-center"
         >
           <LAButton style="max-width: 350px" class="mt-4 w-100">
             <h2 class="text-darkGray text-darkGray font-weight-bold" style="font-size: 18px;">
@@ -59,7 +62,7 @@
             <h2 class="text-darkGray text-h4 font-weight-bold">
               Quiz completed!
             </h2>
-            <h2 class="text-darkGray text-h5 font-weight-medium mt-3">
+            <h2 class="text-darkGray text-center text-h5 font-weight-medium mt-3">
               Great, now we can get started on learning!
             </h2>
             <nuxt-link
@@ -81,11 +84,14 @@
 <script setup>
 import axios from "axios";
 import { ref, computed } from "vue";
+import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { useCurrentUser } from "vuefire";
 import { titleCase } from "@/server/utils/strings";
 import { load, save } from "@/utils/localStorage";
 import Quiz from "@/components/Quiz.vue";
+
+const { xs } = useDisplay();
 
 useHead({
   title: 'Learn Anything | Welcome',

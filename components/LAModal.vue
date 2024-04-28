@@ -2,14 +2,15 @@
   <v-dialog
     v-model="value"
     :fullscreen="fullscreen"
-    :width="width"
-    :max-width="maxWidth"
-    :height="height"
+    :width="fullscreen ? '100%' : width"
+    :max-width="fullscreen ? '100%' : maxWidth"
+    :height="fullscreen ? '100%' : height"
     v-bind="$attrs"
     @keydown="keyListener"
   >
     <div
-      class="bg-white pa-8 rounded-xl h-100"
+      class="bg-white pa-8 h-100"
+      :class="fullscreen ? '' : 'rounded-xl'"
       style="box-shadow: rgba(0, 0, 0, 20%) 0px 0px 15px 15px"
     >
       <div class="d-flex w-100 justify-space-between align-center">
@@ -43,10 +44,13 @@ const props = defineProps({
     type: String,
     default: "500px",
   },
+  fullscreen: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const value = ref(false);
-const fullscreen = false;
 
 const emits = defineEmits(["close"]);
 
