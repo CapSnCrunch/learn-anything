@@ -98,9 +98,7 @@ const handleHomeButton = (): void => {
 }
 
 const handleLogin = async (): Promise<void> => {
-  console.log(accountRoutes.includes(route.name?.toString() || ''))
   if (accountRoutes.includes(route.name?.toString() || '')) {
-    console.log('login')
     const redirectedFrom = route?.query?.redirectedFrom || '' as string;
     handleRoutingForAction('/login', redirectedFrom);
   } else {
@@ -109,9 +107,7 @@ const handleLogin = async (): Promise<void> => {
 }
 
 const handleCreateAccount = (): void => {
-  console.log(accountRoutes.includes(route.name?.toString() || ''))
   if (accountRoutes.includes(route.name?.toString() || '')) {
-    console.log('signup')
     const redirectedFrom = route?.query?.redirectedFrom || '' as string;
     handleRoutingForAction('/signup', redirectedFrom);
   } else {
@@ -120,7 +116,10 @@ const handleCreateAccount = (): void => {
 }
 
 const handleRoutingForAction = (path: string, redirectedFrom?: string): void => {
-  const query = redirectedFrom ? { redirectedFrom, } : '';
+  let query: string | { redirectedFrom: string } = ''
+  if (redirectedFrom != '/') {
+    query = redirectedFrom ? { redirectedFrom, } : '';
+  }
   exitPath.value = { path: path, query }
   if (assessmentRoutes.includes(route.name?.toString() || '')) {
     backToCourseModalOpen.value = true
