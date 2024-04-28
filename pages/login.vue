@@ -100,7 +100,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { load, clear } from "@/utils/localStorage";
 import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
@@ -121,6 +121,7 @@ const password = ref("");
 const auth = useFirebaseAuth()!;
 const error = ref<Error | null>(null);
 const message = ref<string>("");
+const route = useRoute();
 const router = useRouter();
 
 async function signInWithEmailPassword() {
@@ -138,7 +139,12 @@ async function signInWithEmailPassword() {
     const topicWithMostProgress = findTopicWithMostProgress(
       userProgress?.topics
     );
-    if (topicWithMostProgress) {
+
+    const redirectedFrom = route?.query?.redirectedFrom as string | undefined;
+
+    if (redirectedFrom) {
+      router.push({ path: `${redirectedFrom}` });
+    } else if (topicWithMostProgress) {
       router.push({ path: `/course/${topicWithMostProgress}` });
     } else {
       router.push({ path: "/welcome" });
@@ -161,7 +167,12 @@ async function signInWithGooglePopup() {
     const topicWithMostProgress = findTopicWithMostProgress(
       userProgress?.topics
     );
-    if (topicWithMostProgress) {
+
+    const redirectedFrom = route?.query?.redirectedFrom as string | undefined;
+
+    if (redirectedFrom) {
+      router.push({ path: `${redirectedFrom}` });
+    } else if (topicWithMostProgress) {
       router.push({ path: `/course/${topicWithMostProgress}` });
     } else {
       router.push({ path: "/welcome" });

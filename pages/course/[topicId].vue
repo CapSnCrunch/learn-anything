@@ -21,7 +21,8 @@
         
         <v-row 
           v-if="!loading"
-          class="d-flex justify-end align-center w-100 mb-3"
+          class="d-flex align-center w-100 mb-3"
+          :class="lgAndUp ? 'justify-end' : 'justify-center'"
         >
           <div
             class="section-card d-flex flex-column align-center w-100"
@@ -37,7 +38,8 @@
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
-          class="d-flex justify-end align-center w-100 mb-3"
+          class="d-flex align-center w-100 mb-3"
+          :class="lgAndUp ? 'justify-end' : 'justify-center'"
         >
           <div v-if="lgAndUp" class="pr-8">
             <img :src="mascots[subtopicIndex]" width="220px" height="220px">
@@ -61,12 +63,12 @@
               </h1>
             </div>
 
-            <v-row class="d-flex w-100 mt-8 mb-6 align-center">
-              <v-col v-if="!lgAndUp" cols="4" class="w-100">
+            <v-row class="d-flex w-100 mt-8 mb-6 align-center justify-center">
+              <v-col v-if="sm || md" cols="4" class="w-100">
                 <img :src="mascots[subtopicIndex]" width="220px" height="220px">
               </v-col>
-              <v-col cols="8" lg="12">
-                <v-row class="d-flex flex-wrap justify-space-around">
+              <v-col cols="12" sm="8" lg="12">
+                <v-row class="d-flex flex-wrap" :class="xs ? 'justify-space-between' : 'justify-space-around'">
                   <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
                     <nuxt-link
                       :to="quizIndex > subtopic.progress ? '' : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`"
@@ -101,11 +103,12 @@
         cols="12"
         md="4"
         lg="3"
-        class="d-flex justify-start align-start px-4"
+        class="d-flex px-4"
+        :class="lgAndUp ? 'justify-start align-start' : 'justify-center align-center'"
         style="margin-top: 100px; position: relative;"
       >
-        <div class="side-card-section h-100 w-100 pr-8" style="max-width: 400px">
-          <div class="d-flex flex-column h-100 w-100 pr-8">
+        <div class="h-100 w-100" :class="lgAndUp ? 'side-card-section-fixed pr-8' : 'side-card-section-relative'" style="max-width: 400px">
+          <div class="d-flex flex-column h-100 w-100" :class="lgAndUp ? 'pr-8' : ''">
             <div class="side-card d-flex flex-column justify-start align-center pa-6 w-100" :style="Object.keys(userProgress).length < 2 ? 'height: 250px;' : 'height: 350px;'">
               <div class="d-flex justify-center w-100 pl-10">
                 <h2 class="text-darkGray text-h6 font-weight-bold pb-2 ml-auto">
@@ -121,13 +124,13 @@
                   @close="settingsModalOpen = false"
                 />
               </div>
-              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'scrollbox'" class="w-100">
+              <div :class="Object.keys(userProgress).length < 4 ? 'ml-0' : 'scrollbox'" class="w-100 mt-2">
                 <div v-for="([topicId, topic], index) of Object.entries(userProgress).sort()" :key="`course-button-${topicId}`" class="d-flex flex-column w-100">
                   <nuxt-link
                     :to="'/course/' + topicId"
-                    class="text-decoration-none"
+                    class="text-decoration-none w-100"
                   >
-                    <LAButton class="w-100 mt-3 mb-1" style="max-width: 300px">
+                    <LAButton class="w-100 mt-3 mb-1" style="max-width: 350px">
                       <div class="d-flex flex-column align-center justify-center w-100">
                         <h2 class="text-darkGray text-subtitle-1 text-no-wrap">{{ titleCase(topicId) }}</h2>
                         <LAProgressBar :value="computeTotalTopicProgress(topic)" style="height: 12px; width: 125px;" />
@@ -140,7 +143,7 @@
                 to="/welcome"
                 class="d-flex text-decoration-none w-100"
               >
-                <LAButton class="pt-4 w-100" style="max-width: 300px">
+                <LAButton class="pt-4 w-100" style="max-width: 350px">
                     <v-icon icon="mdi-plus-thick" size="35px" color="darkGray" />
                 </LAButton>
               </nuxt-link>
@@ -220,7 +223,7 @@ const colors = ref([
   "rgb(53.725% 88.627% 9.804%)",
 ]);
 
-const { xs, lgAndUp } = useDisplay();
+const { xs, sm, md, lgAndUp } = useDisplay();
 const settingsModalOpen = ref(false);
 
 const route = useRoute();
@@ -340,9 +343,13 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.side-card-section {
+.side-card-section-fixed {
   position: fixed;
   top: 75px;
+}
+
+.side-card-section-relative {
+  position: relative;
 }
 
 .side-card {

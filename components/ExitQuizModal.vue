@@ -44,8 +44,10 @@ const emits = defineEmits(["close", "exit"]);
 const router = useRouter();
 const props = defineProps({
   exitPath: {
-    type: String,
-    default: '/'
+    type: Object,
+    default: () => { 
+      return { path: '/' }
+    }
   }
 });
 
@@ -58,6 +60,6 @@ function close() {
 const exit = (): void => {
   emits("close");
   emits("exit");
-  router.push({ path: props.exitPath });
+  router.push(props.exitPath);
 };
 </script>

@@ -54,7 +54,7 @@ const error = ref<Error | null>(null);
 const route = useRoute();
 const router = useRouter();
 
-const exitPath = ref<string>("/")
+const exitPath = ref({ path: "/" })
 const backToCourseModalOpen = ref<boolean>(false);
 
 const savedProgress = ref<any>([])
@@ -62,13 +62,13 @@ const savedProgress = ref<any>([])
 const assessmentRoutes = ['welcome-topicId', 'assessment-topicId-quizId']
 
 const handleSignOut = async (): Promise<void> => {
-  exitPath.value = '/'
+  exitPath.value = { path: '/' }
   error.value = null;
   try {
     await signOut(auth);
     clear();
     savedProgress.value = []
-    router.push({ path: exitPath.value });
+    router.push(exitPath.value);
   } catch (e: any) {
     console.error("Failed signOut", e);
     error.value = e;
@@ -96,19 +96,20 @@ const handleHomeButton = (): void => {
 }
 
 const handleLogin = async (): Promise<void> => {
-  handleRoutingForAction('/login')
+  handleRoutingForAction('/login', route.path);
 }
 
 const handleCreateAccount = (): void => {
-  handleRoutingForAction('/signup')
+  handleRoutingForAction('/signup', route.path);
 }
 
-const handleRoutingForAction = (path: string): void => {
-  exitPath.value = path || '/'
+const handleRoutingForAction = (path: string, redirectedFrom?: string): void => {
+  const query = redirectedFrom ? { redirectedFrom, } : '';
+  exitPath.value = { path: path, query }
   if (assessmentRoutes.includes(route.name?.toString() || '')) {
     backToCourseModalOpen.value = true
   } else {
-    router.push({ path: exitPath.value });
+    router.push(exitPath.value);
   }
 }
 
