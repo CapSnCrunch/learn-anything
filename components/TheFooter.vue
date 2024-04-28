@@ -51,6 +51,6 @@ const { xs } = useDisplay()
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #44c3a6;
+    background-color: #56c6a2;
 }
 </style>

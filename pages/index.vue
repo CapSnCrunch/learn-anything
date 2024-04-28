@@ -52,7 +52,7 @@
     </v-sheet>
     <v-sheet
       class="d-flex align-center justify-center px-10"
-      :style="mdAndDown ? 'height: 250vh' : 'height: 175vh'"
+      :style="mobile ? 'height: 300vh' : mdAndDown ? 'height: 250vh' : 'height: 175vh'"
     >
       <v-row class="d-flex justify-start align-start" :style="xs ? 'margin-top: 0px;' : 'margin-top: 75px;'">
         <v-col cols="12" class="d-flex align-center justify-center">
@@ -96,7 +96,7 @@
             </div>
             <img
               src="../assets/rabbit.png"
-              style="height: 100%; max-width: 350px;"
+              style="height: 100%; max-width: 350px; max-height: 350px;"
             />
           </div>
         </v-col>
@@ -127,7 +127,7 @@ import { ref } from "vue";
 import { useDisplay } from "vuetify";
 import LAButton from "@/components/LAButton.vue";
 
-const { xs, mdAndDown, mdAndUp, lgAndUp } = useDisplay();
+const { mobile, xs, mdAndDown, mdAndUp, lgAndUp } = useDisplay();
 const topics = ref([])
 
 useHead({
