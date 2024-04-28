@@ -19,7 +19,7 @@
       <LAProgressBar :value="progress" />
 
       <v-row v-if="progress == 100" class="d-flex w-100 mt-8">
-        <v-col cols="12" class="d-flex flex-column align-center">
+        <v-col cols="12" class="d-flex flex-column align-center justify-center">
           <slot name="completed-screen" />
         </v-col>
       </v-row>
@@ -27,7 +27,7 @@
       <span v-else-if="loading || questions.length < 1 || !currentQuestion?.question" class="w-100">
         <v-row class="d-flex w-100 mt-8">
           <v-col cols="12" class="d-flex flex-column align-center">
-            <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
+            <h2 class="text-darkGray text-h4 text-center font-weight-bold mb-8">
               {{ loadingMessage }}
             </h2>
             <img src="../assets/loading.gif" width="50px" height="50px" />
@@ -36,14 +36,15 @@
       </span>
 
       <div v-else class="d-flex flex-column">
-        <v-row class="d-flex w-100 mt-4">
+        <v-row class="d-flex w-100 mt-4 mx-0">
           <v-col cols="12" class="mb-4">
             <h2 class="text-darkGray text-h5 text-start">
               {{ currentQuestion.question }}
             </h2>
           </v-col>
           <v-col
-            cols="6"
+            cols="12"
+            md="6"
             v-for="(answer, answerIndex) of currentQuestion.answers"
             class="d-flex align-center justify-center px-1 py-0 mb-3"
           >
@@ -106,18 +107,18 @@
           </v-col>
         </v-row>
 
-        <v-row v-if="!knowledgeAssessment" class="d-flex w-100 h-100 pt-4">
-          <v-col cols="4">
-          <div class="d-flex justify-end">
+        <v-row v-if="!knowledgeAssessment" class="d-flex w-100 h-100 pt-4 mt-4 ma-0">
+          <v-col v-if="mdAndUp" cols="12" md="4">
+            <div class="d-flex justify-end">
               <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
             </div>
           </v-col>
-          <v-col cols="8" class="pa-6" style="max-height: 500px; margin-top: -30px;">
+          <v-col cols="12" md="8" class="pa-6" style="margin-top: -30px;" :style="xs ? 'max-height: 450px;' : 'max-height: 400px;'">
             <transition name="chat-bubble-transition h-100">
               <div class="chat-bubble" :class="{ 'expanded': conversation?.length > 0 }">
-                <div :class="{ 'triangle-left': conversation?.length > 0 }"></div>
+                <div v-if="conversation?.length > 0" :class="mdAndUp ? 'triangle-left' : 'triangle-bottom'"></div>
                 <div class="scrollbox" ref="scrollbox">
-                  <div v-for="chat of conversation" :class="chat.role == 'user' ? 'chat-message-user' : 'chat-message-assistant'">
+                  <div v-for="chat of conversation" :class="chat.role == 'user' ? 'chat-message-user' : 'chat-message-assistant'" :style="xs ? 'max-width: 80%' : 'max-width: 70%'">
                     {{ chat.message }}
                   </div>  
                   <div v-if="chatLoading" class="chat-message-assistant d-flex justify-center align-center py-3" style="width: 75px;">
@@ -134,6 +135,11 @@
               </div>
             </transition>
           </v-col>
+          <v-col v-if="!mdAndUp" cols="12" md="4">
+            <div class="d-flex justify-center">
+              <img :src="mascots[subtopicIndex]" style="max-height: 350px; margin-top: -30px;">
+            </div>
+          </v-col>
         </v-row>
       </div>
     </span>
@@ -142,6 +148,7 @@
 
 <script setup lang="ts">
 import axios from "axios";
+import { useDisplay } from "vuetify"
 import { load } from "@/utils/localStorage";
 import { watch, nextTick, defineProps, defineEmits } from "vue";
 import { titleCase } from "@/server/utils/strings";
@@ -171,6 +178,8 @@ const mascots = ref([
   fox,
   elephant
 ])
+
+const { xs, mdAndUp } = useDisplay();
 
 interface Answer {
   answer: string;
@@ -463,7 +472,6 @@ const progress = computed(() => {
   align-self: end;
   background-color: #e5e5e5;
   border-radius: 8px;
-  max-width: 70%;
   margin-bottom: 5px;
 }
 
@@ -471,7 +479,6 @@ const progress = computed(() => {
   padding: 8px;
   background-color: #e5e5e5;
   border-radius: 8px;
-  max-width: 70%;
   margin-bottom: 5px;
 }
 
@@ -487,12 +494,24 @@ const progress = computed(() => {
 .triangle-left {
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #f0f0f0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid #f0f0f0;
   position: absolute;
-  left: -10px;
+  left: -15px;
   top: 20%;
+  transform: translateY(-50%);
+}
+
+.triangle-bottom {
+  width: 0;
+  height: 0;
+  border-top: 20px solid #f0f0f0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  position: absolute;
+  bottom: -25px;
+  left: 45%;
   transform: translateY(-50%);
 }
 </style>

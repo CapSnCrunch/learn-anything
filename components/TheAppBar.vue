@@ -17,7 +17,7 @@
             </LAButton>
           </div>
           <div class="d-flex" v-else>
-            <LAButton class="mr-2" :width="xs ? '45px' : '150px'" height="40px" @click="handleLogin()">
+            <LAButton :class="xs ? 'mr-4' : 'mr-2'" :width="xs ? '45px' : '150px'" height="40px" @click="handleLogin()">
               <v-icon v-if="xs" icon="mdi-login" size="20px" color="darkGray" />
               <span v-else>Login</span>
             </LAButton>
@@ -29,6 +29,7 @@
         <ExitQuizModal
           v-model="backToCourseModalOpen" 
           :exit-path="exitPath"
+          :fullscreen="xs"
           @close="backToCourseModalOpen = false"
         />
       </v-row>
@@ -59,6 +60,7 @@ const backToCourseModalOpen = ref<boolean>(false);
 
 const savedProgress = ref<any>([])
 
+const accountRoutes = ['login', 'signup']
 const assessmentRoutes = ['welcome-topicId', 'assessment-topicId-quizId']
 
 const handleSignOut = async (): Promise<void> => {
@@ -96,11 +98,25 @@ const handleHomeButton = (): void => {
 }
 
 const handleLogin = async (): Promise<void> => {
-  handleRoutingForAction('/login', route.path);
+  console.log(accountRoutes.includes(route.name?.toString() || ''))
+  if (accountRoutes.includes(route.name?.toString() || '')) {
+    console.log('login')
+    const redirectedFrom = route?.query?.redirectedFrom || '' as string;
+    handleRoutingForAction('/login', redirectedFrom);
+  } else {
+    handleRoutingForAction('/login', route.path);
+  }
 }
 
 const handleCreateAccount = (): void => {
-  handleRoutingForAction('/signup', route.path);
+  console.log(accountRoutes.includes(route.name?.toString() || ''))
+  if (accountRoutes.includes(route.name?.toString() || '')) {
+    console.log('signup')
+    const redirectedFrom = route?.query?.redirectedFrom || '' as string;
+    handleRoutingForAction('/signup', redirectedFrom);
+  } else {
+    handleRoutingForAction('/signup', route.path);
+  }
 }
 
 const handleRoutingForAction = (path: string, redirectedFrom?: string): void => {

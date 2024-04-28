@@ -1,17 +1,18 @@
 <template>
   <v-container no-gutters fluid class="d-flex justify-center pa-0 ma-0">
-    <v-row class="d-flex justify-center w-100" style="max-width: 1600px">
+    <v-row class="d-flex justify-center w-100 ma-0 px-4" style="max-width: 1600px">
+      <!-- Main Course Content -->
       <v-col
         cols="12"
         md="8"
         lg="9"
-        class="d-flex flex-column align-end ma-0"
+        class="d-flex flex-column align-end ma-0 pa-0"
         style="padding-top: 100px;"
       >
         <span v-if="loading" class="w-100">
           <v-row class="d-flex w-100 mt-8">
-            <v-col cols="12" class="d-flex flex-column align-center">
-              <h2 class="text-darkGray text-h4 font-weight-bold mb-8">
+            <v-col cols="12" class="d-flex flex-column align-center" :class="xs ? 'mt-12' : ''">
+              <h2 class="text-darkGray text-h4 text-center font-weight-bold mb-8">
                 Loading your custom course...
               </h2>
               <img src="../assets/loading.gif" width="50px" height="50px" />
@@ -21,8 +22,9 @@
         
         <v-row 
           v-if="!loading"
-          class="d-flex align-center w-100 mb-3"
+          class="d-flex align-center w-100 mb-3 mx-0"
           :class="lgAndUp ? 'justify-end' : 'justify-center'"
+          style="margin-top: 75px"
         >
           <div
             class="section-card d-flex flex-column align-center w-100"
@@ -38,7 +40,7 @@
           v-for="(subtopic, subtopicIndex) of subtopics"
           :id="`subtopic-${subtopicIndex}`"
           :key="`subtopic-${subtopicIndex}`"
-          class="d-flex align-center w-100 mb-3"
+          class="d-flex align-center w-100 mb-3 mx-0"
           :class="lgAndUp ? 'justify-end' : 'justify-center'"
         >
           <div v-if="lgAndUp" class="pr-8">
@@ -68,8 +70,8 @@
                 <img :src="mascots[subtopicIndex]" width="220px" height="220px">
               </v-col>
               <v-col cols="12" sm="8" lg="12">
-                <v-row class="d-flex flex-wrap" :class="xs ? 'justify-space-between' : 'justify-space-around'">
-                  <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex">
+                <v-row class="d-flex flex-wrap justify-space-around">
+                  <v-col cols="3" lg="1" v-for="(quiz, quizIndex) of subtopic?.quizzes" :key="quizIndex" :class="xs ? 'px-1' : 'px-3'">
                     <nuxt-link
                       :to="quizIndex > subtopic.progress ? '' : `/assessment/${kebabCase(topicId)}/${quiz?.quizId}`"
                       class="d-flex flex-wrap text-decoration-none cursor-pointer align-center justify-center"
@@ -98,14 +100,16 @@
         </v-row>
       </v-col>
 
+      <!-- Fixed Side Column -->
       <v-col
         v-if="!loading"
         cols="12"
-        md="4"
+        md="12"
         lg="3"
         class="d-flex px-4"
         :class="lgAndUp ? 'justify-start align-start' : 'justify-center align-center'"
-        style="margin-top: 100px; position: relative;"
+        style="position: relative;"
+        :style="lgAndUp ? 'margin-top: 100px;' : 'margin-top: 0px;'"
       >
         <div class="h-100 w-100" :class="lgAndUp ? 'side-card-section-fixed pr-8' : 'side-card-section-relative'" style="max-width: 400px">
           <div class="d-flex flex-column h-100 w-100" :class="lgAndUp ? 'pr-8' : ''">
@@ -120,6 +124,7 @@
                 <CourseSettingsModal
                   v-model="settingsModalOpen" 
                   :user-progress="userProgress"
+                  :fullscreen="xs"
                   @refresh="topicId => getUserProgress(topicId)"
                   @close="settingsModalOpen = false"
                 />

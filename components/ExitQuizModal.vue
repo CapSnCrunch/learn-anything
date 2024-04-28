@@ -1,6 +1,7 @@
 <template>
   <LAModal
     v-model="value"
+    :fullscreen="fullscreen"
     width="600px"
     max-width="600px"
     height="300px"
@@ -19,13 +20,13 @@
             Your progress will not be saved.
           </span>
         </h2>
-        <v-row class="d-flex justify-end mt-12">
-          <LAButton @click="close()" width="150px">
+        <v-row class="d-flex justify-end mt-12" :class="xs ? 'flex-column' : 'flex-row'">
+          <LAButton @click="close()" :width="xs ? '100%' : '150px'">
             <h2 class="font-weight-medium">
               Stay Here
             </h2>
           </LAButton>
-          <LAButton class="ml-4" @click="exit()" width="150px">
+          <LAButton @click="exit()" :width="xs ? '100%' : '150px'" :class="xs ? 'mt-4' : 'ml-4'">
             <h2 class="font-weight-medium">
               Exit
             </h2>
@@ -38,7 +39,10 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
+import { useDisplay } from "vuetify"
 import { useRouter } from "vue-router";
+
+const { xs } = useDisplay()
 
 const emits = defineEmits(["close", "exit"]);
 const router = useRouter();
@@ -48,7 +52,11 @@ const props = defineProps({
     default: () => { 
       return { path: '/' }
     }
-  }
+  },
+  fullscreen: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const value = ref(false);

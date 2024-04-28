@@ -1,12 +1,12 @@
 <template>
   <v-container no-gutters fluid fill-height class="d-flex justify-center pa-0 ma-0">
-    <v-row class="d-flex flex-column align-center justify-center" style="max-width: 100vw">
+    <v-row class="d-flex flex-column align-center justify-center px-2" style="max-width: 100vw">
       <v-col class="pa-0 ma-0" style="max-width: 1200px;">
         <v-sheet class="section d-flex align-center justify-center">
           <v-col
             cols="12"
-            sm="8"
-            md="6"
+            sm="7"
+            md="5"
             lg="4"
             class="d-flex flex-column justify-center align-center ma-0"
             style="max-width: 100vw"
@@ -71,8 +71,8 @@
 
             <v-row class="d-flex justify-center w-100 mt-6">
               <h2 class="text-darkGray text-h6">
-                Already have an account?
-                <nuxt-link :to="{ path: '/login' }"> Login instead </nuxt-link>
+                Have an account?
+                <span class="font-weight-bold text-h6 text-decoration-underline cursor-pointer" @click="handleRoutingToLogin()"> Login instead </span>
               </h2>
             </v-row>
           </v-col>
@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { load, clear } from "@/utils/localStorage";
 import LAButton from "@/components/LAButton.vue";
 import { GoogleAuthProvider } from "firebase/auth";
@@ -101,7 +101,14 @@ const password = ref("");
 
 const auth = useFirebaseAuth()!;
 const error = ref<Error | null>(null);
+const route = useRoute();
 const router = useRouter();
+
+const handleRoutingToLogin = (): void => {
+  const redirectedFrom = route?.query?.redirectedFrom || '' as string;
+  const query = redirectedFrom ? { redirectedFrom, } : '';
+  router.push({ path: '/login', query });
+}
 
 async function signUpWithEmailAndPassword() {
   error.value = null;
