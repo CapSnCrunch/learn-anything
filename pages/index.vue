@@ -51,7 +51,7 @@
     </v-sheet>
     <v-sheet
       class="d-flex align-center justify-center px-10"
-      :style="xs ? 'height: 300vh' : mdAndDown ? 'height: 250vh' : 'height: 175vh'"
+      :style="mdAndDown ? 'height: 270vh' : 'height: 175vh'"
     >
       <v-row class="d-flex justify-start align-start">
         <v-col cols="12" class="d-flex align-center justify-center">
