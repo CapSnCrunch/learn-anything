@@ -87,7 +87,7 @@
             <v-row class="d-flex justify-center w-100 mt-6">
               <h2 class="text-darkGray text-h6">
                 Don't have an account?
-                <div class="font-weight-bold text-h6 text-decoration-underline cursor-pointer" @click="handleRoutingToSignup()"> Create one </div>
+                <span class="font-weight-bold text-h6 text-decoration-underline cursor-pointer" @click="handleRoutingToSignup()"> Create one </span>
               </h2>
             </v-row>
           </v-col>
