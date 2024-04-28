@@ -12,8 +12,7 @@
 
         <v-col xs="12" md="6" class="d-flex align-center ma-0 pa-0" :class="mdAndUp ? 'justify-start' : 'justify-center mt-2'">
           <v-row
-            class="d-flex flex-column align-center justify-center ma-0"
-            :class="mdAndUp ? 'px-0' : 'ml-6'"
+            class="d-flex flex-column align-center justify-center ma-0 px-0"
             style="width: 100%; max-width: 500px"
           >
             <h2 class="text-darkGray text-center font-weight-bold mb-6" :class="mdAndUp ? 'text-h4' : 'text-h5'">
