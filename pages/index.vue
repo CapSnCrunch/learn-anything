@@ -52,9 +52,9 @@
     </v-sheet>
     <v-sheet
       class="d-flex align-center justify-center px-10"
-      :style="mobile ? 'height: 300vh' : mdAndDown ? 'height: 250vh' : 'height: 175vh'"
+      :style="xs ? 'height: 300vh' : mdAndDown ? 'height: 250vh' : 'height: 175vh'"
     >
-      <v-row class="d-flex justify-start align-start" :style="xs ? 'margin-top: 0px;' : 'margin-top: 75px;'">
+      <v-row class="d-flex justify-start align-start">
         <v-col cols="12" class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column-reverse' : 'flex-row'" style="max-width: 1000px">
             <div :class="mdAndDown ? 'px-2' : 'pa-4'">
@@ -66,7 +66,7 @@
             </div>
             <img
               src="../assets/beaver.png"
-              style="height: 100%; max-width: 350px;"
+              style="height: 100%; max-width: 350px; max-height: 350px;"
             />
           </div>
         </v-col>
@@ -74,7 +74,7 @@
           <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column' : 'flex-row'" style="max-width: 1000px">
             <img
               src="../assets/owl.png"
-              style="height: 100%; max-width: 350px;"
+              style="height: 100%; max-width: 350px; max-height: 350px;"
             />
             <div :class="mdAndDown ? 'px-2' : 'pa-4'">
               <h2 class="text-h5 text-center font-weight-bold text-darkGray mb-3 mt-10">Achieve Your Certification Goals</h2>
