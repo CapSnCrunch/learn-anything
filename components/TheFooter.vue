@@ -47,7 +47,7 @@ const { xs } = useDisplay()
 .footer-top {
     width: 100%;
     height: 250px;
-    margin-top: 50px;
+    margin-top: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
