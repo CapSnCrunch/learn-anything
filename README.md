@@ -1,6 +1,6 @@
 # Learn Anything
 
-<a href="learnanything.io">learnanything.io</a> is a submission for the <a href="https://googleai.devpost.com/">Google AI Hackathon on Devpost</a>.
+<a href="https://learnanything.io">learnanything.io</a> is a submission for the <a href="https://googleai.devpost.com/">Google AI Hackathon on Devpost</a>.
 
 Learn Anything is a web application built to help users of all backgrounds approach any topic from a place of confidence and curiosity.
 
