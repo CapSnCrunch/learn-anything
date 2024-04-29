@@ -17,7 +17,7 @@ Navigating search results can be like piecing together a puzzle with missing pie
 **Note for Judges**: If viewing the live version of the project is sufficient, please checkout the hosted version at [https://learnanything.io/](https://learnanything.io/)
 
 1. Fork and clone the repository
-2. From the project root, `npm install`
+2. From the root of the project, run `npm install`
 3. Setup a [Firebase Project](https://console.firebase.google.com/)
    - Setup Authentication with email / password and Google Sign-In
    - Set environment variables in the project's `.env` for `FIREBASE_PROJECT_ID`, `FIREBASE_AUTH_DOMAIN`, and `FIREBASE_API_KEY`
@@ -30,5 +30,13 @@ Navigating search results can be like piecing together a puzzle with missing pie
 If you have any issues setting up the project, [please reach out](https://www.linkedin.com/in/samuel-perales/)!
 
 ## Demo
+Demo coming soon...
 
 ## Other
+### Meet the Cast!
+Every topic on Learn Anything is taught with the help of these ten assistants. If you're ever struggling with a problem, you can rely on them for direction!
+
+<p align="center">
+  <img src="https://github.com/CapSnCrunch/learn-anything/assets/19574838/48b52072-0b14-4b08-9505-287e8f0b7dc4" width="850">
+</p>
+<br/>
