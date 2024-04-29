@@ -27,12 +27,9 @@ export default defineNuxtConfig({
       sessionCookie: true,
     },
     config: {
-      apiKey: "AIzaSyDLv7fDcq0lKfpBURi0shnzgiMjGX5-jtQ",
-      authDomain: "learn-anything-63265.firebaseapp.com",
-      projectId: "learn-anything-63265",
-      storageBucket: "learn-anything-63265.appspot.com",
-      messagingSenderId: "205593743745",
-      appId: "1:205593743745:web:2b8632a3cb4ddd9426d880",
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
     },
   },
 });
