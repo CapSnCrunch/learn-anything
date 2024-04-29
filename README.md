@@ -1,75 +1,7 @@
-# Nuxt 3 Minimal Starter
+# Learn Anything
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+<a href="learnanything.io">learnanything.io</a> is a submission for the <a href="https://googleai.devpost.com/">Google AI Hackathon on Devpost</a>.
 
-## Setup
+Learn Anything is a web application built to help users of all backgrounds approach any topic from a place of confidence and curiosity.
 
-Make sure to install the dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Navigating search results can be like piecing together a puzzle with missing pieces. Learn Anything streamlines the learning process by **generating courses organized in the logical sequence you'd expect**, eliminating the frustration of sifting through disjointed web page and video tutorials. With our platform, you can seamlessly progress from foundational concepts to advanced topics, ensuring a comprehensive and cohesive learning experience tailored to your needs. Whether you're studying for a certification, need extra practice for a class you're in, or simply a curious person, Learn Anything allows you to approach your learning goals with **topics that may have never even had a formal course available before**.
