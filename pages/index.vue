@@ -5,8 +5,8 @@
         <v-col cols="12" md="6" class="d-flex align-end ma-0 pa-4" :class="mdAndUp ? 'justify-end' : 'justify-center mt-8'">
           <img
             src="../assets/login-image.png"
-            style="width: 100%;"
-            :style="mdAndUp ? 'max-width: 600px;' : 'max-width: 350px;'"
+            style="width: 100%; max-width: 500px"
+            
           />
         </v-col>
 
@@ -49,10 +49,7 @@
         </Vue3Marquee>
       </v-row>
     </v-sheet>
-    <v-sheet
-      class="d-flex align-center justify-center px-10"
-      :style="mdAndDown ? 'height: 270vh' : 'height: 175vh'"
-    >
+    <v-sheet class="d-flex align-center justify-center px-10">
       <v-row class="d-flex justify-start align-start">
         <v-col cols="12" class="d-flex align-center justify-center">
           <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column-reverse' : 'flex-row'" style="max-width: 1000px">
@@ -103,7 +100,8 @@
           <h2 class="text-h5 text-center font-weight-bold text-darkGray my-6">What are you waiting for?</h2>
           <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none">
             <LAButton 
-              width="350px"
+              width="400px"
+              height="80px"
               :colors="{
                 borderColor: 'linear-gradient(90deg, rgb(7.882% 49.92% 68.824%), rgb(37.06% 60.502% 6.824%))',
                 borderColorHover: 'linear-gradient(90deg, rgb(11.882% 59.92% 78.824%), rgb(47.06% 70.502% 16.824%))',
@@ -111,7 +109,7 @@
                 backgroundColorHover: 'linear-gradient(90deg, rgb(14.98% 75.02% 100%), rgb(64.725% 93.627% 20.804%))',
               }"
             >
-              <h2 class="text-white text-h6 font-weight-bold">Start Learning!</h2>
+              <h2 class="text-white text-h5 font-weight-bold">Start Learning!</h2>
           </LAButton>
           </nuxt-link>
         </v-col>
