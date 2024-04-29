@@ -37,6 +37,6 @@ Demo coming soon...
 Every topic on Learn Anything is taught with the help of these ten assistants. If you're ever struggling with a problem, you can rely on them for direction!
 
 <p align="center">
-  <img src="https://github.com/CapSnCrunch/learn-anything/assets/19574838/b7a9c1e9-2e3e-4361-9e43-99103b40a575" width="850">
+  <img src="https://github.com/CapSnCrunch/learn-anything/assets/19574838/8f975fb9-58b1-48e0-bc42-4a72fc1769ae" width="850">
 </p>
 <br/>
