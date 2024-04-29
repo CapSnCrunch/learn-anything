@@ -1,12 +1,11 @@
 <template>
   <v-container no-gutters fluid class="pa-0 ma-0">
-    <v-sheet class="d-flex flex-column align-center justify-center" style="height: 100vh;">
+    <v-sheet class="d-flex flex-column align-center justify-center" style="min-height: 100vh;">
       <v-row class="d-flex flex-wrap justify-center align-center h-100 pt-8 ma-0">
         <v-col cols="12" md="6" class="d-flex align-end ma-0 pa-4" :class="mdAndUp ? 'justify-end' : 'justify-center mt-8'">
           <img
             src="../assets/login-image.png"
-            style="width: 100%; max-width: 500px"
-            
+            style="width: 100%; max-width: 500px;"
           />
         </v-col>
 
@@ -39,19 +38,17 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-row class="d-flex w-100 ma-0 pa-0 pb-4" :class="mdAndUp ? 'pb-4' : 'pt-4'">
-        <Vue3Marquee style="height: 80px;" duration="80">
-          <nuxt-link v-for="topic in topics" :to="'/welcome/' + topic.topicId" class="text-decoration-none">
-            <LAButton width="300px" height="50px" class="mx-2 pt-2">
-              <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">{{ topic.name }}</h2>
-            </LAButton>
-          </nuxt-link>
-        </Vue3Marquee>
-      </v-row>
+      <Vue3Marquee style="height: 80px;" duration="80">
+        <nuxt-link v-for="topic in topics" :to="'/welcome/' + topic.topicId" class="text-decoration-none">
+          <LAButton width="300px" height="50px" class="mx-2 pt-2">
+            <h2 class="text-darkGray font-weight-bold" style="font-size: 18px">{{ topic.name }}</h2>
+          </LAButton>
+        </nuxt-link>
+      </Vue3Marquee>
     </v-sheet>
-    <v-row class="d-flex justify-start align-start ma-0 pa-0">
-      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0">
-        <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column-reverse' : 'flex-row'" style="max-width: 1000px">
+    <v-row class="d-flex justify-start align-start ma-0 pa-0 mt-10">
+      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0 my-4">
+        <div class="d-flex align-center justify-center w-100 flex-row" :class="lgAndUp ? 'flex-row' : 'flex-column-reverse'" style="max-width: 1000px">
           <div :class="mdAndDown ? 'px-2' : 'pa-4'">
             <h2 class="text-h5 text-center font-weight-bold text-darkGray mb-3 mt-10">Enhance Your Classroom Experience</h2>
             <h2 class="text-h6 text-center text-darkGray">
@@ -65,8 +62,8 @@
           />
         </div>
       </v-col>
-      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0">
-        <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column' : 'flex-row'" style="max-width: 1000px">
+      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0 my-4">
+        <div class="d-flex align-center justify-center w-100 flex-row" :class="lgAndUp ? 'flex-row' : 'flex-column'" style="max-width: 1000px">
           <img
             src="../assets/owl.png"
             style="height: 100%; max-width: 350px; max-height: 350px;"
@@ -80,8 +77,8 @@
           </div>
         </div>
       </v-col>
-      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0">
-        <div class="d-flex align-center justify-center w-100" :class="mdAndDown ? 'flex-column-reverse' : 'flex-row'" style="max-width: 1000px">
+      <v-col cols="12" class="d-flex align-center justify-center ma-0 pa-0 my-4">
+        <div class="d-flex align-center justify-center w-100 flex-row" :class="lgAndUp ? 'flex-row' : 'flex-column-reverse'" style="max-width: 1000px">
           <div :class="mdAndDown ? 'px-2' : 'pa-4'">
             <h2 class="text-h5 text-center font-weight-bold text-darkGray mb-3 mt-10">Curiosity Awaits!</h2>
             <h2 class="text-h6 text-center text-darkGray">
@@ -97,7 +94,7 @@
       </v-col>
       <v-col cols="12" class="d-flex flex-column align-center justify-center" :style="xs ? 'margin-bottom: 0px; margin-top: 50px;' : 'margin-bottom: 75px;'">
         <h2 class="text-h5 text-center font-weight-bold text-darkGray my-6">What are you waiting for?</h2>
-        <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none w-100">
+        <nuxt-link :to="{ name: 'welcome' }" class="text-decoration-none" style="width: 100%; max-width: 400px;">
           <LAButton 
             style="width: 100%; max-width: 400px;"
             height="80px"
