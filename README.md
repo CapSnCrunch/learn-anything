@@ -2,7 +2,7 @@
 
 <a href="https://learnanything.io">learnanything.io</a> is a submission for the <a href="https://googleai.devpost.com/">Google AI Hackathon on Devpost</a>.
 
-Learn Anything is a web application built to help users of all backgrounds approach any topic from a place of confidence and curiosity.
+Learn Anything is a platform for learners of all backgrounds which generates structured courses for topics where formal courses are difficult to access or may not even exist.
 
 <br/>
 <p align="center">
