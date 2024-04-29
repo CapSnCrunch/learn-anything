@@ -1,75 +1,42 @@
-# Nuxt 3 Minimal Starter
+# Learn Anything
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+<a href="https://learnanything.io">learnanything.io</a> is a submission for the <a href="https://googleai.devpost.com/">Google AI Hackathon on Devpost</a>.
 
-## Setup
+Learn Anything is a web application built to help users of all backgrounds approach any topic from a place of confidence and curiosity.
 
-Make sure to install the dependencies:
+<br/>
+<p align="center">
+  <img src="https://github.com/CapSnCrunch/learn-anything/assets/19574838/b0ff99d9-b3f3-4dd3-9d63-bd652ad3cb81" width="600">
+</p>
+<br/>
 
-```bash
-# npm
-npm install
+Navigating search results can be like piecing together a puzzle with missing pieces. Learn Anything streamlines the learning process by <ins>generating courses organized in the logical sequence you'd expect</ins>, eliminating the frustration of sifting through disjointed web page and video tutorials. With our platform, you can seamlessly progress from foundational concepts to advanced topics, ensuring a comprehensive and cohesive learning experience tailored to your needs. Whether you're <ins>studying for a certification, need extra practice for a class you're in, or simply a curious person</ins>, Learn Anything allows you to approach your learning goals with <ins>topics that may have never even had a formal course available before</ins>.
 
-# pnpm
-pnpm install
+## Project Setup
 
-# yarn
-yarn install
+**Note for Judges**: If viewing the live version of the project is sufficient, please checkout the hosted version at [https://learnanything.io/](https://learnanything.io/)
 
-# bun
-bun install
-```
+1. Fork and clone the repository
+2. From the root of the project, run `npm install`
+3. Setup a [Firebase Project](https://console.firebase.google.com/)
+   - Setup Authentication with email / password and Google Sign-In
+   - Set environment variables in the project's `.env` for `FIREBASE_PROJECT_ID`, `FIREBASE_AUTH_DOMAIN`, and `FIREBASE_API_KEY`
+   - Set the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to be your stringified `service-account.json` (see [here](https://firebase.google.com/support/guides/service-accounts))
+   - You may need to set localhost as an authorized domain in Authentication > Settings > Authorized Domains
+4. Set the `LOCAL_URL="http://localhost:3000"` environment variable
+5. Generate a [Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key) and set it with `GEMINI_API_KEY`
+6. Run `npm run dev` from the root of the project
 
-## Development Server
+If you have any issues setting up the project, [please reach out](https://www.linkedin.com/in/samuel-perales/)!
 
-Start the development server on `http://localhost:3000`:
+## Demo
+Demo coming soon...
 
-```bash
-# npm
-npm run dev
+## Other
+### Meet the Cast!
+Every topic on Learn Anything is taught with the help of these ten assistants. If you're ever struggling with a problem, you can rely on them for direction!
 
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+<p align="center">
+  <img src="https://github.com/CapSnCrunch/learn-anything/assets/19574838/b7a9c1e9-2e3e-4361-9e43-99103b40a575" width="850">
+</p>
+<br/>
