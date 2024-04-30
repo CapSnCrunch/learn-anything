@@ -30,7 +30,7 @@ Navigating search results can be like piecing together a puzzle with missing pie
 If you have any issues setting up the project, [please reach out](https://www.linkedin.com/in/samuel-perales/)!
 
 ## Demo
-Demo coming soon...
+[![image](https://github.com/CapSnCrunch/learn-anything/assets/19574838/ef5f7b46-d765-48c5-9ffa-c451f7c1d542)](https://www.youtube.com/watch?v=xlzTbqeKgCc)
 
 ## Other
 ### Meet the Cast!
