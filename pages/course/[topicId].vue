@@ -26,14 +26,19 @@
           :class="lgAndUp ? 'justify-end' : 'justify-center'"
           style="margin-top: 75px"
         >
-          <div
+          <v-col cols="3" v-if="lgAndUp" class="pr-6 w-100">
+          </v-col>
+          <v-col
+            cols="12"
+            lg="9"
+            xl="12"
             class="section-card d-flex flex-column align-center w-100"
             style="max-width: 800px; padding: 24px 0;"
             ref="sections"
           >
             <h2 class="text-darkGray text-h4 text-center font-weight-bold">{{ titleCase(topicId) }}</h2>
             <LAProgressBar :value="computeTotalTopicProgress(currentTopic)" class="mt-3" style="height: 18px; width: 75%;" />
-          </div>
+          </v-col>
         </v-row>
       
         <v-row v-if="!loading"
@@ -43,10 +48,13 @@
           class="d-flex align-center w-100 mb-3 mx-0"
           :class="lgAndUp ? 'justify-end' : 'justify-center'"
         >
-          <div v-if="lgAndUp" class="pr-8">
-            <img :src="mascots[subtopicIndex]" width="220px" height="220px">
-          </div>
-          <div
+          <v-col cols="3" v-if="lgAndUp" class="pr-6 w-100">
+            <img :src="mascots[subtopicIndex]" style="width: 100%; max-width: 220px;">
+          </v-col>
+          <v-col
+            cols="12"
+            lg="9"
+            xl="12"
             class="section-card d-flex flex-column align-center w-100"
             style="max-width: 800px"
             ref="sections"
@@ -67,7 +75,7 @@
 
             <v-row class="d-flex w-100 mt-8 mb-6 align-center justify-center">
               <v-col v-if="sm || md" cols="4" class="w-100">
-                <img :src="mascots[subtopicIndex]" width="220px" height="220px">
+                <img :src="mascots[subtopicIndex]" style="width: 100%; max-width: 220px;">
               </v-col>
               <v-col cols="12" sm="8" lg="12">
                 <v-row class="d-flex flex-wrap justify-space-around">
@@ -95,8 +103,7 @@
                 </v-row>
               </v-col>
             </v-row>
-
-          </div>
+          </v-col>
         </v-row>
       </v-col>
 
@@ -402,5 +409,11 @@ onMounted(async () => {
 
 .scrollbox:hover {
   box-shadow: inset 0 -10px 10px -10px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1400px) {
+  .side-card-section-fixed {
+    max-width: 300px;
+  }
 }
 </style>

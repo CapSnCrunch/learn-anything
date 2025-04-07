@@ -10,7 +10,7 @@ Learn Anything is a platform for learners of all backgrounds which generates str
 </p>
 <br/>
 
-Navigating search results can be like piecing together a puzzle with missing pieces. Learn Anything streamlines the learning process by <ins>generating courses organized in the logical sequence you'd expect</ins>, eliminating the frustration of sifting through disjointed web page and video tutorials. With our platform, you can seamlessly progress from foundational concepts to advanced topics, ensuring a comprehensive and cohesive learning experience tailored to your needs. Whether you're <ins>studying for a certification, need extra practice for a class you're in, or simply a curious person</ins>, Learn Anything allows you to approach your learning goals with <ins>topics that may have never even had a formal course available before</ins>.
+Navigating search results can be like piecing together a puzzle with missing pieces. Learn Anything streamlines the learning process by <ins>generating courses organized in the logical sequence you'd expect</ins>, eliminating the frustration of sifting through disjointed web pages and video tutorials. With our platform, you can seamlessly progress from foundational concepts to advanced topics, ensuring a comprehensive and cohesive learning experience tailored to your needs. Whether you're <ins>studying for a certification, need extra practice for a class you're in, or simply a curious person</ins>, Learn Anything allows you to approach your learning goals with <ins>topics that may have never even had a formal course available before</ins>.
 
 ## Project Setup
 
@@ -30,7 +30,7 @@ Navigating search results can be like piecing together a puzzle with missing pie
 If you have any issues setting up the project, [please reach out](https://www.linkedin.com/in/samuel-perales/)!
 
 ## Demo
-Demo coming soon...
+[![image](https://github.com/CapSnCrunch/learn-anything/assets/19574838/ef5f7b46-d765-48c5-9ffa-c451f7c1d542)](https://www.youtube.com/watch?v=xlzTbqeKgCc)
 
 ## Other
 ### Meet the Cast!
