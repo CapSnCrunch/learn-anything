@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Generate Questions for Knowledge Assessment with Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const prompt = `You are a fun helpful teaching assistant trying to help your student learn about the topic ${topicId}. The course is currently focused on ${quizId}.
       The student is working on the problem '${question?.question}' which has the following answers: ${question?.answers}. Please help the student determine the right 
       answer without revealing the correct answer verbatim. Instead, you should answer their questions, provide explanations, and link them to helpful resources to better

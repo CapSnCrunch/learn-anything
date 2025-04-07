@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Generate Subtopics with Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const subtopicPlanPrompt = `You are a helpful teacher trying to create a course plan for your students learning ${topic.name}. 
       Generate a list of units that will be covered in the course. For example, a course on machine learning might have
       the subtopics 'linear algebra review', 'linear regression', 'neural networks', and 'computer vision'.

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Generate Topics with Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const prompt = `Generate a list of learning topics based on the following input: "${message}". 
       Consider topics like Web Development, Baking, Archaeology, etc. Respond with a JSON object in the format 
       { topics: [{ name: 'Example Topic', description: 'no more than 20 words...'}] }. Generate exactly 6 distinct topics.
