@@ -1,5 +1,5 @@
 export const save = (key: string, value: any): void => {
-  if (!value) {
+  if (!key || !value) {
     console.warn(`Tried to save value ${value} to localStorage with key ${key}. Skipping...`);
     return;
   }
