@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     let topic = docSnapshot.data();
 
     // Generate Questions for Knowledge Assessment with Gemini
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const prompt = `You are a helpful teacher trying to create an initial knowledge assessment to see how much your students know about the topic ${topic?.name}. 
         The quiz should have a full range of difficulties between 3 and 7 out of 10 in order to gauge what level you should teach the rest of the course at 
         (where 1 is a complete beginner, 5 is a student of the topic, and 10 is a subject matter expert). Your response should be a JSON object with an attribute 

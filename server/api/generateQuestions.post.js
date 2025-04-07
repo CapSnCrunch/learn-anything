@@ -84,7 +84,7 @@ export default defineEventHandler(async (event) => {
 
       // Generate Questions with Gemini (2 each time for speed)
       const existingQuestions = questions.map(question => question.question);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
       const prompt = `You are a helpful teacher trying to create a quiz for your students learning ${topic?.name}. You are creating a quiz for the
         ${filteredSubtopic?.name} unit described by ${filteredSubtopic?.description}. This quiz should focus on ${filteredSubtopic?.quiz?.description}.
         The questions should have a difficulty between ${difficulty - 1} and ${difficulty + 1} out of 10 (where 1 is a complete beginner,

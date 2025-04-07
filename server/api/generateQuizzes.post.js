@@ -79,7 +79,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Generate quizzes within each subtopic
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
     const quizPromises = [];
     for (const subtopic of topic?.subtopics) {
       const quizPlanPrompt = `You are a helpful teacher trying to create a course plan for your students learning ${topic.name}. The course
