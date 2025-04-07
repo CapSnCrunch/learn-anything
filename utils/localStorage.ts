@@ -1,4 +1,9 @@
 export const save = (key: string, value: any): void => {
+  if (!value) {
+    console.warn(`Tried to save value ${value} to localStorage with key ${key}. Skipping...`);
+    return;
+  }
+
   window?.localStorage.setItem(key, JSON.stringify(value));
 };
 
